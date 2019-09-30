@@ -62,7 +62,9 @@
 <script>
 
 user_data = {
-	email : '<?= $user_email ?>'
+	//email used to be here
+
+  // email : ' $user_email '
 }
 
 $("#collector_account_email").html(user_data.email);
@@ -147,7 +149,7 @@ function force_reauth_dbx(){
   if(local_website.indexOf("localhost") !== -1){
     local_website += "/www";
   }
-  authUrl = dbx.getAuthenticationUrl(local_website+'/<?= $_SESSION['version'] ?>');
+  authUrl = dbx.getAuthenticationUrl(document.URL);
   authUrl += "&force_reauthentication=true";
   document.getElementById('authlink').href = authUrl;
   $("#authlink")[0].click();
