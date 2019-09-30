@@ -1,4 +1,4 @@
-<?php 
+<?php
 /*  Collector (Garcia, Kornell, Kerr, Blake & Haffey)
     A program for running experiments on the web
     Copyright 2012-2016 Mikey Garcia & Nate Kornell
@@ -15,8 +15,8 @@
 
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>
- 		
-		Kitten release (2019) author: Dr. Anthony Haffey (a.haffey@reading.ac.uk)		
+
+		Kitten release (2019) author: Dr. Anthony Haffey (a.haffey@reading.ac.uk)
 */
 if(isset($_SESSION['user_email']) == false){
 	echo "Please log in to access your data.";
@@ -25,7 +25,7 @@ if(isset($_SESSION['user_email']) == false){
 ?>
 
 <style>
-#data_script_editor { 
+#data_script_editor {
 	height:500px;
 }
 </style>
@@ -35,13 +35,13 @@ if(isset($_SESSION['user_email']) == false){
 	Select file(s) to decrypt:
 	<input type="hidden" name="local_key" 				id="local_key_input">
 	<input type="hidden" name="completion_codes_input" 	id="completion_codes_input">
-	<input type="file" 	 name="filesToUpload[]"  id="filesToUpload" multiple="multiple">		
+	<input type="file" 	 name="filesToUpload[]"  id="filesToUpload" multiple="multiple">
 	<select name="posted_script" id="posted_script">
 		<option selected>None</select>
 	</select>
 	<input type="button" id="data_submit_btn" class="btn btn-primary"	value="Decrypt file(s)" style="display:none">
 	<input type="submit" 	name="submit" 			id="submit_btn" class="btn btn-primary"	value="Decrypt file" style="display:none">
-  
+
 </form>
 
 <div id="drop_zone">Drop files here</div>
@@ -116,33 +116,13 @@ function save_csv (filename, data) {
 	else{
 		var elem = window.document.createElement('a');
 		elem.href = window.URL.createObjectURL(blob);
-		elem.download = filename;        
+		elem.download = filename;
 		document.body.appendChild(elem);
-		elem.click();        
+		elem.click();
 		document.body.removeChild(elem);
 	}
 }
 </script>
-
-<?php
-$email = $_SESSION['user_email'];
-$sql = "SELECT * FROM `view_user_pps` WHERE `email` = '$email'";
-$result = $conn->query($sql);
-$data_array = [];
-while($row = $result->fetch_assoc()) {
-  $this_obj = new stdClass();
-  $this_obj->completion_code 	= $row['completion_code'];
-	$this_obj->experiment_id    = $row['experiment_id'];
-	$this_obj->participant_code = $row['participant_code'];
-	$this_obj->name    					= $row['name'];
-	array_push($data_array,$this_obj);
-}
-$researcher_sql_data = mysqli_fetch_assoc($result);
-
-if($researcher_sql_data == ''){
-	$researcher_sql_data = json_encode(['blank']);
-}
-?>
 <style>
 
 #collector_dropbox_comparison{
@@ -186,39 +166,61 @@ if($researcher_sql_data == ''){
 
 <div id="data_table"></div>
 
-<script>	
+<script>
 
-var data_obj = <?= json_encode($data_array) ?>;
-table_html =  '<table class="table">'+
-                "<tr>"+
-                  "<th> Experiment 				</th>" +
-                  "<th> Participant id		</th>" +					
-                  "<th> Completion code 	</th>" +
-                "</tr>";
-				
-for(i in data_obj){
-	
-	if(data_obj[i].progress !== "100"){
-		var refresh_html = "";
-	} else {
-		var refresh_html = "<button>refresh</button>";
-	}
-	
-	table_html += 	"<tr>"+
-						"<td>"+
-							"<span>"+data_obj[i].name+"</span>"+
-						"</td>"+
-						"<td>"+
-							"<span id='download"+i+"'>"+data_obj[i].participant_code+"</span>"+
-						"</td>" +
-						"<td>"+
-							"<span id='download"+i+"'>"+data_obj[i].completion_code+"</span>"+
-						"</td>" +
-					"</tr>";
+
+function create_data_table(data_array){
+  var data_obj = data_array;
+  table_html =  '<table class="table">'+
+                  "<tr>"+
+                    "<th> Experiment 				</th>" +
+                    "<th> Participant id		</th>" +
+                    "<th> Completion code 	</th>" +
+                  "</tr>";
+
+  for(i in data_obj){
+
+    if(data_obj[i].progress !== "100"){
+      var refresh_html = "";
+    } else {
+      var refresh_html = "<button>refresh</button>";
+    }
+
+    table_html += 	"<tr>"+
+              "<td>"+
+                "<span>"+data_obj[i].name+"</span>"+
+              "</td>"+
+              "<td>"+
+                "<span id='download"+i+"'>"+data_obj[i].participant_code+"</span>"+
+              "</td>" +
+              "<td>"+
+                "<span id='download"+i+"'>"+data_obj[i].completion_code+"</span>"+
+              "</td>" +
+            "</tr>";
+  }
+  table_html += "</table>";
+  $("#data_table").html(table_html);
+  var global_returned_data;
 }
-table_html += "</table>";
-$("#data_table").html(table_html);
-var global_returned_data;
+
+switch(developer_obj.context){
+
+  case "gitub":
+    console.dir("not implemented yet");
+    break;
+  case "local":
+    console.dir("not implemented yet");
+    break;
+  case "oCollector":
+    $.post(collector_map["ListData.php"],function(data_array){
+      create_data_table(data_array);
+    });
+    break;
+
+}
+
+
+
 
 function validate_filename(){
 	var these_files   = $("#filesToUpload")[0].files;
@@ -227,10 +229,10 @@ function validate_filename(){
 	for(var i = 0; i < these_files.length; i++){
 		var this_name = these_files[i].name;
 		if(this_name.indexOf("(") !== -1){
-			bootbox.alert("It looks like <b>" + this_name + "</b> has a bracket in it. Please do not change the filename of the files that are e-mailed to you. <br><br> It's possible you downloaded the file multiple times, and so your browser automatically added (x) to the filename. Please find the original file and upload that for decryption."); 
+			bootbox.alert("It looks like <b>" + this_name + "</b> has a bracket in it. Please do not change the filename of the files that are e-mailed to you. <br><br> It's possible you downloaded the file multiple times, and so your browser automatically added (x) to the filename. Please find the original file and upload that for decryption.");
 			validate_pass = false;
 		} else if(this_name.split("-").length !== 2) {
-			bootbox.alert("It looks like  <b>" + this_name + "</b> does not have the correct number of '-'s in it. Please do not change the filename of the files that are e-mailed to you. <br><br> There should be exactly <b>one</b> dash in the file name. Please find the original file with it's original name and upload that for decryption."); 
+			bootbox.alert("It looks like  <b>" + this_name + "</b> does not have the correct number of '-'s in it. Please do not change the filename of the files that are e-mailed to you. <br><br> There should be exactly <b>one</b> dash in the file name. Please find the original file with it's original name and upload that for decryption.");
 			validate_pass = false;
 		} else {
 			console.dir("this_name");
@@ -244,16 +246,17 @@ function validate_filename(){
                       "- You logged in before the participant completed the task. If so, you should be able to refresh the page and then proceed with decrypting the file with code:<b>" + pp_code + "</b> <br><br>" +
                       "- You are logged in with the wrong account (specifically the wrong <b>Collector</b> account). If this is the case, please switch your Collector account and try again");
 			} else {
-				completion_codes[this_name] = completion_code;	
+				completion_codes[this_name] = completion_code;
 			}
-		} 
+		}
 	}
 	$("#completion_codes_input").val(JSON.stringify(completion_codes));
 	return validate_pass;
 }
 
-</script> 
+</script>
 
-<?php 
+<?php
+}
 }
 ?>

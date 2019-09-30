@@ -1,6 +1,8 @@
 collector_map = {
 
   //IndexTabs
+    //Data
+      "ListData.php" : "IndexTabs/Data/listData.php",
     //Help
       "CondHelp.txt" : "IndexTabs/Help/CondHelp.txt",
       "GrapHelp.txt" : "IndexTabs/Help/GrapHelp.txt",
