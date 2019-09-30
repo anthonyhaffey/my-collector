@@ -15,9 +15,8 @@
 
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>
- 
-	Kitten release (2019) author: Dr. Anthony Haffey (a.haffey@reading.ac.uk)
 
+	Kitten release (2019) author: Dr. Anthony Haffey (a.haffey@reading.ac.uk)
 -->
 <style>
 #dropbox_initiate_div,
@@ -28,12 +27,11 @@
   display:none;
 }
 #top_navbar{
-  height:50px; 
+  height:50px;
   padding:5px;
 }
 </style>
 <script src="../libraries/jquery-3.3.1.min.js"></script>
-
 
 <div id="libraries_div"></div>
 <script>
@@ -44,10 +42,10 @@ $("#libraries_div").load("libraries.html");
   <link rel="stylesheet" href="Style.css"></link>
   <nav class="navbar fixed-top navbar-light bg-primary navbar-expand-lg" id="top_navbar">
     <div id="logo_div"></div>
-    <div class="collapse navbar-collapse">	
+    <div class="collapse navbar-collapse">
       <ul class="navbar-nav mr-auto">
         <div id="page_selected"></div>
-      </ul>		    
+      </ul>
     </div>
     <a href="https://github.com/open-collector/open-collector/issues" target="_blank" style="margin:2px">
       <button class="btn btn-primary">Report Bug</button>
@@ -63,7 +61,7 @@ $("#libraries_div").load("libraries.html");
   </nav>
   <table id="content_table" style="width:100%">
     <tr>
-      <td colspan="2" class='survey_cell_view_td'><textarea id="survey_cell_view" readonly></textarea></td>		
+      <td colspan="2" class='survey_cell_view_td'><textarea id="survey_cell_view" readonly></textarea></td>
     </td>
     <tr>
       <td id="content_area">
@@ -75,10 +73,10 @@ $("#libraries_div").load("libraries.html");
                              "IndexTabs/Boost/Boost.html",
                              "IndexTabs/Data/data.html"];
         navbar_names.forEach(function(this_name,index){
-          $("#content_area").append("<div class='collapse multi-collapse' style='width:100%' id='collapse_" + this_name +"' >"); 
+          $("#content_area").append("<div class='collapse multi-collapse' style='width:100%' id='collapse_" + this_name +"' >");
           $("#collapse_" + this_name).load(pages[index]);
         });
-  
+
       </script>
       <td id="help_area" class="help_class"></td>
     </tr>
@@ -91,16 +89,16 @@ $("#libraries_div").load("libraries.html");
   navbar_names.forEach(function(name,index){
     navbar_html += '<label class="btn btn-'+navbar_colors[index]+' select_page" id="option_'+name+'"  data-toggle="collapse" href="#collapse_'+name+'" role="button" aria-expanded="false" aria-controls="#collapse_'+name+'">'+
       '<input type="radio" style="display:none" name="options" autocomplete="off" >'+name+
-    '</label>';	
+    '</label>';
   });
   $("#page_selected").html(navbar_html);
 
-  $(".select_page").on("click",function(){	
+  $(".select_page").on("click",function(){
     $('.collapse').collapse('hide');
     $('.select_page').css("font-weight","normal");
-    $(this).css("font-weight","bold");	
+    $(this).css("font-weight","bold");
     $('.select_page').removeClass("bg-white");
-    $('.select_page').removeClass("text-primary");  
+    $('.select_page').removeClass("text-primary");
     $(this).addClass("bg-white");
     $(this).addClass("text-primary");
     var this_id = this.id;
@@ -110,10 +108,10 @@ $("#libraries_div").load("libraries.html");
         top:"100px"
       },
       {
-        duration:200      
-      });  
+        duration:200
+      });
     } else {
-      setTimeout(function(){	
+      setTimeout(function(){
         $("#help_content").animate(
         {
           top:"60px"
@@ -121,12 +119,12 @@ $("#libraries_div").load("libraries.html");
         {
           duration:200
         });
-      },300);		
+      },300);
     }
-  });	
+  });
   if($("#collector_account_email").html() == "--undefined--"){
     highlight_account("dropbox_account_email");
-    highlight_account("collector_account_email");	
+    highlight_account("collector_account_email");
   }
 
   </script>

@@ -22,10 +22,12 @@ function initiate_collector(){
         if(local_key !== "no-key"){
           window.localStorage.setItem("local_key",local_key);
         }
-      });      
+      });
+      break;
+    case "github":
+      $("#logged_in").show();
       break;
     case "localhost":
-    case "github":
       var user_email = window.localStorage.getItem("user_email");
       if(user_email == null){
         $("#login_div").show();
