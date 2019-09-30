@@ -1,4 +1,4 @@
-<!-- 
+<!--
   Collector (Garcia, Kornell, Kerr, Blake & Haffey)
   A program for running experiments on the web
   Copyright 2012-2016 Mikey Garcia & Nate Kornell
@@ -15,20 +15,19 @@
 
   You should have received a copy of the GNU General Public License
   along with this program.  If not, see <http://www.gnu.org/licenses/>
-  
+
   Kitten release (2019) author: Dr. Anthony Haffey (a.haffey@reading.ac.uk)
 !-->
-<script src="CollectorMap.js"></script>
 <script>
 function custom_alert(msg,duration) {
   if(typeof(duration) == "undefined"){
 		duration = 1000;
 	}
-	create_alerts_container();    
+	create_alerts_container();
 	var el = $("<div>");
-	el.html(msg);    
-	el.css("opacity", "0");	
-	$("#alerts").append(el).show();	
+	el.html(msg);
+	el.css("opacity", "0");
+	$("#alerts").append(el).show();
 	el.animate({opacity: "1"}, 600, "swing", function() {
 		$(this).delay(duration).animate({height: "0px"}, 800, "swing", function() {
 			$(this).remove();
@@ -40,10 +39,10 @@ function custom_alert(msg,duration) {
 }
 function create_alerts_container() {
 	if (typeof(alerts_ready) !== "undefined" && alerts_ready) return;
-	
+
 	var top_padding = parseFloat($("#sim_navbar").css("height").replace("px","")) + parseFloat($("#top_navbar").css("height").replace("px",""));
-	
-	
+
+
 	var el = $("<div>");
 	el.css({
 			position: "fixed",
@@ -53,24 +52,24 @@ function create_alerts_container() {
 			backgroundColor: "#ffc8c8",
 			borderRadius: "6px",
 			border: "1px solid #DAA",
-			color: "#800",					
+			color: "#800",
 	});
-	
+
 	el.attr("id", "alerts");
 	el.css("z-index", "1000");
 
 	$("body").append(el);
-	
+
 	var style = $("<style>");
 	style.html("#alerts > div { margin: 10px 5px; }");
-	
+
 	$("body").append(style);
-	
+
 	alerts_ready = true;
 }
 
-function update_dropdown_list(list_id,list,option_class){    
-    user_trialtype_list = user_trialtype_list.sort();    
+function update_dropdown_list(list_id,list,option_class){
+    user_trialtype_list = user_trialtype_list.sort();
 	user_trialtype_list.forEach(function(trialtype){
 		var new_option = "<option class='"+option_class+"'>"+trialtype+"</option>";
 		$("#"+list_id).append(new_option);

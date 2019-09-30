@@ -43,7 +43,7 @@
 			<span id="google_account_email" class="account_info text-white"></span>
 		</td>
     <td>
-			<img class='logo' style="border-radius: 50%; background-color:white; padding:2px" src="../logos/google.ico.png" id="collector_logo">
+			<img class='logo' style="border-radius: 50%; background-color:white; padding:2px" src="../logos/google.png" id="google_logo">
 		</td>
     <td>
       <span id="collector_account_email" class="account_info text-white"></span>
@@ -108,6 +108,10 @@ $("#collector_logo").on("click", function(){
       $("#logout_btn").click();
     }
   });
+});
+
+$("#google_logo").on("click",function(){
+  alert("beep");
 });
 
 var local_website = "<?= $_SESSION['local_website'] ?>";
