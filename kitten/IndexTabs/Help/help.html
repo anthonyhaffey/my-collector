@@ -55,30 +55,34 @@
 
 <script>
 help_obj = {};
-var help_array = ["CondHelp.txt",
-                  "GrapHelp.txt",
-                  "MainHelp.txt",
-                  "ProcHelp.txt",
-                  "SurvHelp.txt"];
+var help_dictionary = {
+  cond:    "CondHelp.txt",
+  graphic: "GrapHelp.txt",
+  main:    "MainHelp.txt",
+  proc:    "ProcHelp.txt",
+  surv:    "SurvHelp.txt"
+};
+function load_help(list){
+  if(list.length > 0){
+    help_item = list.pop();
+    console.dir("hi there");
+    $.get(collector_map[help_dictionary[help_item]],function(cond_help){
+      help_obj[help_item.replace(".txt","")] = cond_help;
+    });
+  } else {
+    help_general_html = '<div class="container">';
+    help_obj.main.forEach(function(tip,index){
+      help_general_html +=  '<div class="jumbotron general_tip tip'+index+'">' +
+                              tip +
+                            '</div>';
+    });
+    $(".help_general").html(help_general_html);
 
-help_array.forEach(function(help_file){
-
-  $.post(collector_map(help_file),function(cond_help){
-    help_obj[help_file.replace(".txt","")] = cond_help;
-  });
-});
-
-help_general_html = '<div class="container">';
-help_obj.main.forEach(function(tip,index){
-	help_general_html +=  '<div class="jumbotron general_tip tip'+index+'">' +
-													tip +
-												'</div>';
-});
-$(".help_general").html(help_general_html);
-
-help_obj.tip_no = Math.floor(Math.random() * help_obj.main.length);
-$(".tip"+help_obj.tip_no).show();
-
+    help_obj.tip_no = Math.floor(Math.random() * help_obj.main.length);
+    $(".tip"+help_obj.tip_no).show();
+  }
+}
+load_help(Object.keys(help_dictionary));
 
 function helperActivate(help_title, cellValue,help_type){
 	$("#help_title").html(help_title);
