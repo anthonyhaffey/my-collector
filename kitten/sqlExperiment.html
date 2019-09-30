@@ -21,7 +21,7 @@
 <script src="../libraries/jquery-3.3.1.min.js"></script>
 <div id="initiate_collector_div"></div>
 <script>
-$("#initiate_collector_div").load("initiateCollector.js");
+$("#initiate_collector_div").load(collector_map("initiateCollector.js"));
 </script>
 
 <head>
@@ -177,8 +177,34 @@ if(typeof(block_save) !== "undefined"){ //i.e. simulator
 }
 </script>
 
-<script src="../<?= $_SESSION['version'] ?>/iframe_library.js"></script>
-<script src="../<?= $_SESSION['version'] ?>/TrialFunctions.js"></script>
+<script src="iframe_library.js"></script>
+<script src="TrialFunctions.js"></script>
+
+<script>
+
+
+/* exemplar code in case the above two scripts don't run
+var amchart_scripts = ["https://www.amcharts.com/lib/3/ammap.js",
+                       "https://www.amcharts.com/lib/3/maps/js/worldLow.js",
+                       "https://www.amcharts.com/lib/3/themes/light.js"];
+
+function load_amchart(list){
+  if(list.length > 0){
+    var this_script = list.pop();
+    $.getScript( "ajax/test.js", function( data, textStatus, jqxhr ) {
+      console.log( data ); // Data returned
+      console.log( textStatus ); // Success
+      console.log( jqxhr.status ); // 200
+      console.log( "Load was performed." );
+      load_amchart(list);
+    });
+  }
+}
+*/
+
+
+</script>
+
 
 <script>
 function collectorPapaParsed(preparsed){
@@ -568,7 +594,7 @@ function create_exp_json_functions(){
 
 		//look through all variables and replace with the value
 
-		this_trialtype =  "<scr" + "ipt> Trial = {}; Trial.trial_no = '"+trial_no+"'; Trial.post_no ='"+post_no+"' </scr" + "ipt>" + "<scr" + "ipt src = '../<?= $_SESSION['version'] ?>/TrialFunctions.js' ></scr" + "ipt>" + this_trialtype ; //; trial_script +
+		this_trialtype =  "<scr" + "ipt> Trial = {}; Trial.trial_no = '"+trial_no+"'; Trial.post_no ='"+post_no+"' </scr" + "ipt>" + "<scr" + "ipt src = 'TrialFunctions.js' ></scr" + "ipt>" + this_trialtype ; //; trial_script +
 
 
 		this_trialtype = this_trialtype.replace("[trial_no]",trial_no);

@@ -1,6 +1,7 @@
 //detect if this is local or github or ocollector.org
 developer_obj = {
   context : "",
+  version : ""
 }
 function detect_context(){
   if(document.URL.indexOf("localhost") !== -1){
@@ -10,6 +11,10 @@ function detect_context(){
   } else { //assume it's github
     return "github";
   }
+}
+function detect_version(){
+  if(document.URL.indexOf("/kitten/") !== -1){
+    return "kitten";
 }
 function initiate_collector(){
   developer_obj.context = detect_context();
