@@ -23,6 +23,14 @@ function dropbox_login(message){
   }
 }
 
+function getAccessTokenFromUrl() { // Parses the url and gets the access token if it is in the urls hash
+ return utils.parseQueryString(window.location.hash).access_token;
+}
+function isAuthenticated() { // If the user was just redirected from authenticating, the urls hash will contain the access token.
+  return !!getAccessTokenFromUrl();
+}
+
+
 function check_authenticated(){
   if(isAuthenticated()){
     help_div_content = $(".help_general").html();

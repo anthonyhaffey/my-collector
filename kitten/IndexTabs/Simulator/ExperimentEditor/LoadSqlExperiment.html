@@ -335,12 +335,7 @@ function check_trialtypes_in_proc(procedure,post_trialtype){
 		}
 	});
 }
-function getAccessTokenFromUrl() { // Parses the url and gets the access token if it is in the urls hash
- return utils.parseQueryString(window.location.hash).access_token;
-}
-function isAuthenticated() { // If the user was just redirected from authenticating, the urls hash will contain the access token.
-  return !!getAccessTokenFromUrl();
-}
+
 function list_experiments(){
 	name_list = Object.keys(megaUberJson.exp_mgmt.experiments);
 	//synch with dropbox
