@@ -57,7 +57,7 @@ function check_authenticated(){
     });
   // Create an instance of Dropbox with the access token and use it to
     // fetch and render the files in the users root directory.
-    var dbx = new Dropbox({ accessToken: getAccessTokenFromUrl() });
+    dbx = new Dropbox({ accessToken: getAccessTokenFromUrl() });
 
     dbx.usersGetCurrentAccount()
     .then(function(account_info){
