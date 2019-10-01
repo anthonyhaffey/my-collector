@@ -15,6 +15,7 @@ function detect_context(){
 function detect_version(){
   if(document.URL.indexOf("/kitten/") !== -1){
     return "kitten";
+  }
 }
 function initiate_collector(){
   developer_obj.context = detect_context();
@@ -42,7 +43,4 @@ function initiate_collector(){
       break;
   }
 }
-
 initiate_collector();
-
-//$.post("init
