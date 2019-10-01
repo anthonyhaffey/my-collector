@@ -83,17 +83,28 @@
 <div id="autloaded_boosts_div"></div>
 
 <script>
+console.dir("boost loading");
 
-var boost_editor = ace.edit("boost_editor");
-		boost_editor.setTheme("ace/theme/chrome");
-		boost_editor.session.setMode("ace/mode/html");
-		boost_editor.setOptions({
-			enableBasicAutocompletion: true,
-			enableLiveAutocompletion: true,
-			enableSnippets: false,
-			tabSize:2,
-			wrap:true
-		});
+function boost_ace(){
+  if(typeof(ace) == "undefined"){
+    setTimeout(function(){
+      boost_ace();
+    },1000);
+  } else {
+    boost_editor = ace.edit("boost_editor");
+    boost_editor.setTheme("ace/theme/chrome");
+    boost_editor.session.setMode("ace/mode/html");
+    boost_editor.setOptions({
+      enableBasicAutocompletion: true,
+      enableLiveAutocompletion: true,
+      enableSnippets: false,
+      tabSize:2,
+      wrap:true
+    });
+  }
+}
+
+
 
 
 /////////////
