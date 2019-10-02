@@ -64,34 +64,20 @@ $("#initiate_collector_div").load(collector_map["initiateCollector.js"]);
 </script>
 <div id="welcome_div"></div>
 <script>
-$("#welcome_div").load("Welcome.html");
-</script>
-
-<?php
-require_once "../../sqlConnect.php";
-
-// Is the simulator on?
-///////////////////////
-
-if(isset($simulator_on)){
+if(typeof(dev_obj.simulator_on) !== "undefined" && dev_obj.simulator_on = false){
+  $("#welcome_div").load("Welcome.html");
+} else {
+  /*
 	$exp_json	     = "'tbc'";
 	$experiment_id = false;
 	$iv  		       = false;
 	$location      = "";
 	$published_id  = false;
 	$condition 		 = "";
-} else {
-
-	if(isset($_GET['name'])){
-		$condition = $_GET['name'];
-	} else {
-		$condition = "";
-	}
-	$location	= $_GET['location'];
-	require("Welcome.php");
+  */
 }
+</script>
 
-?>
 
 <style>
 
@@ -165,7 +151,52 @@ if(isset($simulator_on)){
 		}
 	?>
 </div>
+
+
+<?php
+require_once "../../sqlConnect.php";
+
+// Is the simulator on?
+///////////////////////
+
+if(isset($simulator_on)){
+
+} else {
+
+	if(isset($_GET['name'])){
+		$condition = $_GET['name'];
+	} else {
+		$condition = "";
+	}
+	$location	= $_GET['location'];
+	require("Welcome.php");
+}
+
+?>
+
 <script>
+
+//solution to retrieve get values from url by weltraumpirat
+function getSearchParameters() {
+  var prmstr = window.location.search.substr(1);
+  return prmstr != null && prmstr != "" ? transformToAssocArray(prmstr) : {};
+}
+
+function transformToAssocArray( prmstr ) {
+  var params = {};
+  var prmarr = prmstr.split("&");
+  for ( var i = 0; i < prmarr.length; i++) {
+    var tmparr = prmarr[i].split("=");
+    params[tmparr[0]] = tmparr[1];
+  }
+  return params;
+}
+
+var params = getSearchParameters();
+
+console.dir(params);
+
+//retrieve info from the header
 
 exp_condition = "<?= $condition ?>";
 exp_location  = "<?= $location ?>";
