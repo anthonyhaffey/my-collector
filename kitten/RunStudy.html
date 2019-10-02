@@ -64,7 +64,9 @@ $("#initiate_collector_div").load(collector_map["initiateCollector.js"]);
 </script>
 <div id="welcome_div"></div>
 <script>
-if(typeof(dev_obj.simulator_on) !== "undefined" && dev_obj.simulator_on = false){
+if(typeof(dev_obj) !== "undefined" &&
+   typeof(dev_obj.simulator_on) !== "undefined" &&
+   dev_obj.simulator_on == false){
   $("#welcome_div").load("Welcome.html");
 } else {
   /*
