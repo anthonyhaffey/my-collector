@@ -14,7 +14,7 @@
 
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>
- 
+
 		Kitten release (2019) author: Dr. Anthony Haffey (a.haffey@reading.ac.uk)
 */
 if(typeof(Trial) !== "undefined"){
@@ -33,8 +33,8 @@ if(typeof(Trial) !== "undefined"){
 	Trial.elapsed = function(){
 		if(Trial.post_no == ""){
 			Trial.post_no = 0;
-		}		
-		return (new Date()).getTime() - parent.parent.exp_json.this_trial["post_"+Trial.post_no+"_trial_start_ms"];		
+		}
+		return (new Date()).getTime() - parent.parent.exp_json.this_trial["post_"+Trial.post_no+"_trial_start_ms"];
 	}
 }
 
@@ -47,7 +47,7 @@ function precrypted_data(decrypted_data){
 				response_headers.push(item);
 			};
 		});
-	});	
+	});
 	this_condition    = decrypted_data.this_condition;
 	condition_headers = Object.keys(this_condition).filter(item => item !== "_empty_");
 	table_headers			= response_headers.concat(condition_headers);
@@ -56,15 +56,15 @@ function precrypted_data(decrypted_data){
 		downloadable_csv.push([]);
 		table_headers.forEach(function(item,item_no){
 			if(typeof(row[item]) !== "undefined"){
-				downloadable_csv[row_no+1][item_no] = row[item];				
+				downloadable_csv[row_no+1][item_no] = row[item];
 			} else if (condition_headers.indexOf(item) !== -1){
-				downloadable_csv[row_no+1][item_no] = this_condition[item];				
+				downloadable_csv[row_no+1][item_no] = this_condition[item];
 			} else {
-				downloadable_csv[row_no+1][item_no] = "";				
+				downloadable_csv[row_no+1][item_no] = "";
 			}
 		});
 	});
-	
+
 	bootbox.prompt({
 		title:"What do you want to save this file as?",
 		value:$("#participant_code").val()+".csv",
@@ -79,13 +79,13 @@ $(window).bind('keydown', function(event) {
 	if (event.ctrlKey || event.metaKey) {
 		switch (String.fromCharCode(event.which).toLowerCase()) {
 			case 's':
-				if(simulator_on !== "true"){
+				if(dev_obj.simulator_on !== "true"){
 					event.preventDefault();
 					precrypted_data(parent.parent.exp_json,"What do you want to save this file as?");
 				}
 			break;
-		}		
-	}	
+		}
+	}
 });
 function save_csv (filename, data) {
 	var blob = new Blob([data], {type: 'text/csv'});
@@ -95,9 +95,9 @@ function save_csv (filename, data) {
 	else{
 		var elem = window.document.createElement('a');
 		elem.href = window.URL.createObjectURL(blob);
-		elem.download = filename;        
+		elem.download = filename;
 		document.body.appendChild(elem);
-		elem.click();        
+		elem.click();
 		document.body.removeChild(elem);
 	}
 }
