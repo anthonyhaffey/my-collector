@@ -350,15 +350,13 @@ function renderItems() {
   highlight_account("dropbox_account_email");
   highlight_account("collector_account_email");
 
+  first_load = true;
+
   list_experiments();
 	list_boosts();
   list_surveys();
 	list_trialtypes();
 	list_graphics();
-
-
-	first_load = true;
-
 
 	var published_list = dev_obj.published_links;
 	megaUberJson.exp_mgmt.published_ids = {};
