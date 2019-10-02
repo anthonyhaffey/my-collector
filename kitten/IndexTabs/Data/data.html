@@ -211,7 +211,7 @@ switch(developer_obj.context){
   case "local":
     console.dir("not implemented yet");
     break;
-  case "oCollector":
+  case "server":
     $.post(collector_map["ListData.php"],function(data_array){
       create_data_table(data_array);
     });

@@ -6,10 +6,12 @@ developer_obj = {
 function detect_context(){
   if(document.URL.indexOf("localhost") !== -1){
     return "localhost";
-  } else if(document.URL.indexOf("ocollector.org") !== -1){
-    return "ocollector";
-  } else { //assume it's github
+  } else if(document.URL.indexOf("github.io") !== -1) { //assume it's github
     return "github";
+  } else if(document.URL.indexOf("gitpod.io") !== -1){
+    return "gitpod"
+  } else {
+    return "server";
   }
 }
 function detect_version(){
@@ -20,7 +22,7 @@ function detect_version(){
 function initiate_collector(){
   developer_obj.context = detect_context();
   switch(developer_obj.context){
-    case "ocollector":
+    case "server":
       console.dir("hi");
       $.post("code/initiateCollector.php",{
         //nothing to post, just want to run it.
@@ -31,6 +33,7 @@ function initiate_collector(){
       });
       break;
     case "github":
+    case "gitpod":
       $("#logged_in").show();
       break;
     case "localhost":

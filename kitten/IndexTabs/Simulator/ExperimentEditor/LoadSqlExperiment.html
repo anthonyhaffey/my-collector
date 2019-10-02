@@ -71,7 +71,7 @@ switch(developer_obj.context){
       developer_obj.published_links = published_links;
     });
     break;
-  case "ocollector":
+  case "server":
     $.post("oCollectorExperiments.php",function(experiments){
       megaUberJson.exp_mgmt.experiments = experiments;
       list_experiments();
