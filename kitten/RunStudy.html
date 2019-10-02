@@ -62,6 +62,11 @@ $("#initiate_collector_div").load(collector_map["initiateCollector.js"]);
 	window.bootstrap || document.write('<link rel="stylesheet" href="../libraries/bootstrapCollector.css"><script src="../libraries/bootstrap.4.0.min.js"><\/script>');
 
 </script>
+<div id="welcome_div"></div>
+<script>
+$("#welcome_div").load("Welcome.html");
+</script>
+
 <?php
 require_once "../../sqlConnect.php";
 

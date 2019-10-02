@@ -334,8 +334,8 @@ function list_experiments(){
 
 				var this_exp = megaUberJson.exp_mgmt.experiments[this.value];
 				$("#dropbox_inputs").show();
-				$("#run_link").attr("href","../"+ megaUberJson.exp_mgmt.version + "/sqlExperiment.php?location="+this_exp.location);
-				$("#run_btn").attr("title","../"+ megaUberJson.exp_mgmt.version + "/sqlExperiment.php?location="+this_exp.location);
+				$("#run_link").attr("href","../"+ megaUberJson.exp_mgmt.version + "/RunStudy.html?location="+this_exp.location);
+				$("#run_btn").attr("title","../"+ megaUberJson.exp_mgmt.version + "/RunStudy.html?location="+this_exp.location);
 				update_handsontables();
 			});
 		})

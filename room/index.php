@@ -15,9 +15,9 @@
 
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>
- 		
-		Kitten release (2019) author: Dr. Anthony Haffey (a.haffey@reading.ac.uk)		
-*/  
+
+		Kitten release (2019) author: Dr. Anthony Haffey (a.haffey@reading.ac.uk)
+*/
 -->
 <head>
 
@@ -29,7 +29,7 @@ body, html {
 
 
 <head>
-	<link rel="shortcut icon" type="image/x-icon" href="logos/collector.ico.png" />	
+	<link rel="shortcut icon" type="image/x-icon" href="logos/collector.ico.png" />
 </head>
 
 <body>
@@ -52,12 +52,12 @@ body, html {
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
 </head>
 
-<style>  
+<style>
 	#class_login_card{
 		margin: 0 auto; /* Added */
 		float: none; /* Added */
 		margin-bottom: 10px; /* Added */
-	}		
+	}
 </style>
 
 
@@ -72,13 +72,13 @@ body, html {
 
 <script>
 $("#login_button").on("click",function(){
-  
+
   //ajax call to redirect the student to the "experiment" -tbc
-  
-  
+
+
   //hard coded solution for now
   if($("#classroom_id").val().toLowerCase() == "howdy"){
-    document.location.href = "https://www.ocollector.org/kitten/sqlExperiment.php?location=https://www.dropbox.com/s/39x5c86zeog9ubp/accelerator_participant.json?dl=0&name=Condition1";
+    document.location.href = "https://www.ocollector.org/kitten/RunStudy.html?location=https://www.dropbox.com/s/39x5c86zeog9ubp/accelerator_participant.json?dl=0&name=Condition1";
   }
 });
 </script>
