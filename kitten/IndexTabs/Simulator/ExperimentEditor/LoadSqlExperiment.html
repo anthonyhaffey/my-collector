@@ -35,7 +35,7 @@ I'm unclear whether the following does anything
 
 
 //List experiment functionality here
-switch(developer_obj.context){
+switch(dev_obj.context){
   case "github":
     $.post("GOOGLE/DROPBOX/OTHER LINK",function(experiments){
       megaUberJson.exp_mgmt.experiments = experiments;
@@ -59,7 +59,7 @@ switch(developer_obj.context){
 */
 
 //List published experiments info
-switch(developer_obj.context){
+switch(dev_obj.context){
   case "github":
     $.post("GOOGLE/DROPBOX/OTHER LINK",function(experiments){
       megaUberJson.exp_mgmt.experiments = experiments;
@@ -68,7 +68,7 @@ switch(developer_obj.context){
       break;
   case "localhost":
     $.post("LocalExperiments.php",function(published_links){
-      developer_obj.published_links = published_links;
+      dev_obj.published_links = published_links;
     });
     break;
   case "server":
@@ -360,7 +360,7 @@ function renderItems() {
 	first_load = true;
 
 
-	var published_list = developer_obj.published_links;
+	var published_list = dev_obj.published_links;
 	megaUberJson.exp_mgmt.published_ids = {};
 	for(var i = 0; i< name_list.length; i++){
 		megaUberJson.exp_mgmt.published_ids[name_list[i]] = published_list[i];

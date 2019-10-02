@@ -1,5 +1,5 @@
 //detect if this is local or github or ocollector.org
-developer_obj = {
+dev_obj = {
   context : "",
   version : ""
 }
@@ -20,8 +20,8 @@ function detect_version(){
   }
 }
 function initiate_collector(){
-  developer_obj.context = detect_context();
-  switch(developer_obj.context){
+  dev_obj.context = detect_context();
+  switch(dev_obj.context){
     case "server":
       console.dir("hi");
       $.post("code/initiateCollector.php",{

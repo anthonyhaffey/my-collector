@@ -43,7 +43,7 @@
 
 <script>
 function check_errors(){
-  switch(developer_obj.context){
+  switch(dev_obj.context){
     case "server":
       $.post("checkErrors.php",{
         //nothing
@@ -180,7 +180,7 @@ $("#register_button").on("click",function(){
 });
 
 $("#login_button").on("click",function(){
-  switch(developer_obj.context){
+  switch(dev_obj.context){
     case "server":
       $("#login_button_submit").click(); // to submit form
       break;
@@ -201,7 +201,7 @@ $("#login_button").on("click",function(){
   }
 });
 
-switch(developer_obj.context){
+switch(dev_obj.context){
   case "server":
 
     break;

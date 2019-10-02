@@ -130,7 +130,7 @@ function remove_from_list(experiment){
 }
 
 function show_run_stop_buttons(){
-  if(simulator_on_off == "on"){
+  if(developer_obj.simulator_on_off == "on"){
     $("#run_stop_buttons").show();
   }
 }

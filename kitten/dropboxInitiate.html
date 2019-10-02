@@ -45,8 +45,8 @@ function dropbox_login(message){
     var message = "You need to be logged in to dropbox to access your experiments";
   }
   var dbx = new Dropbox({ clientId: CLIENT_ID });
-  if(developer_obj.context == "server" |
-     developer_obj.context == "github"){
+  if(dev_obj.context == "server" |
+     dev_obj.context == "github"){
     var local_website = document.URL
 
     var authUrl = dbx.getAuthenticationUrl(document.URL);
@@ -129,7 +129,7 @@ function check_authenticated(){
     dropbox_login();
   }
 }
-switch(developer_obj.context){
+switch(dev_obj.context){
   case "server":
   case "github":
     check_authenticated();
