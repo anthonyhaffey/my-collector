@@ -70,9 +70,7 @@ if(typeof(dev_obj) == "undefined"){
 }
 
 if(typeof(dev_obj.simulator_on) !== "undefined" &&
-   dev_obj.simulator_on == false){
-  $("#welcome_div").load("Welcome.html");
-} else {
+  dev_obj.simulator_on == true){
   /*
 	$exp_json	     = "'tbc'";
 	$experiment_id = false;
@@ -81,6 +79,9 @@ if(typeof(dev_obj.simulator_on) !== "undefined" &&
 	$published_id  = false;
 	$condition 		 = "";
   */
+} else {
+  $("#welcome_div").load("Welcome.html");
+
 }
 </script>
 
