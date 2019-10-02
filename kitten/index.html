@@ -103,7 +103,17 @@ $("#libraries_div").load("libraries.html");
   $("#page_selected").html(navbar_html);
 
   $(".select_page").on("click",function(){
-    $('.collapse').collapse('hide');
+
+    //hide everything
+    $('.collapse').hide();//collapse('hide');
+
+    //show the current page
+    console.dir("this");//[0].id.replace("option_","")
+    $("#collapse_" + this.id.replace("option_","")).show();
+
+    //$("#collapse_" + ).show();
+    //that is not the associated page
+
     $('.select_page').css("font-weight","normal");
     $(this).css("font-weight","bold");
     $('.select_page').removeClass("bg-white");
