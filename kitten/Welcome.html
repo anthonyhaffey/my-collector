@@ -119,6 +119,12 @@ $("#start_btn").on("click",function(){
 });
 
 function post_welcome_data(returned_data){
+  console.dir("returned_data");
+  console.dir(returned_data);
+  if(returned_data == "blank"){
+    id_error = "skip";
+  }
+
 
   if( returned_data == "blank" | //lazy solution for now.
       returned_data.indexOf("error") !== -1){
