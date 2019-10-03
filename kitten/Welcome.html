@@ -154,7 +154,7 @@ function post_welcome(participant_code,id_error){
         location: exp_json.location
       },function(returned_data){
         post_welcome_data(returned_data);
-      }
+      });
       break;
     case "github":
     case "gitpod":
