@@ -214,25 +214,6 @@ if(typeof(block_save) !== "undefined"){ //i.e. simulator
 
 <script>
 
-var amchart_scripts = ["https://www.amcharts.com/lib/3/ammap.js",
-                       "https://www.amcharts.com/lib/3/maps/js/worldLow.js",
-                       "https://www.amcharts.com/lib/3/themes/light.js"];
-
-function load_amchart(list){
-  if(list.length > 0){
-    var this_script = list.pop();
-    $.getScript( "ajax/test.js", function( data, textStatus, jqxhr ) {
-      console.log( data ); // Data returned
-      console.log( textStatus ); // Success
-      console.log( jqxhr.status ); // 200
-      console.log( "Load was performed." );
-      load_amchart(list);
-    });
-  }
-}
-/* exemplar code in case the above two scripts don't run
-
-*/
 
 
 </script>
