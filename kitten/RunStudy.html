@@ -1036,7 +1036,7 @@ if(exp_location !== ""){
 
   $.get(get_location,function(this_experiment){
     exp_json = JSON.parse(this_experiment);
-    if(dev_obj.simulator_on == "false"){ //note this HAS TO BE IN QUOTES to pass properly from PhP to js.
+    if(typeof(dev_obj.simulator_on) == "undefined" || dev_obj.simulator_on == "false"){ //note this HAS TO BE IN QUOTES to pass properly from PhP to js.
       initiate_experiment();
     }
   });
