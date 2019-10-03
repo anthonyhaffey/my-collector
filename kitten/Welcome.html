@@ -20,7 +20,7 @@
 
 
 
-probably deletable php remnants:
+probably deletable php remnants (unless useful for dev_obj.context == "server" version):
 
 require_once ("cleanRequests.php");
 require_once 'Code/initiateCollector.php';
@@ -169,21 +169,5 @@ function post_welcome(participant_code,id_error){
       break;
 
   }
-  /* ich denke wir das deleten kannen
-	$.post("PostWelcome.php",{
-		participant_code : participant_code,
-		location: exp_json.location
-	},function(returned_data){
-
-		} else {
-			$("#welcome_div").hide();
-			$("#post_welcome").show();
-			$("#experiment_div").show();
-		}
-	});
-  */
 }
-
-
-
 </script>
