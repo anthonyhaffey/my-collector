@@ -47,7 +47,7 @@ function dropbox_login(message){
   var dbx = new Dropbox({ clientId: CLIENT_ID });
   if(dev_obj.context == "server" |
      dev_obj.context == "github"){
-    var local_website = document.URL
+    // var local_website = document.URL can delete?
 
     var authUrl = dbx.getAuthenticationUrl(document.URL);
     document.getElementById('authlink').href = authUrl;
@@ -60,7 +60,27 @@ function dropbox_login(message){
     //alert("it's all goood");
   }
 }
+function force_reauth_dbx(){
+  dbx.setClientId(CLIENT_ID); // i think is necessary
 
+  var return_url = document.URL.split("#access_token")[0];
+
+  authUrl = dbx.getAuthenticationUrl(return_url);
+  authUrl += "&force_reauthentication=true";
+  document.getElementById('authlink').href = authUrl;
+  $("#authlink")[0].click();
+
+  /* probably deletable:
+  dbx.setClientId(CLIENT_ID); // i think is necessary
+  if(local_website.indexOf("localhost") !== -1){
+    local_website += "/www";
+  }
+  authUrl = dbx.getAuthenticationUrl(document.URL);
+  authUrl += "&force_reauthentication=true";
+  document.getElementById('authlink').href = authUrl;
+  $("#authlink")[0].click();
+  */
+}
 function getAccessTokenFromUrl() { // Parses the url and gets the access token if it is in the urls hash
  return utils.parseQueryString(window.location.hash).access_token;
 }
@@ -108,14 +128,7 @@ function check_authenticated(){
       $("#dropbox_account_email").html(account_info.email);
       $("#startup_prog").html("Dropbox account: <a href='https://www.dropbox.com/home/Apps/Open-Collector' target='_blank'>" + account_info.email + "</a> <button class='btn btn-info' id='intro_switch_dbx'>Switch account</button>");
       $("#intro_switch_dbx").on("click",function(){
-        dbx.setClientId(CLIENT_ID); // i think is necessary
-
-        var return_url = document.URL.split("#access_token")[0];
-
-        authUrl = dbx.getAuthenticationUrl(return_url);
-        authUrl += "&force_reauthentication=true";
-        document.getElementById('authlink').href = authUrl;
-        $("#authlink")[0].click();
+        force_reauth_dbx();
       });
       initiate_uberMegaFile(); //detect mega_uber file
     })
