@@ -26,8 +26,9 @@ function initiate_collector(){
     case "server":
       console.dir("hi");
       $.post("code/initiateCollector.php",{
-        //nothing to post, just want to run it.
-      },function(local_key){
+				//nothing to post, just want to run it.
+      },function(local_key){				
+				$("#login_div").show();
         if(local_key !== "no-key"){
           window.localStorage.setItem("local_key",local_key);
         }
