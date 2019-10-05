@@ -1,7 +1,8 @@
 //detect if this is local or github or ocollector.org
 dev_obj = {
   context : "",
-  version : ""
+  version : "",
+  published_links : []
 }
 function detect_context(){
   if(document.URL.indexOf("localhost") !== -1){

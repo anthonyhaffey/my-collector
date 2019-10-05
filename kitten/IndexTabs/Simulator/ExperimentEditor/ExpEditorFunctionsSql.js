@@ -90,35 +90,47 @@ function new_experiment(experiment){
 
 		var this_path = "/Experiments/"+experiment+".json";
 
-		dbx_obj.new_upload({path:this_path,contents:JSON.stringify(new_experiment_data)},function(result){
-				dbx.sharingCreateSharedLink({path:this_path})
-					.then(function(returned_link){
-						$.post(
-							"IndexTabs/Simulator/AjaxMySQL.php",
-							{
-								action: "new",
-								experiment: experiment,
-								location:returned_link.url
-							},
-							function(returned_data){
-								$('#experiment_list').append($('<option>', {
-									text : experiment
-								}));
-								$("#experiment_list").val(experiment);
-								$("#save_btn").click();
-                $("#run_button").prop('disabled', false);
-                $("#run_button").prop('title', "");
 
-							}
-						);
-					})
-					.catch(function(error){
-						report_error(error,"new_experiment trying to share link");
-					});
-			},function(error){
-				report_error(error,"new_experiment trying to upload template to dropbox");
-			},
-			"filesUpload");
+    function update_experiment_list(returned_data){
+      $('#experiment_list').append($('<option>', {
+        text : experiment
+      }));
+      $("#experiment_list").val(experiment);
+      $("#save_btn").click();
+      $("#run_button").prop('disabled', false);
+      $("#run_button").prop('title', "");
+    }
+		dbx_obj.new_upload({path:this_path,contents:JSON.stringify(new_experiment_data)},function(result){
+      dbx.sharingCreateSharedLink({path:this_path})
+        .then(function(returned_link){
+          switch(dev_obj.context){
+            case "server":
+              $.post(
+                "IndexTabs/Simulator/AjaxMySQL.php",
+                {
+                  action: "new",
+                  experiment: experiment,
+                  location:returned_link.url
+                },
+                function(returned_data){
+                  update_experiment_list(experiment);
+                }
+              );
+              break;
+              case "gitpod":
+              case "github":
+                update_experiment_list(experiment);
+                break;
+          }
+
+        })
+        .catch(function(error){
+          report_error(error,"new_experiment trying to share link");
+        });
+    },function(error){
+      report_error(error,"new_experiment trying to upload template to dropbox");
+    },
+    "filesUpload");
 	}
 }
 
