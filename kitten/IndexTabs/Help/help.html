@@ -67,8 +67,8 @@ function load_help(list){
     help_item = list.pop();
     console.dir("loading next help item:");
     console.dir("loading" + help_item);
-    $.get(collector_map[help_dictionary[help_item]],function(cond_help){
-      help_obj[help_item.replace(".json","")] = cond_help;
+    $.get(collector_map[help_dictionary[help_item]],function(this_help){
+      help_obj[help_item.replace(".json","")] = this_help;
       load_help(list);
     });
   } else {
