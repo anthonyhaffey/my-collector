@@ -2,8 +2,8 @@
   "all_procs":{
     "Procedure.csv": [["Item","Trial Type","Max Time","Text","Settings","Shuffle 1"],["0","Instruct","user","This is the start of a new experiment.","","off"]]
   },
-  "cond_array":[["Description","Notes","Stimuli 1","Procedure 1"],["New Experiment","You can put more detailed notes in this field","Stimuli.csv","Procedure.csv"]],
-  "Conditions.csv":[["Description","Notes","Stimuli 1","Procedure 1"],["New Experiment","You can put more detailed notes in this field","Stimuli.csv","Procedure.csv"]],
+  "cond_array":[["Name","Notes","Stimuli 1","Procedure 1"],["New Experiment","You can put more detailed notes in this field","Stimuli.csv","Procedure.csv"]],
+  "Conditions.csv":[["Name","Notes","Stimuli 1","Procedure 1"],["New Experiment","You can put more detailed notes in this field","Stimuli.csv","Procedure.csv"]],
   "Procedure":{
     "Procedure.csv":[["Item","Trial Type","Max Time","Text","Settings","Shuffle 1"],["0","Instruct","user","This is the start of a new experiment.","","off"]]
     },
