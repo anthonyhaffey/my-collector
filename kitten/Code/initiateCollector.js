@@ -1,7 +1,7 @@
 //detect if this is local or github or ocollector.org
 dev_obj = {
   context : "",
-  version : "",
+  version : "kitten", //this needs to be updated when moving to cat, but perhaps can just be hardcoded
   published_links : []
 }
 function detect_context(){
