@@ -35,17 +35,49 @@
   padding:5px;
 }
 </style>
-<script>
-console.dir("start loading now");
-</script>
+
+<!--
+
+Hard coding the libraries in this page for smoothness (rather than calling "libraries.html")
+
+-->
+
 <script src="../libraries/jquery-3.3.1.min.js"></script>
+<link rel="stylesheet" href="../libraries/bootstrapCollector.css">
+<script type="text/javascript" charset="utf-8" src="../libraries/bootstrap.4.0.min.js"></script>
+<!-- bootbox -->
+<script type="text/javascript" src="../libraries/bootbox.4.4.0.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="../libraries/popper.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<!-- dropbox -->
+<script type="text/javascript" charset="utf-8" src="../libraries/dropbox.2.5.13.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="../libraries/dropbox.dropins.js" id="dropboxjs" data-app-key="6xumb4iloq9sz1u"></script>
+<!-- lodash ! not currently used-->
+<script type="text/javascript" charset="utf-8" src="../libraries/lodash.4.17.4.min.js"></script>
+<!-- papaparse -->
+<script type="text/javascript" charset="utf-8" src="../libraries/papaparse.4.3.6.min.js"></script>
+<!-- ace -->
+<script type="text/javascript" charset="utf-8" src="../libraries/ace-master/ace.js"></script>
+<script type="text/javascript" charset="utf-8" src="../libraries/ace-master/ext-language_tools.js"></script>
+<!-- handsontable -->
+<link   rel="stylesheet" href="IndexTabs/Simulator/handsontables/handsontables.full.css">
+<script type="text/javascript" charset="utf-8" src="IndexTabs/Simulator/handsontables/handsontables.full.js"></script>
+<script type="text/javascript" charset="utf-8" src="IndexTabs/Simulator/HandsontableFunctions.js"></script>
+<!--
+	fix to close button being messed up, by  Paweł Rymsza  on https://stackoverflow.com/questions/48529880/bootbox-dialog-modal-bootstrap-4
+-->
+<style>
+.bootbox .modal-header{
+	display: block;
+}
+</style>
+<!-- Collector javascript functions-->
+<script type="text/javascript" charset="utf-8" src="jsFunctions.js"></script>
+
+
+
 <script src="CollectorMap.js"></script>
 <script>
-</script>
-<div id="libraries_div"></div>
-<script>
-$("#libraries_div").load("libraries.html");
-</script>
 <script src="browserCheck.js"></script>
 <div id="logged_in">
   <link rel="stylesheet" href="Style.css"></link>

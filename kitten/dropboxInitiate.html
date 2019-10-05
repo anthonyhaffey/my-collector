@@ -116,7 +116,9 @@ function check_authenticated(){
   // Create an instance of Dropbox with the access token and use it to
     // fetch and render the files in the users root directory.
     if(dev_obj.context == "gitpod"){
-      dbx = new Dropbox({ accessToken: "zX0EGDhNy2AAAAAAAAAAESNFkuoeIj_lonJ23sTJQLzRD9j8C0wyLlQoAXKeFBpq" }); //Anthony believes this will need replacing if someone actively logs out of this account
+      if(typeof(dbx) == "undefined"){
+        dbx = new Dropbox({ accessToken: "zX0EGDhNy2AAAAAAAAAAGmbZwossiZU57nyMf7jGtgN63cWAM8S78aSES__JJyzT" });
+      }
 
     } else {
       dbx = new Dropbox({ accessToken: getAccessTokenFromUrl() });

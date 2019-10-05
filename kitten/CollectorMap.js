@@ -18,6 +18,8 @@ collector_map = {
       //TrialTypeEditor
         "TrialTypeEditor.html" : "IndexTabs/Simulator/TrialTypeEditor/TrialTypeEditor.html",
         "Graphic.html"         : "IndexTabs/Simulator/TrialTypeEditor/Graphic.html",
+        //Default
+        "DefaultTrialtypeList.txt" :"IndexTabs/Simulator/TrialTypeEditor/Default/DefaultTrialtypeList.txt",
 
     //Surveys
       //Default
