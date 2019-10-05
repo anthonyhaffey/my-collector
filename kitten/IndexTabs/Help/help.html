@@ -56,11 +56,11 @@
 <script>
 help_obj = {};
 var help_dictionary = {
-  cond:    "CondHelp.txt",
-  graphic: "GrapHelp.txt",
-  main:    "MainHelp.txt",
-  proc:    "ProcHelp.txt",
-  surv:    "SurvHelp.txt"
+  cond:    "CondHelp.json",
+  graphic: "GrapHelp.json",
+  main:    "MainHelp.json",
+  proc:    "ProcHelp.json",
+  surv:    "SurvHelp.json"
 };
 function load_help(list){
   if(list.length > 0){
@@ -68,7 +68,7 @@ function load_help(list){
     console.dir("loading next help item:");
     console.dir("loading" + help_item);
     $.get(collector_map[help_dictionary[help_item]],function(cond_help){
-      help_obj[help_item.replace(".txt","")] = cond_help;
+      help_obj[help_item.replace(".json","")] = cond_help;
       load_help(list);
     });
   } else {

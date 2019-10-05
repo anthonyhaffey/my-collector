@@ -5,11 +5,11 @@ collector_map = {
       "ListData.php" : "IndexTabs/Data/listData.php",
 
     //Help
-      "CondHelp.txt" : "IndexTabs/Help/CondHelp.txt",
-      "GrapHelp.txt" : "IndexTabs/Help/GrapHelp.txt",
-      "MainHelp.txt" : "IndexTabs/Help/MainHelp.txt",
-      "ProcHelp.txt" : "IndexTabs/Help/ProcHelp.txt",
-      "SurvHelp.txt" : "IndexTabs/Help/SurvHelp.txt",
+      "CondHelp.txt" : "IndexTabs/Help/CondHelp.json",
+      "GrapHelp.txt" : "IndexTabs/Help/GrapHelp.json",
+      "MainHelp.txt" : "IndexTabs/Help/MainHelp.json",
+      "ProcHelp.txt" : "IndexTabs/Help/ProcHelp.json",
+      "SurvHelp.txt" : "IndexTabs/Help/SurvHelp.json",
 
     //Simulator
       //ExperimentEditor
