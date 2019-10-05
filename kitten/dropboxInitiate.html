@@ -65,7 +65,7 @@ function getAccessTokenFromUrl() { // Parses the url and gets the access token i
  return utils.parseQueryString(window.location.hash).access_token;
 }
 function isAuthenticated() { // If the user was just redirected from authenticating, the urls hash will contain the access token.
-  return !!getAccessTokenFromUrl();
+  return !!getAccessTokenFromUrl() | dev_obj.context == "gitpod";
 }
 
 
@@ -95,7 +95,11 @@ function check_authenticated(){
     });
   // Create an instance of Dropbox with the access token and use it to
     // fetch and render the files in the users root directory.
-    dbx = new Dropbox({ accessToken: getAccessTokenFromUrl() });
+    if(dev_obj.context == "gitpod"){
+      dbx = new Dropbox({ accessToken: "zX0EGDhNy2AAAAAAAAAADyezs-QsYpMlcyivsm9gxg4AK-8fnwR5t2LUW87VqupR" });
+    } else {
+      dbx = new Dropbox({ accessToken: getAccessTokenFromUrl() });
+    }
     console.dir("dropbox on");
 
     dbx.usersGetCurrentAccount()
@@ -129,6 +133,7 @@ function check_authenticated(){
   }
 }
 switch(dev_obj.context){
+  case "gitpod":
   case "server":
   case "github":
     check_authenticated();

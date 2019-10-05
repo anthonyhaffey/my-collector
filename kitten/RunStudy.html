@@ -1027,6 +1027,7 @@ function write_trial_iframe(index){
 
 var exp_json = ""; //this will get updated
 if(exp_location !== ""){
+  console.dir(exp_location);
 
 	if(exp_location.indexOf("www.dropbox") !== -1){
 		get_location = exp_location.replace("www.","dl.");
