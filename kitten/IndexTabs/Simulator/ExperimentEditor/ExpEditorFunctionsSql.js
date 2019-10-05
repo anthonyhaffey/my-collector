@@ -73,9 +73,6 @@ function new_experiment(experiment){
   $("#run_button").prop('disabled', true);
   $("#run_button").prop('title', "Loading your new experiment, please wait a moment before previewing");
 
-
-
-
   if($("#experiment_list").text().indexOf(experiment) !== -1){
 		bootbox.alert("Name already exists. Please try again.");
 	} else {
@@ -84,8 +81,13 @@ function new_experiment(experiment){
 		megaUberJson.exp_mgmt.experiment 			  			= experiment;
 		megaUberJson.exp_mgmt.experiments[experiment] = new_experiment_data;
 
+    alert("bop");
 		update_handsontables();
+    alert("beap");
 		updateUberMegaFile();
+    alert("bap");
+
+
 		var this_path = "/Experiments/"+experiment+".json";
 
 		dbx_obj.new_upload({path:this_path,contents:JSON.stringify(new_experiment_data)},function(result){

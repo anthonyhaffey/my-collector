@@ -140,8 +140,6 @@ trialtypes_obj = {
 }
 function list_trialtypes(){
   function process_returned(returned_data){
-    console.dir("returned_data");
-    console.dir(returned_data);
     default_trialtypes = JSON.parse(returned_data);
 		user_trialtypes 	 = megaUberJson.trialtypes.user_trialtypes;
 
@@ -176,25 +174,12 @@ function list_trialtypes(){
       $.get(collector_map["DefaultTrialtypeList.txt"],function(default_list){
         default_trialtypes = {};
         default_list = default_list.split(",");
-        console.dir("default_list");
-        console.dir(default_list);
         //Need a recursive function here to loop through the trialtypes and then, once all loaded, update the dropdown list. Hmm. Or update the dropdown list asap?
         function git_default_trialtypes(list){
           if(list.length > 0){
             var item = list.pop();
             $.get("IndexTabs/Simulator/TrialTypeEditor/Default/" + item + ".html",function(trial_content){
-
-
               default_trialtypes[item] = trial_content;
-
-
-
-
-
-
-
-
-
               git_default_trialtypes(list)
             });
           } else {
