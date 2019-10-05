@@ -101,7 +101,10 @@ function load_uberMegaFile(link_created){
 	});
 }
 function new_dropbox_account(dropbox_dialog){
+  alert("howdy");
   $.get("uberMega.json",function(uberMega){
+    console.dir(uberMega);
+    alert("beep");
     megaUberJson = uberMega;
     //create more general dropbox update function that queues any dropbox request?
     var these_folders = ["boosts",
