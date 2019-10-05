@@ -16,7 +16,8 @@ collector_map = {
         "default_experiment.json" : "IndexTabs/Simulator/ExperimentEditor/default_experiment.json",
         "ExperimentEditor.html"   : "IndexTabs/Simulator/ExperimentEditor/ExperimentEditor.html",
       //TrialTypeEditor
-        "TrialTypeEditor.html"    : "IndexTabs/Simulator/TrialTypeEditor/TrialTypeEditor.html",
+        "TrialTypeEditor.html" : "IndexTabs/Simulator/TrialTypeEditor/TrialTypeEditor.html",
+        "Graphic.html"         : "IndexTabs/Simulator/TrialTypeEditor/Graphic.html",
 
     //Surveys
       //Default
