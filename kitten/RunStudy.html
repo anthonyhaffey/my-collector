@@ -900,7 +900,11 @@ function shuffleArray(array) { //by Laurens Holst on https://stackoverflow.com/q
 }
 
 function shuffle_start_exp(){
-
+  for(var i = 0; i < exp_json.parsed_proc.length; i++){
+    if(exp_json.parsed_proc[i].shuffle_1 == ""){
+      exp_json.parsed_proc[i].shuffle_1 = "off";
+    }
+  }
 	if($("#shuffle_on_button").length == 0 || $("#shuffle_on_button").length == 1 && $("#shuffle_on_button").is(":hidden")){
 		shuffle_array = {};
 		exp_json.parsed_proc.forEach(function(row,index){
