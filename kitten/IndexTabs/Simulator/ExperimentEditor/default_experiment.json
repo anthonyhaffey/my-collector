@@ -1,9 +1,28 @@
 {
   "all_procs":{
-    "Procedure.csv": [["Item","Trial Type","Max Time","Text","Settings","Shuffle 1"],["0","Instruct","user","This is the start of a new experiment.","","off"]]
+    "Procedure.csv": [["Item","Trial Type","Max Time","Text",                                  "Settings","Shuffle 1"],
+                      ["0",   "Instruct",  "user",    "This is the start of a new experiment.","",        "off"]]
   },
-  "cond_array":[["Name","Notes","Stimuli 1","Procedure 1","fullscreen"],
-                ["New Experiment","You can put more detailed notes in this field","Stimuli.csv","Procedure.csv","off"]],
+  "cond_array":[["Name",
+                 "Notes",
+                 "Stimuli",
+                 "Procedure",
+                 "fullscreen",
+                 "welcome",
+                 "participant_id",
+                 "end_message",
+                 "start_message",
+                 "buffer"],
+                ["New Experiment",
+                 "You can put more detailed notes in this field",
+                 "Stimuli.csv",
+                 "Procedure.csv",
+                 "off",
+                 "",
+                 "on",
+                 "",
+                 "",
+                 5]],
   "Conditions.csv":[["Name","Notes","Stimuli 1","Procedure 1"],["New Experiment","You can put more detailed notes in this field","Stimuli.csv","Procedure.csv"]],
   "Procedure":{
     "Procedure.csv":[["Item","Trial Type","Max Time","Text","Settings","Shuffle 1"],["0","Instruct","user","This is the start of a new experiment.","","off"]]
@@ -18,6 +37,6 @@
     ]
   },
   "Stimuli":{
-    "Stimuli.csv":[["Cue","Answer"],["A","Apple"],["B","Banana"],["",""],["",""],["",""],["",""],["",""],["",""],["",""],["",""],["",""],["",""]]
-  },"index.php":"<?php\r\n\r\nrequire '..\/..\/Code\/Welcome.php';\r\n"
+    "Stimuli.csv":[["Cue","Answer"],["A","Apple"],["B","Banana"]]
+  }
 }
