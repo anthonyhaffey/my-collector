@@ -81,15 +81,10 @@ function new_experiment(experiment){
 		megaUberJson.exp_mgmt.experiment 			  			= experiment;
 		megaUberJson.exp_mgmt.experiments[experiment] = new_experiment_data;
 
-    alert("bop");
-		update_handsontables();
-    alert("beap");
-		updateUberMegaFile();
-    alert("bap");
-
+    update_handsontables();
+    updateUberMegaFile();
 
 		var this_path = "/Experiments/"+experiment+".json";
-
 
     function update_experiment_list(returned_data){
       $('#experiment_list').append($('<option>', {
