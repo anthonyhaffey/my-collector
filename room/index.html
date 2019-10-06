@@ -72,7 +72,7 @@ body, html {
 
 <script>
 var rooms;
-$.get("Rooms.json",function(){
+$.get("Rooms.json",function(result){
   rooms = result;
 });
 $("#login_button").on("click",function(){
