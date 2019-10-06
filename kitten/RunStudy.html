@@ -1023,7 +1023,7 @@ function write_trial_iframe(index){
 //////////////////////
 
 var exp_json = ""; //this will get updated
-if(exp_location !== ""){
+if(typeof(exp_location) !== "undefined" && exp_location !== ""){
   console.dir(exp_location);
 
 	if(exp_location.indexOf("www.dropbox") !== -1){
@@ -1037,6 +1037,13 @@ if(exp_location !== ""){
     if(typeof(dev_obj.simulator_on) == "undefined" || dev_obj.simulator_on == "false"){ //note this HAS TO BE IN QUOTES to pass properly from PhP to js.
       initiate_experiment();
     }
+  });
+} else {
+  //assume it's gitpod
+  get_location = "https://dl.dropbox.com/s/46xw6a4pkfery75/PY1PR_Autumn_Workshop_1.json?dl";
+  $.get(get_location,function(this_experiment){
+    exp_json = JSON.parse(this_experiment);
+    initiate_experiment();
   });
 }
 
