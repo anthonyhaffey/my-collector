@@ -89,13 +89,6 @@ if(typeof(dev_obj.simulator_on) !== "undefined" &&
 
 
 <style>
-
-#experiment_div{
-	display: none;
-	width  : 100%;
-	margin : auto;
-}
-
 .trial_iframe{
   visibility:hidden;
 	overflow:hidden;
@@ -105,17 +98,20 @@ if(typeof(dev_obj.simulator_on) !== "undefined" &&
 	margin-right: auto;
 }
 
+#experiment_div{
+	display: none;
+	width  : 100%;
+	margin : auto;
+}
 #feedback_div{
 	display:none;
 }
-
 #download_json{
 	color:green;
 }
 #post_welcome{
 	display:none;
 }
-
 </style>
 
 
@@ -166,6 +162,7 @@ $("#participant_country").load("ParticipantCountry.html");
 
 
 <script>
+
 
 //solution to retrieve get values from url by weltraumpirat
 function getSearchParameters() {

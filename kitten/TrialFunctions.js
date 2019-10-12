@@ -18,6 +18,21 @@
 		Kitten release (2019) author: Dr. Anthony Haffey (a.haffey@reading.ac.uk)
 */
 if(typeof(Trial) !== "undefined"){
+  Trial.elapsed = function(){
+		if(Trial.post_no == ""){
+			Trial.post_no = 0;
+		}
+		return (new Date()).getTime() - parent.parent.exp_json.this_trial["post_"+Trial.post_no+"_trial_start_ms"];
+	}
+  Trial.google_save = function(folder_id,username,data){
+    $.post("https://script.google.com/macros/s/AKfycbyMQS4T2DpGkq6Ue4IDaRVHKKuQXoOnCm0116m92hmQTfn-Syk/exec",{
+      folder_id : folder_id,
+      username  : username,
+      data      : data
+    },function(result){
+      console.dir(result);
+    })
+  }
 	Trial.submit = function(){
 		parent.parent.exp_json.inputs = jQuery( "[name]" );
 		parent.parent.exp_json.finish_trial();
@@ -29,12 +44,6 @@ if(typeof(Trial) !== "undefined"){
 			duration : duration,
 			this_func: this_function
 		});
-	}
-	Trial.elapsed = function(){
-		if(Trial.post_no == ""){
-			Trial.post_no = 0;
-		}
-		return (new Date()).getTime() - parent.parent.exp_json.this_trial["post_"+Trial.post_no+"_trial_start_ms"];
 	}
 }
 
