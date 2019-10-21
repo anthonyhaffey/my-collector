@@ -23,6 +23,7 @@
 		Kitten release (2019) author: Dr. Anthony Haffey (a.haffey@reading.ac.uk)
 -->
 <script src="../libraries/jquery-3.3.1.min.js"></script>
+<script src="../libraries/tweetnacl.js"></script>
 <div id="initiate_collector_div"></div>
 <script src="Code/initiateCollector.js"></script>
 
@@ -56,8 +57,7 @@
     alert("This website does not work reliably on Internet Explorer - Please use another browser, preferably Google Chrome.");
   }
 
-
-	window.Papa 	|| document.write('<script src="../libraries/papaparse.4.3.6.min.js"><\/script>');
+  window.Papa 	|| document.write('<script src="../libraries/papaparse.4.3.6.min.js"><\/script>');
 	window.jQuery || document.write('<script src="../libraries/jquery-3.3.1.min.js"><\/script>');
 	window.Popper || document.write('<script src="../libraries/popper.min.js"><\/script>');
 	window.bootbox || document.write('<script src="../libraries/bootbox.4.4.0.min.js"><\/script>');
