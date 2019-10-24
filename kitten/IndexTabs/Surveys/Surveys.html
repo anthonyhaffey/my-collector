@@ -31,15 +31,21 @@ function load_default_surveys(){
     if(list.length > 0){
       var this_survey = list.pop();
       $.get(collector_map[this_survey],function(survey_content){
-        default_surveys[this_survey] = survey_content;
+        default_surveys[this_survey] = Papa.parse(survey_content).data;
         load_survey(list);
       });
     } else {
-
+      //based on solution by "dule" at https://stackoverflow.com/questions/740195/adding-options-to-a-select-using-jquery
+      default_surveys_list = Object.keys(default_surveys).sort();
+      $.each(default_surveys_list, function (i, item) {
+        $('#survey_select').append($('<option>', {
+          value: "default|" + item , //.value,
+          text : item, //.text
+        }));
+      });
     }
-
   }
-
+  load_survey(default_survey_files);
   /*
   default_survey_files.forEach(function(file){
 
