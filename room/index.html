@@ -73,9 +73,7 @@ body, html {
 <div id="student_content"></div>
 
 <script>
-var rooms = {
-
-}
+var rooms = {};
 $.get("Rooms.csv",function(result){
   var rooms_csv = Papa.parse(result).data;
   // convert this into an object
@@ -84,25 +82,17 @@ $.get("Rooms.csv",function(result){
   });
 });
 $("#login_button").on("click",function(){
-
-  //ajax call to redirect the student to the "experiment" -tbc
-
-
-  //hard coded solution for now
   var this_room = $("#classroom_id").val().toLowerCase();
-
-
-
-  /*
   if(typeof(rooms[this_room]) !== "undefined"){
     document.location.href = rooms[this_room];
   } else {
     bootbox.alert("this room doesn't appear to exist");
   }
-  /*
-  if($("#classroom_id").val().toLowerCase() == "howdy"){
-    document.location.href = "https://www.ocollector.org/kitten/RunStudy.html?location=https://www.dropbox.com/s/39x5c86zeog9ubp/accelerator_participant.json?dl=0&name=Condition1";
+});
+$('#classroom_id').keypress(function (e) {
+  if (e.which == 13) {
+    $("#login_button").click();
+    return false;    //<---- Add this line
   }
-  */
 });
 </script>
