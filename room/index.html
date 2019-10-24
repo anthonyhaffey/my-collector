@@ -73,9 +73,15 @@ body, html {
 <div id="student_content"></div>
 
 <script>
-var rooms;
-$.get("Rooms.json",function(result){
-  rooms = result;
+var rooms = {
+
+}
+$.get("Rooms.csv",function(result){
+  var rooms_csv = Papa.parse(result).data;
+  // convert this into an object
+  rooms_csv.forEach(function(room){
+    rooms[room[0]] = room[1]
+  });
 });
 $("#login_button").on("click",function(){
 
@@ -84,6 +90,10 @@ $("#login_button").on("click",function(){
 
   //hard coded solution for now
   var this_room = $("#classroom_id").val().toLowerCase();
+
+
+
+  /*
   if(typeof(rooms[this_room]) !== "undefined"){
     document.location.href = rooms[this_room];
   } else {
