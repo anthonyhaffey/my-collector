@@ -267,22 +267,20 @@ $("#save_btn").on("click", function(){
     Object.keys(this_exp.parsed_procs).forEach(function(proc_name){
       this_exp.parsed_procs[proc_name] = this_exp.parsed_procs[proc_name].map(function(row){
         var cleaned_row = clean_obj_keys(row);
-        if(trialtypes.indexOf(cleaned_row["tral type"]) == -1){
-          trialtypes.push(cleaned_row["tral type"]);
+        if(trialtypes.indexOf(cleaned_row["trial type"]) == -1){
+          trialtypes.push(cleaned_row["trial type"]);
         }
         return cleaned_row;
       });
 
     });
+    trialtypes = trialtypes.filter(Boolean); //remove blanks
 
-    /*
+    /* deletable
     var trialtypes = this_exp.parsed_procs[proc].map(row => row[trialtype_index]);
-
-
-
     var trialtypes = this_exp.all_procs[proc].map(row => row[trialtype_index]);
     trialtypes = _.uniq(trialtypes);
-    trialtypes = trialtypes.filter(Boolean); //remove blanks
+
     */
 
     console.dir("trialtypes below:");
