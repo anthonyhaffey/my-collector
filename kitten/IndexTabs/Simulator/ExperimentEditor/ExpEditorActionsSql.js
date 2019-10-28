@@ -261,12 +261,29 @@ $("#save_btn").on("click", function(){
       });
     });
 
-    var proc = this_exp.procedure;
-    trialtype_index = this_exp.all_procs[proc][0].indexOf("trial type");
+    //clean all the procedures
+    var trialtypes = [];
+
+    Object.keys(this_exp.parsed_procs).forEach(function(proc_name){
+      this_exp.parsed_procs[proc_name] = this_exp.parsed_procs[proc_name].map(function(row){
+        var cleaned_row = clean_obj_keys(row);
+        if(trialtypes.indexOf(cleaned_row["tral type"]) == -1){
+          trialtypes.push(cleaned_row["tral type"]);
+        }
+        return cleaned_row;
+      });
+
+    });
+
+    /*
+    var trialtypes = this_exp.parsed_procs[proc].map(row => row[trialtype_index]);
+
+
 
     var trialtypes = this_exp.all_procs[proc].map(row => row[trialtype_index]);
     trialtypes = _.uniq(trialtypes);
     trialtypes = trialtypes.filter(Boolean); //remove blanks
+    */
 
     console.dir("trialtypes below:");
     console.dir(trialtypes);
