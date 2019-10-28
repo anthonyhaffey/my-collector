@@ -220,10 +220,9 @@ $("#save_btn").on("click", function(){
     if(typeof(this_exp.surveys) == "undefined"){
       this_exp.surveys = {};
     }
-    /* potentially deletable:
-    var experiment_trialtypes = [];
-    */
+
     Object.keys(this_exp.parsed_procs).forEach(function(proc_name){
+      this_exp.parsed_procs[proc_name] = clean_obj_keys(this_exp.parsed_procs[proc_name]);
       this_proc = this_exp.parsed_procs[proc_name];
       this_proc.forEach(function(proc_row){
         /* potentially deletable
@@ -265,20 +264,6 @@ $("#save_btn").on("click", function(){
         }
       });
     });
-
-
-    /* potentially deletable
-    //update trialtypes in the experiment (this might need deleting imminently)
-    experiment_trialtypes.forEach(function(this_trialtype){
-      if(typeof(megaUberJson.trialtypes.default_trialtypes[this_trialtype]) !== "undefined"){
-        exp_json.trialtypes[this_trialtype] = megaUberJson.trialtypes.default_trialtypes[this_trialtype];
-      } else if(typeof(megaUberJson.trialtypes.user_trialtypes[this_trialtype]) !== "undefined"){
-        exp_json.trialtypes[this_trialtype] = megaUberJson.trialtypes.user_trialtypes[this_trialtype];
-      } else {
-        bootbox.alert("Trial type:<b>" + this_trialtype + "</b> doesn't appear to exist");
-      }
-    });
-    */
 
     var proc = this_exp.procedure;
     trialtype_index = this_exp.all_procs[proc][0].indexOf("trial type");
