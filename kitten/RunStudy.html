@@ -231,49 +231,56 @@ function collectorPapaParsed(preparsed){
 	return post_parsed;
 }
 
+function simulator_off(){
+  return typeof(dev_obj.simulator_on) == "undefined" || dev_obj.simulator_on == "false";
+}
+
 // transform exp_json into readable csv
 ///////////////////////////////////////
 function precrypted_data(decrypted_data,message){
-  responses_csv = decrypted_data.responses;
-	response_headers = [];
-	responses_csv.forEach(function(row){
-		Object.keys(row).forEach(function(item){
-			if(response_headers.indexOf(item) == -1){
-				response_headers.push(item);
-			};
-		});
-	});
-	this_condition    = decrypted_data.this_condition;
 
-  condition_headers = Object.keys(this_condition).filter(function(item){
-    return item !== "_empty_";
-  });
+  if(simulator_off()){
+    responses_csv = decrypted_data.responses;
+    response_headers = [];
+    responses_csv.forEach(function(row){
+      Object.keys(row).forEach(function(item){
+        if(response_headers.indexOf(item) == -1){
+          response_headers.push(item);
+        };
+      });
+    });
+    this_condition    = decrypted_data.this_condition;
 
-	//condition_headers = Object.keys(this_condition).filter(item => item !== "_empty_");
-	table_headers			= response_headers.concat(condition_headers);
-	downloadable_csv = [table_headers];
-	responses_csv.forEach(function(row,row_no){
-		downloadable_csv.push([]);
-		table_headers.forEach(function(item,item_no){
-			if(typeof(row[item]) !== "undefined"){
-				downloadable_csv[row_no+1][item_no] = row[item];
-			} else if (condition_headers.indexOf(item) !== -1){
-				downloadable_csv[row_no+1][item_no] = this_condition[item];
-			} else {
-				downloadable_csv[row_no+1][item_no] = "";
-			}
-		});
-	});
+    condition_headers = Object.keys(this_condition).filter(function(item){
+      return item !== "_empty_";
+    });
 
-	bootbox.prompt({
-		title:message,
-		value:$("#participant_code").val()+".csv",
-		callback:function(result){
-			if(result !== null){
-				save_csv(result,Papa.unparse(downloadable_csv));
-			}
-		}
-	});
+    //condition_headers = Object.keys(this_condition).filter(item => item !== "_empty_");
+    table_headers			= response_headers.concat(condition_headers);
+    downloadable_csv = [table_headers];
+    responses_csv.forEach(function(row,row_no){
+      downloadable_csv.push([]);
+      table_headers.forEach(function(item,item_no){
+        if(typeof(row[item]) !== "undefined"){
+          downloadable_csv[row_no+1][item_no] = row[item];
+        } else if (condition_headers.indexOf(item) !== -1){
+          downloadable_csv[row_no+1][item_no] = this_condition[item];
+        } else {
+          downloadable_csv[row_no+1][item_no] = "";
+        }
+      });
+    });
+
+    bootbox.prompt({
+      title:message,
+      value:$("#participant_code").val()+".csv",
+      callback:function(result){
+        if(result !== null){
+          save_csv(result,Papa.unparse(downloadable_csv));
+        }
+      }
+    });
+  }
 }
 experiment_finished_and_emailed = false;
 function final_trial(){
