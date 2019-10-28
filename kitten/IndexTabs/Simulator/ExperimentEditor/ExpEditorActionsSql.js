@@ -222,14 +222,10 @@ $("#save_btn").on("click", function(){
     }
 
     Object.keys(this_exp.parsed_procs).forEach(function(proc_name){
-      this_exp.parsed_procs[proc_name] = clean_obj_keys(this_exp.parsed_procs[proc_name]);
+
       this_proc = this_exp.parsed_procs[proc_name];
       this_proc.forEach(function(proc_row){
-        /* potentially deletable
-        if(experiment_trialtypes.indexOf(proc_row["trial type"]) == -1){
-          experiment_trialtypes.push(proc_row["trial type"])
-        }
-        */
+        proc_row = clean_obj_keys(proc_row);
         if(typeof(proc_row.survey) !== "undefined" &&
           proc_row.survey !== ""){
           var this_survey = proc_row.survey.toLowerCase();
