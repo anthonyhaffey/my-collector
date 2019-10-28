@@ -203,7 +203,6 @@ $("#save_btn").on("click", function(){
   $("#save_snip_btn").click();
 	$("#save_data_script_btn").click();
 
-	//update trialtypes in the experiment
 	var experiment = megaUberJson.exp_mgmt.experiment;
 	var this_exp = megaUberJson.exp_mgmt.experiments[experiment];
 
@@ -221,10 +220,13 @@ $("#save_btn").on("click", function(){
     if(typeof(this_exp.surveys) == "undefined"){
       this_exp.surveys = {};
     }
-
+    var experiment_trialtypes = [];
     Object.keys(this_exp.parsed_procs).forEach(function(proc_name){
       this_proc = this_exp.parsed_procs[proc_name];
       this_proc.forEach(function(proc_row){
+        if(trialtypes.indexOf(proc_row["trial type"]) == -1){
+          experiment_trialtypes.push(proc_row["trial type"])
+        }
         if(typeof(proc_row.survey) !== "undefined" &&
           proc_row.survey !== ""){
           var this_survey = proc_row.survey.toLowerCase();
@@ -258,6 +260,17 @@ $("#save_btn").on("click", function(){
           }
         }
       });
+    });
+
+    //update trialtypes in the experiment
+    experiment_trialtypes.forEach(function(this_trialtype){
+      if(typeof(megaUberJson.trialtypes.default_trialtypes[this_trialtype]) !== "undefined"){
+        exp_json.trialtypes[this_trialtype] = megaUberJson.trialtypes.default_trialtypes[this_trialtype];
+      } else if(typeof(megaUberJson.trialtypes.user_trialtypes[this_trialtype]) !== "undefined"){
+        exp_json.trialtypes[this_trialtype] = megaUberJson.trialtypes.user_trialtypes[this_trialtype];
+      } else {
+        bootbox.alert("Trial type:<b>" + this_trialtype + "</b> doesn't appear to exist");
+      }
     });
 
     var proc = this_exp.procedure;

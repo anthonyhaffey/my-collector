@@ -288,7 +288,7 @@ function final_trial(){
 	$("#experiment_div").html("<h3 class='text-primary'>Please do not close this window until it has been confirmed that the researcher has been e-mailed your data (or you have downloaded the data yourself that you will e-mail the researcher). If you do not get a prompt to do this within 30 seconds, press CTRL-S and you should be able to directly download your data.</h3>");
 	download_at_end = exp_json.this_condition.download_at_end;
 
-	if(typeof(dev_obj.simulator_on) == "undefined" || dev_obj.simulator_on == "false"){
+	if(simulator_off()){
 		$.post("emailData.php",{
 			all_data   : JSON.stringify(exp_json),
 		},function(returned_data){
