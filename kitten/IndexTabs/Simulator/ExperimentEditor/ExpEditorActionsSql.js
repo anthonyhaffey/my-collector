@@ -276,13 +276,6 @@ $("#save_btn").on("click", function(){
     });
     trialtypes = trialtypes.filter(Boolean); //remove blanks
 
-    /* deletable
-    var trialtypes = this_exp.parsed_procs[proc].map(row => row[trialtype_index]);
-    var trialtypes = this_exp.all_procs[proc].map(row => row[trialtype_index]);
-    trialtypes = _.uniq(trialtypes);
-
-    */
-
     console.dir("trialtypes below:");
     console.dir(trialtypes);
 
