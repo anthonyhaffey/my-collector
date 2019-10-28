@@ -262,7 +262,7 @@ $("#save_btn").on("click", function(){
       });
     });
 
-    //update trialtypes in the experiment
+    //update trialtypes in the experiment (this might need deleting imminently)
     experiment_trialtypes.forEach(function(this_trialtype){
       if(typeof(megaUberJson.trialtypes.default_trialtypes[this_trialtype]) !== "undefined"){
         exp_json.trialtypes[this_trialtype] = megaUberJson.trialtypes.default_trialtypes[this_trialtype];
@@ -279,6 +279,9 @@ $("#save_btn").on("click", function(){
     var trialtypes = this_exp.all_procs[proc].map(row => row[trialtype_index]);
     trialtypes = _.uniq(trialtypes);
     trialtypes = trialtypes.filter(Boolean); //remove blanks
+
+    console.dir("trialtypes below:");
+    console.dir(trialtypes);
 
     if(typeof(this_exp.trialtypes) == "undefined"){
       this_exp.trialtypes = {};
