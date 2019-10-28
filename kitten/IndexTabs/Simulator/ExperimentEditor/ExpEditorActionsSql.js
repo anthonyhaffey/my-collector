@@ -220,13 +220,17 @@ $("#save_btn").on("click", function(){
     if(typeof(this_exp.surveys) == "undefined"){
       this_exp.surveys = {};
     }
+    /* potentially deletable:
     var experiment_trialtypes = [];
+    */
     Object.keys(this_exp.parsed_procs).forEach(function(proc_name){
       this_proc = this_exp.parsed_procs[proc_name];
       this_proc.forEach(function(proc_row){
+        /* potentially deletable
         if(experiment_trialtypes.indexOf(proc_row["trial type"]) == -1){
           experiment_trialtypes.push(proc_row["trial type"])
         }
+        */
         if(typeof(proc_row.survey) !== "undefined" &&
           proc_row.survey !== ""){
           var this_survey = proc_row.survey.toLowerCase();
@@ -262,6 +266,8 @@ $("#save_btn").on("click", function(){
       });
     });
 
+
+    /* potentially deletable
     //update trialtypes in the experiment (this might need deleting imminently)
     experiment_trialtypes.forEach(function(this_trialtype){
       if(typeof(megaUberJson.trialtypes.default_trialtypes[this_trialtype]) !== "undefined"){
@@ -272,6 +278,7 @@ $("#save_btn").on("click", function(){
         bootbox.alert("Trial type:<b>" + this_trialtype + "</b> doesn't appear to exist");
       }
     });
+    */
 
     var proc = this_exp.procedure;
     trialtype_index = this_exp.all_procs[proc][0].indexOf("trial type");
