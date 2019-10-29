@@ -13,13 +13,10 @@ html, body {
 	window.jQuery || document.write('<script src="../libraries/jquery-3.3.1.min.js"><\/script>');
 </script>
 
-<script src="https://www.amcharts.com/lib/3/ammap.js"></script>
-<script src="https://www.amcharts.com/lib/3/maps/js/worldLow.js"></script>
-<script src="https://www.amcharts.com/lib/3/themes/light.js"></script>
-<h3 class="text-info"> 
+<h3 class="text-info">
   Feel free to skip the following step:
 </h3>
-<div class="text-info"> 
+<div class="text-info">
   If you are from a currently represented institute, please select from the dropdown list:
 </div>
 <div id="current_institute_list"></div>
@@ -30,7 +27,7 @@ Otherwise, please identify your institute:
   <tr>
     <td>Insitute:</td>
     <td><input class="form-control" id="institute_name"></td>
-  </tr>  
+  </tr>
 </table>
 And click on the country it is based:
 
@@ -39,12 +36,12 @@ And click on the country it is based:
 <script>
 institutes = '';
 function list_institutes(){
-  
+
   $.post("AjaxInstitutesList.php",{
   },function(result){
-    current_institute_list_html = 
-      "<select class='form-control' id='institutions_options'>" + 
-        "<option>Please select an institute from below if you belong to one</option>";      
+    current_institute_list_html =
+      "<select class='form-control' id='institutions_options'>" +
+        "<option>Please select an institute from below if you belong to one</option>";
     institutes = JSON.parse(result);
     institutes = institutes.sort();
     institutes.forEach(function(institute){
@@ -57,8 +54,8 @@ function list_institutes(){
         $("#skip_map_button").click();
       }
     });
-  });  
-  
+  });
+
 }
 if($("#login_button").length == 0 && $("#top_navbar").length == 0){
   list_institutes();
@@ -68,38 +65,61 @@ if($("#login_button").length == 0 && $("#top_navbar").length == 0){
 /**
  * Create the map
  */
- 
-var map = AmCharts.makeChart("chartdiv", {
-  "type": "map",
-  "theme": "light",
-  "projection": "eckert3",
-  "dataProvider": {
-    "map": "worldLow",
-    "getAreasFromMap": true
-  },
-  "areasSettings": {
-    "selectedColor": "#CC0000",
-    "selectable": true
-  }
-});
-$("#country_selected").on("click",function(){  
-  if(typeof(map.selectedObject.id) !== "undefined"){
-    var institute = $("#institute_name").val();
-    if(institute == ""){
-      bootbox.alert("Please write down the name of the institute you work from");
-    } else {    
-      $.post("AjaxResearcherInstitute.php",{
-        institute    : institute,
-        country_id   : map.selectedObject.id,
-        country_name : map.selectedObject.title,
-      },function(result){
-        $("#register_submit").click();
-        //$("#participant_country").html("")
-      });    
-    }
-  } else {
-    bootbox.alert("Please select a country before trying to input your institute");
-  }  
-});
 
+
+
+var amchart_scripts = ["https://www.amcharts.com/lib/3/ammap.js",
+                       "https://www.amcharts.com/lib/3/maps/js/worldLow.js",
+                       "https://www.amcharts.com/lib/3/themes/light.js"];
+
+function load_amchart(list){
+  if(list.length > 0){
+    var this_script = list.pop();
+    $.getScript( "ajax/test.js", function( data, textStatus, jqxhr ) {
+      console.log( data ); // Data returned
+      console.log( textStatus ); // Success
+      console.log( jqxhr.status ); // 200
+      console.log( "Load was performed." );
+      load_amchart(list);
+    });
+  } else {
+    console.dir("AmCharts");
+    console.dir(AmCharts);
+    var map = AmCharts.makeChart("chartdiv", {
+      "type": "map",
+      "theme": "light",
+      "projection": "eckert3",
+      "dataProvider": {
+        "map": "worldLow",
+        "getAreasFromMap": true
+      },
+      "areasSettings": {
+        "selectedColor": "#CC0000",
+        "selectable": true
+      }
+    });
+    $("#country_selected").on("click",function(){
+      if(typeof(map.selectedObject.id) !== "undefined"){
+        var institute = $("#institute_name").val();
+        if(institute == ""){
+          bootbox.alert("Please write down the name of the institute you work from");
+        } else {
+          $.post("AjaxResearcherInstitute.php",{
+            institute    : institute,
+            country_id   : map.selectedObject.id,
+            country_name : map.selectedObject.title,
+          },function(result){
+            $("#register_submit").click();
+            //$("#participant_country").html("")
+          });
+        }
+      } else {
+        bootbox.alert("Please select a country before trying to input your institute");
+      }
+    });
+  }
+}
+
+//this functionality is broken, but not a priority for now:
+// load_amchart(amchart_scripts);
 </script>

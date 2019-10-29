@@ -1,5 +1,5 @@
-<?php 
-/*  Collector (Garcia, Kornell, Kerr, Blake & Haffey)
+<!--
+    Collector (Garcia, Kornell, Kerr, Blake & Haffey)
     A program for running experiments on the web
     Copyright 2012-2016 Mikey Garcia & Nate Kornell
 
@@ -15,23 +15,25 @@
 
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>
- 
+
 		Kitten release (2019) author: Dr. Anthony Haffey (a.haffey@reading.ac.uk)
-*/
+
+
+
+probably deletable php remnants (unless useful for dev_obj.context == "server" version):
 
 require_once ("cleanRequests.php");
-
-
 require_once 'Code/initiateCollector.php';
-
 $url =  "//{$_SERVER['HTTP_HOST']}{$_SERVER['REQUEST_URI']}";
 
-?>
+
+-->
+
 <style>
 #welcome_div{
-	padding:	10px; 
-	width: 		500px; 
-	height:		500px; 
+	padding:	10px;
+	width: 		500px;
+	height:		500px;
 	position: absolute;
   top:			0;
   bottom: 	0;
@@ -44,16 +46,19 @@ $url =  "//{$_SERVER['HTTP_HOST']}{$_SERVER['REQUEST_URI']}";
 <div id="welcome_div">
 	<div id="loading_exp_json">Loading ... please wait</div>
 	<div id="researcher_message" style="display:none"></div>
-	
+
 	<br><br>
 	<div id="warning_pp_code" class="text-danger" style="display:none"><b>Illegal character entered, replaced with legal alternative</b></div>
-	<div class="input-group mb-3" style='width:500px; display:none' id="participant_id_div">		
+	<div class="input-group mb-3" style='width:500px; display:none' id="participant_id_div">
 		<input id="participant_code" type="text" class="form-control" placeholder="Please type the ID the researcher needs here" aria-label="participant_code">
 		<div class="input-group-append">
 			<button class="btn btn-primary" type="button" id="start_btn">Start</button>
 		</div>
 	</div>
-	<input type='hidden' name='return_page' value='<?= $url ?>' />
+
+  <!-- the below attempt to make the return page the current url may not work: -->
+
+	<input type='hidden' name='return_page' value='document.URL' />
 </div>
 
 <script>
@@ -106,48 +111,63 @@ $("#start_btn").on("click",function(){
 	var participant_code = $("#participant_code").val();
 	bootbox.prompt("Please confirm your ID in the text box below", function(confirmed_id){
 		if(confirmed_id == participant_code){
-			post_welcome(participant_code,false);	
+			post_welcome(participant_code,false);
 		} else {
 			bootbox.alert("The IDs you've typed in do not match. Please double check and try again");
 		}
-	});  
+	});
 });
 
-function post_welcome(participant_code,id_error){
-	$.post("PostWelcome.php",{
-		participant_code : participant_code,
-		location: exp_json.location
-	},function(returned_data){
-		if(returned_data.indexOf("error") !== -1){
-			if(id_error == "skip"){ 
-				$("#welcome_div").hide();
-				$("#post_welcome").show();
-				$("#experiment_div").show();
-        full_screen();
-			} else if(id_error == "random"){
-				
-				//generate new random code
-				var this_code = Math.random().toString(36).substr(2, 16)
-				post_welcome(this_code,"random");
-				
-			} else if(id_error == false){ 
-				bootbox.confirm(returned_data,function(response){
-					if(response){ 																		//i.e. chosen to proceed with id despite the warning
-						$("#welcome_div").hide();
-						$("#post_welcome").show();
-						$("#experiment_div").show();
-            full_screen();
-					}
-				});
-			}
-		} else {
-			$("#welcome_div").hide();
-			$("#post_welcome").show();
-			$("#experiment_div").show();					
-		}
-	});
+function post_welcome_data(returned_data){
+  console.dir("returned_data");
+  console.dir(returned_data);
+  if(returned_data == "blank"){
+    id_error = "skip";
+  }
+
+
+  if( returned_data == "blank" | //lazy solution for now.
+      returned_data.indexOf("error") !== -1){
+    if(id_error == "skip"){
+      $("#welcome_div").hide();
+      $("#post_welcome").show();
+      $("#experiment_div").show();
+      full_screen();
+    } else if(id_error == "random"){
+
+      //generate new random code
+      var this_code = Math.random().toString(36).substr(2, 16)
+      post_welcome(this_code,"random");
+
+    } else if(id_error == false){
+      bootbox.confirm(returned_data,function(response){
+        if(response){ 																		//i.e. chosen to proceed with id despite the warning
+          $("#welcome_div").hide();
+          $("#post_welcome").show();
+          $("#experiment_div").show();
+          full_screen();
+        }
+      });
+    }
+  }
 }
 
+function post_welcome(participant_code,id_error){
+  switch(dev_obj.context){
+    case "server":
+      $.post("PostWelcome.php",{
+        participant_code : participant_code,
+        location: exp_json.location
+      },function(returned_data){
+        post_welcome_data(returned_data);
+      });
+      break;
+    case "github":
+    case "gitpod":
+      id_error = "skip";
+      post_welcome_data("blank");
+      break;
 
-
+  }
+}
 </script>

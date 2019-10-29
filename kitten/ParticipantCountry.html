@@ -14,30 +14,46 @@ html, body {
 	window.jQuery || document.write('<script src="../libraries/jquery-3.3.1.min.js"><\/script>');
 </script>
 
-<script src="https://www.amcharts.com/lib/3/ammap.js"></script>
-<script src="https://www.amcharts.com/lib/3/maps/js/worldLow.js"></script>
-<script src="https://www.amcharts.com/lib/3/themes/light.js"></script>
 <h3 class="text-primary"> This is totally optional, but please select the country you are completing this from and then click on "Submit"</h3>
 <button id="country_selected" class="btn btn-primary">Submit</button>
 <div id="chartdiv"></div>
 <script>
 
+var amchart_scripts = ["https://www.amcharts.com/lib/3/ammap.js",
+                       "https://www.amcharts.com/lib/3/maps/js/worldLow.js",
+                       "https://www.amcharts.com/lib/3/themes/light.js"];
+
+function load_amchart(list){
+  if(list.length > 0){
+    var this_script = list.pop();
+    $.getScript( "ajax/test.js", function( data, textStatus, jqxhr ) {
+      console.log( data ); // Data returned
+      console.log( textStatus ); // Success
+      console.log( jqxhr.status ); // 200
+      console.log( "Load was performed." );
+      load_amchart(list);
+    });
+  } else {
+    var map = AmCharts.makeChart("chartdiv", {
+      "type": "map",
+      "theme": "light",
+      "projection": "eckert3",
+      "dataProvider": {
+        "map": "worldLow",
+        "getAreasFromMap": true
+      },
+      "areasSettings": {
+        "selectedColor": "#CC0000",
+        "selectable": true
+      }
+    });
+  }
+}
+
 /**
  * Create the map
  */
-var map = AmCharts.makeChart("chartdiv", {
-  "type": "map",
-  "theme": "light",
-  "projection": "eckert3",
-  "dataProvider": {
-    "map": "worldLow",
-    "getAreasFromMap": true
-  },
-  "areasSettings": {
-    "selectedColor": "#CC0000",
-    "selectable": true
-  }
-});
+
 document.getElementById("country_selected").addEventListener("click",function(){
   $.post("AjaxParticipantCountry.php",{
     country_id   : map.selectedObject.id,
