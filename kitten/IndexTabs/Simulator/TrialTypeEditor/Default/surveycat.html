@@ -616,7 +616,10 @@ function process_survey_question(this_row,row_no){
                                 '<label class="custom-control-label" for="'+this_row["item_name"]+i+'">'+options[i]+'</label>'+
                                   feedback_string +
                               '</div>';
+
+
             }
+            question_td +=  "<input type='hidden' class='"+this_class+"' id='survey_"+this_row["item_name"].toLowerCase()+"_score' name='survey_"+this_row["item_name"].toLowerCase()+"_score'>";
           break;
 
           case "radio_horizontal":
