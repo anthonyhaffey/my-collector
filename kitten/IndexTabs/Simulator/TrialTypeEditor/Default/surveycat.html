@@ -612,11 +612,11 @@ function process_survey_question(this_row,row_no){
               feedback_string = generate_feedback_string(feedback_array,i,feedback_color,row_no,this_row);
 
               question_td +=  '<div class="custom-control custom-radio">'+
-                                '<input type="radio" class="custom-control-input '+this_class+' custom-control custom-radio '+this_row["item_name"]+'_item row_'+row_no+'" id="'+this_row["item_name"]+ i +'"  onchange="response_check(this)" value="' + values[i] + '" name="survey_'+this_row["item_name"].toLowerCase()+'">'+
+                                '<input type="radio" class="custom-control-input '+this_class+'  onclick="likert_update(this,\''+options[i]+'\',\''+values[i]+'\')" custom-control custom-radio '+this_row["item_name"]+'_item row_'+row_no+'" id="'+this_row["item_name"]+ i +'"  onchange="response_check(this)" value="' + options[i] + '" name="survey_'+this_row["item_name"].toLowerCase()+'">'+
                                 '<label class="custom-control-label" for="'+this_row["item_name"]+i+'">'+options[i]+'</label>'+
                                   feedback_string +
                               '</div>';
-
+                              question_td +=  "<input type='hidden' class='"+this_class+"' id='survey_"+this_row["item_name"].toLowerCase()+"_score' name='survey_"+this_row["item_name"].toLowerCase()+"_score'>";
             }
           break;
 
