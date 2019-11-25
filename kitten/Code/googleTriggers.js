@@ -18,7 +18,7 @@ function google_keys(key_type){
 
 function google_save(participant_id,
                      experiment_id,
-                     enrypted_data){  
+                     encrypted_data){  
 
   data = {
     participant_id: participant_id,
