@@ -1,0 +1,14 @@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tweetnacl/1.0.1/nacl.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+
+<div id="public_key"></div>
+<div id="private_key"></div>
+<script>
+
+var keypair = nacl.box.keyPair();
+
+$("#public_key").html(JSON.stringify(keypair.publicKey));
+$("#private_key").html(JSON.stringify(keypair.secretKey));
+
+
+</script>
