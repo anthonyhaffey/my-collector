@@ -7,48 +7,22 @@
 <div id="private_key"></div>
 <script>
 
+
+//solution at https://medium.com/zinc_work/using-cryptography-tweetnacl-js-to-protect-user-data-intro-tips-tricks-a8e38e1818b5
 var keypair = nacl.box.keyPair();
 
-$("#public_key").html(JSON.stringify(keypair.publicKey));
-$("#private_key").html(JSON.stringify(keypair.secretKey));
-
-var raw_message = "hi there";
-var nonce = "beep";
-
-var encrypted_message = nacl.box(raw_message, nonce, theirPublicKey, mySecretKey);
+receiverPublicKey = nacl.util.encodeBase64(keypair.publicKey);
+receiverSecretKey = nacl.util.encodeBase64(keypair.secretKey)
 
 
 
-var encrypted_message = "";
+$("#public_key").html(receiverPublicKey);
+$("#private_key").html(receiverSecretKey);
 
-
-
-
-/* 
-** You'll need to generate a key pair for your users e.g.
-** const keypair = nacl.box.keyPair()
-** const receiverPublicKey = util.encodeBase64(keypair.publicKey)
-** const receiverSecretKey = util.encodeBase64(keypair.secretKey)
-**
-*/
-
-/* encrypted message interface */
-/*
-interface IEncryptedMsg {  
-  ciphertext: string  
-  ephemPubKey: string  
-  nonce: string  
-  version: string
-}
-*/
-/* This function encrypts a message using a base64 encoded
-** publicKey such that only the corresponding secretKey will
-** be able to decrypt
-*/
 function encrypt(receiverPublicKey, msgParams) {  //: string
   const ephemeralKeyPair = nacl.box.keyPair()  
-  const pubKeyUInt8Array = util.decodeBase64(receiverPublicKey)  
-  const msgParamsUInt8Array = util.decodeUTF8(msgParams)  
+  const pubKeyUInt8Array =  nacl.util.decodeBase64(receiverPublicKey)  
+  const msgParamsUInt8Array = nacl.util.decodeUTF8(msgParams)  
   const nonce = nacl.randomBytes(nacl.box.nonceLength)
   const encryptedMessage = nacl.box(
      msgParamsUInt8Array,
@@ -57,28 +31,40 @@ function encrypt(receiverPublicKey, msgParams) {  //: string
      ephemeralKeyPair.secretKey
   )  
   return {    
-    ciphertext: util.encodeBase64(encryptedMessage),    
-    ephemPubKey: util.encodeBase64(ephemeralKeyPair.publicKey),
-    nonce: util.encodeBase64(nonce),     
+    ciphertext: nacl.util.encodeBase64(encryptedMessage),    
+    ephemPubKey: nacl.util.encodeBase64(ephemeralKeyPair.publicKey),
+    nonce: nacl.util.encodeBase64(nonce),     
     version: "x25519-xsalsa20-poly1305"  
   }
   
 }
 /* Decrypt a message with a base64 encoded secretKey (privateKey) */
 function decrypt(receiverSecretKey, encryptedData) {  
-  const receiverSecretKeyUint8Array = util.decodeBase64(
+  const receiverSecretKeyUint8Array = nacl.util.decodeBase64(
       receiverSecretKey
   )      
-  const nonce = util.decodeBase64(encryptedData.nonce)      
-  const ciphertext = util.decodeBase64(encryptedData.ciphertext)      
-  const ephemPubKey = util.decodeBase64(encryptedData.ephemPubKey)      
+  const nonce = nacl.util.decodeBase64(encryptedData.nonce)      
+  const ciphertext = nacl.util.decodeBase64(encryptedData.ciphertext)      
+  const ephemPubKey = nacl.util.decodeBase64(encryptedData.ephemPubKey)      
   const decryptedMessage = nacl.box.open(
       ciphertext, 
       nonce,          
       ephemPubKey, 
       receiverSecretKeyUint8Array
   )
-  return util.encodeUTF8(decryptedMessage)        
+  return nacl.util.encodeUTF8(decryptedMessage)        
 }
+
+alert("encrypting");
+this_encrypted_message = encrypt(receiverPublicKey,"howdy");
+console.dir("this_encrypted_message");
+console.dir(this_encrypted_message);
+
+this_encrypted_message = JSON.stringify(this_encrypted_message);
+alert(this_encrypted_message);
+this_encrypted_message = JSON.parse(this_encrypted_message);
+this_decrypted_message = decrypt(receiverSecretKey,this_encrypted_message);
+alert("decrypted");
+alert(this_decrypted_message);
 
 </script>
