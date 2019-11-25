@@ -16,8 +16,8 @@ function google_keys(key_type){
   }
 }
 
-function google_save(participant_id,
-                     experiment_id,
+function google_save(experiment_id,
+                     participant_id,
                      encrypted_data){  
 
   data = {

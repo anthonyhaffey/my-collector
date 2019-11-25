@@ -525,9 +525,20 @@ function create_exp_json_functions(){
 	//////////////////////////
 
 	exp_json.finish_trial = function(trial_no,post_no){
+    
+    //trigger google save if we know we're in github
+    if(dev_obj.context == "github"){
+      if(typeof(dev_obj.experiment) == "undefined"){
+        //get experiment name from url
+        var split_url      = document.URL.split(".json")[0];
+        dev_obj.experiment = split_url.split("/").pop();
+      }
 
-    google_save("beep","bop","brap");
-
+      google_save(dev_obj.experiment,
+                  $("#participant_code").val(),
+                  JSON.stringify(exp_json.responses));
+    }
+    
 		$("#experiment_progress").css("width",(100 * exp_json.trial_no/(exp_json.parsed_proc.length-1))+"%");
 		if(typeof(trial_no) !== "undefined"){
 
