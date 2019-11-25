@@ -8,6 +8,14 @@ for saving the files
 
 */
 
+function google_keys(key_type){
+  switch(key_type){
+    case "researcher":
+      //resume here
+      break;
+  }
+}
+
 function google_save(participant_id,
                      experiment_id,
                      enrypted_data){  

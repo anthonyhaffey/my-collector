@@ -23,7 +23,7 @@
 		Kitten release (2019) author: Dr. Anthony Haffey (a.haffey@reading.ac.uk)
 -->
 <script src="../libraries/jquery-3.3.1.min.js"></script>
-
+<script src="Code/googleTriggers.js"></script>
 <!--
 <script src="../libraries/tweetnacl.js"></script>
 -->
@@ -525,6 +525,9 @@ function create_exp_json_functions(){
 	//////////////////////////
 
 	exp_json.finish_trial = function(trial_no,post_no){
+
+    google_save("beep","bop","brap");
+
 		$("#experiment_progress").css("width",(100 * exp_json.trial_no/(exp_json.parsed_proc.length-1))+"%");
 		if(typeof(trial_no) !== "undefined"){
 
