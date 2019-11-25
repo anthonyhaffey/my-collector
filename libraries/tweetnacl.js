@@ -1,6 +1,6 @@
 /*
 
-Encryption using the library by dchest available at https://github.com/dchest/tweetnacl-js
+Encryption using the library by dchest available at https://cdnjs.cloudflare.com/ajax/libs/tweetnacl/1.0.1/nacl.min.js
 
 */
 
