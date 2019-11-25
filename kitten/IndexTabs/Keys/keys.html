@@ -5,7 +5,7 @@
 <div id="private_key"></div>
 <script>
 
-if(typeof(megaUberJson.keys) == "undefined"){
+function generate_keys(){
 
   //solution at https://medium.com/zinc_work/using-cryptography-tweetnacl-js-to-protect-user-data-intro-tips-tricks-a8e38e1818b5
   var keypair = nacl.box.keyPair();
@@ -14,6 +14,79 @@ if(typeof(megaUberJson.keys) == "undefined"){
   receiverSecretKey = nacl.util.encodeBase64(keypair.secretKey)
 
   megaUberJson.keys.publicKey = receiverPublicKey;
+
+  bootbox.prompt("In order to encrypt and decrypt your participants' data, we need a password. Make sure you will remember this password, if you forget it then any data that is encrypted will be lost forever.",function(result){
+    bootbox.prompt("Let's type in the password one more time, just to be sure",function(result_2){
+      if(result == result_2){
+        //then store the synchronously encrypted password
+        
+        
+        function newNonce(){
+          return nacl.randomBytes(nacl.secretbox.nonceLength);
+        } 
+        
+        function generateKey() {
+          return nacl.util.encodeBase64(nacl.randomBytes(nacl.secretbox.keyLength));
+        }
+        
+        function symmetric_encrypt (json, key) {
+          
+          const keyUint8Array = nacl.util.decodeBase64(key);
+
+          const nonce = newNonce();
+          const messageUint8 = nacl.util.decodeUTF8(JSON.stringify(json));
+          const box = nacl.secretbox(messageUint8, nonce, keyUint8Array);
+
+          const fullMessage = new Uint8Array(nonce.length + box.length);
+          fullMessage.set(nonce);
+          fullMessage.set(box, nonce.length);
+
+          const base64FullMessage = nacl.util.encodeBase64(fullMessage);
+          return base64FullMessage;
+        };
+
+        function symmetric_decrypt (messageWithNonce, key) {
+          const keyUint8Array = nacl.util.decodeBase64(key);
+          const messageWithNonceAsUint8Array = nacl.util.decodeBase64(messageWithNonce);
+          const nonce = messageWithNonceAsUint8Array.slice(0, nacl.secretbox.nonceLength);
+          const message = messageWithNonceAsUint8Array.slice(
+            nacl.secretbox.nonceLength,
+            messageWithNonce.length
+          );
+
+          const decrypted = nacl.secretbox.open(message, nonce, keyUint8Array);
+
+          if (!decrypted) {
+            throw new Error("Could not decrypt message");
+          }
+
+          const base64DecryptedMessage = nacl.util.encodeUTF8(decrypted);
+          return JSON.parse(base64DecryptedMessage);
+        };
+
+
+        var key = generateKey();
+        var obj = { "hello": "world" };
+        var this_encrypted = symmetric_encrypt(obj, key);
+        var this_decrypted = symmetric_decrypt(this_encrypted, key);
+        
+
+
+
+        nacl.secretbox("beep", //message
+                       nacl.randomBytes(nacl.secretbox.nonceLength), //nonce
+                       nacl.util.encodeBase64("UQpKNIdjttyItVKIf11xUwmXTYY3kILyZKQIBhnwPsY=")); //key
+
+        encrypted_private_key = nacl.secretbox(result_2, "ruVefn8WblL3adXv5bDkLSca/ksPHhyZ", receiverSecretKey)
+
+
+
+      } else {
+        generate_keys();
+        bootbox.alert("The passwords didn't match. Let's start again.");
+      }
+    })
+  });
 
   //need to use synchronous key here to use the researchers password to encrypt the secretKey;
 
@@ -28,15 +101,15 @@ if(typeof(megaUberJson.keys) == "undefined"){
     const nonce = nacl.randomBytes(nacl.box.nonceLength)
     const encryptedMessage = nacl.box(
       msgParamsUInt8Array,
-      nonce,        
+      nonce,
       pubKeyUInt8Array,
       ephemeralKeyPair.secretKey
     )  
-    return {    
-      ciphertext: nacl.util.encodeBase64(encryptedMessage),    
+    return {
+      ciphertext: nacl.util.encodeBase64(encryptedMessage),
       ephemPubKey: nacl.util.encodeBase64(ephemeralKeyPair.publicKey),
-      nonce: nacl.util.encodeBase64(nonce),     
-      version: "x25519-xsalsa20-poly1305"  
+      nonce: nacl.util.encodeBase64(nonce),
+      version: "x25519-xsalsa20-poly1305"
     }
     
   }
