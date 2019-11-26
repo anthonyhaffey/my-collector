@@ -1,14 +1,33 @@
 <script src="../libraries/tweetnacl.js"></script>
 <script src="../libraries/tweetnacl-utils.js"></script>
 
-<h1>Hi there - just checking if there are any keys!!</h1>
-<h1>Hi there - just checking if there are any keys!!</h1>
-<h1>Hi there - just checking if there are any keys!!</h1>
-<h1>Hi there - just checking if there are any keys!!</h1>
-<h1>Hi there - just checking if there are any keys!!</h1>
+<table>
+  <tr>
+    <td>
+      Your Public Key
+    </td>
+    <td>
+      Your encrypted private key
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <textarea class="control-form" id="public_key"></textarea>
+    </td>
+    <td>
+      <textarea class="control-form" id="private_key"></textarea>
+    </td>
+  </tr>
+</table>
 
+
+
+<!--
 <div id="public_key"></div>
 <div id="private_key"></div>
+-->
+
+
 <script>
 
 function generate_keys(){
