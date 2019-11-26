@@ -128,10 +128,8 @@ Hard coding the libraries in this page for smoothness (rather than calling "libr
 
   <script>
   navbar_html = "";
-  navbar_colors = ["primary","primary","primary","primary"];
-
   navbar_names.forEach(function(name,index){
-    navbar_html += '<label class="btn btn-'+navbar_colors[index]+' select_page" id="option_'+name+'"  data-toggle="collapse" href="#collapse_'+name+'" role="button" aria-expanded="false" aria-controls="#collapse_'+name+'">'+
+    navbar_html += '<label class="btn btn-primary select_page" id="option_'+name+'"  data-toggle="collapse" href="#collapse_'+name+'" role="button" aria-expanded="false" aria-controls="#collapse_'+name+'">'+
       '<input type="radio" style="display:none" name="options" autocomplete="off" >'+name+
     '</label>';
   });
