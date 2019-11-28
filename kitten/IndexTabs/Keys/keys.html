@@ -1,27 +1,41 @@
 <script src="../libraries/tweetnacl.js"></script>
 <script src="../libraries/tweetnacl-utils.js"></script>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/aes.min.js"></script>
+
+<script>
+    var encryptedAES = CryptoJS.AES.encrypt("Message", "My Secret Passphrase");
+    var decryptedBytes = CryptoJS.AES.decrypt(encryptedAES, "My Secret Passphrase");
+    var plaintext = decryptedBytes.toString(CryptoJS.enc.Utf8);
+    console.dir(plaintext);
+</script>
+
 <nav class="navbar navbar-primary bg-white fixed-top fixed-top-2" id="sim_navbar">
   Howdy
 </nav>
-<table>
-  <tr>
-    <td>
-      Your Public Key
-    </td>
-    <td>
-      Your encrypted private key
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <textarea class="control-form" id="public_key"></textarea>
-    </td>
-    <td>
-      <textarea class="control-form" id="private_key"></textarea>
-    </td>
-  </tr>
-</table>
+<br><br><br>
+
+<br><br><br>
+<div>
+  <table>
+    <tr>
+      <td>
+        Your Public Key
+      </td>
+      <td>
+        Your encrypted private key
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <textarea class="control-form" id="public_key"></textarea>
+      </td>
+      <td>
+        <textarea class="control-form" id="private_key"></textarea>
+      </td>
+    </tr>
+  </table>
+</div>
 
 
 
@@ -41,6 +55,8 @@ function generate_keys(){
   receiverPublicKey = nacl.util.encodeBase64(keypair.publicKey);
   receiverSecretKey = nacl.util.encodeBase64(keypair.secretKey)
 
+  megaUberJson.keys = {};
+
   megaUberJson.keys.publicKey = receiverPublicKey;
 
   bootbox.prompt("In order to encrypt and decrypt your participants' data, we need a password. Make sure you will remember this password, if you forget it then any data that is encrypted will be lost forever.",function(result){
@@ -57,12 +73,12 @@ function generate_keys(){
           return nacl.util.encodeBase64(nacl.randomBytes(nacl.secretbox.keyLength));
         }
         
-        function symmetric_encrypt (json, key) {
+        function symmetric_encrypt (this_string, key) {
           
           const keyUint8Array = nacl.util.decodeBase64(key);
 
           const nonce = newNonce();
-          const messageUint8 = nacl.util.decodeUTF8(JSON.stringify(json));
+          const messageUint8 = nacl.util.decodeUTF8(this_string);
           const box = nacl.secretbox(messageUint8, nonce, keyUint8Array);
 
           const fullMessage = new Uint8Array(nonce.length + box.length);
@@ -89,13 +105,21 @@ function generate_keys(){
           }
 
           const base64DecryptedMessage = nacl.util.encodeUTF8(decrypted);
-          return JSON.parse(base64DecryptedMessage);
+          return base64DecryptedMessage;
         };
 
 
+        
+        
+        var keystring  = "anthonypassword";
+        var smkey = nacl.util.stringToUint8Array(keystring); // must be 32 bytes, pad it if you have to
+        var nonce = nacl.randomBytes(nacl.box.nonceLength);
+        var encryptedSecretKey = nacl.secretbox(secretKey, nonce, smkey);
+        //var key = generateKey();
+
         var key = generateKey();
-        var obj = { "hello": "world" };
-        var this_encrypted = symmetric_encrypt(obj, key);
+        var eg_message = "hello world";
+        var this_encrypted = symmetric_encrypt(eg_message, key);
         var this_decrypted = symmetric_decrypt(this_encrypted, key);
         
 
@@ -165,7 +189,5 @@ function generate_keys(){
   this_encrypted_message = JSON.stringify(this_encrypted_message);
   this_encrypted_message = JSON.parse(this_encrypted_message);
   this_decrypted_message = decrypt(receiverSecretKey,this_encrypted_message);
-  }
-
-
+}
 </script>
