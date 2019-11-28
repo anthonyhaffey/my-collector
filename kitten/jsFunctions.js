@@ -71,7 +71,12 @@ function initiate_uberMegaFile(){
 }
 function load_uberMegaFile(link_created){
 	$.get(link_created.url.replace("www.","dl."),function(returned_data){
-		megaUberJson = JSON.parse(returned_data);
+    megaUberJson = JSON.parse(returned_data);
+    
+    //probable would be good to have a list of things that follow, but for now:
+    if(typeof(megaUberJson.keys) == "undefined"){
+      generate_keys();
+    }
 
 		$("#option_Edit").click();
 		$("#startup_btn").fadeIn(500);
