@@ -75,7 +75,7 @@ function load_uberMegaFile(link_created){
     
     //probable would be good to have a list of things that follow, but for now:
     if(typeof(megaUberJson.keys) == "undefined"){
-      generate_keys();
+      encrypt_obj.generate_keys();
     }
 
 		$("#option_Edit").click();
