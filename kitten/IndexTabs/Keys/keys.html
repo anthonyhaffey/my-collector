@@ -4,10 +4,13 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.min.js"></script>
 
 <script>
+  /*
+    exemplar code
     var encryptedAES = CryptoJS.AES.encrypt("Message", "My Secret Passphrase");
     var decryptedBytes = CryptoJS.AES.decrypt(encryptedAES, "My Secret Passphrase");
     var plaintext = decryptedBytes.toString(CryptoJS.enc.Utf8);
     console.dir(plaintext);
+  */
 </script>
 
 <nav class="navbar navbar-primary bg-white fixed-top fixed-top-2" id="sim_navbar">
@@ -59,91 +62,32 @@ function generate_keys(){
 
   megaUberJson.keys.publicKey = receiverPublicKey;
 
+
   bootbox.prompt("In order to encrypt and decrypt your participants' data, we need a password. Make sure you will remember this password, if you forget it then any data that is encrypted will be lost forever.",function(result){
     bootbox.prompt("Let's type in the password one more time, just to be sure",function(result_2){
       if(result == result_2){
-        //then store the synchronously encrypted password
-        
-        
-        function newNonce(){
-          return nacl.randomBytes(nacl.secretbox.nonceLength);
-        } 
-        
-        function generateKey() {
-          return nacl.util.encodeBase64(nacl.randomBytes(nacl.secretbox.keyLength));
+
+        var encryptedAES = CryptoJS.AES.encrypt(receiverSecretKey, result_2);
+        var encryptedAES_string = encryptedAES.toString();
+        var decrypted = CryptoJS.AES.decrypt(encryptedAES_string, result_2);
+        var plaintext = decrypted.toString(CryptoJS.enc.Utf8);
+
+        if(plaintext == receiverSecretKey){
+          console.dir("all good");
+          megaUberJson.keys.encryptedPrivateKey = encryptedAES_string;
+        } else {
+          bootbox.alert("Something went wrong with creating your encryption keys");
         }
-        
-        function symmetric_encrypt (this_string, key) {
-          
-          const keyUint8Array = nacl.util.decodeBase64(key);
-
-          const nonce = newNonce();
-          const messageUint8 = nacl.util.decodeUTF8(this_string);
-          const box = nacl.secretbox(messageUint8, nonce, keyUint8Array);
-
-          const fullMessage = new Uint8Array(nonce.length + box.length);
-          fullMessage.set(nonce);
-          fullMessage.set(box, nonce.length);
-
-          const base64FullMessage = nacl.util.encodeBase64(fullMessage);
-          return base64FullMessage;
-        };
-
-        function symmetric_decrypt (messageWithNonce, key) {
-          const keyUint8Array = nacl.util.decodeBase64(key);
-          const messageWithNonceAsUint8Array = nacl.util.decodeBase64(messageWithNonce);
-          const nonce = messageWithNonceAsUint8Array.slice(0, nacl.secretbox.nonceLength);
-          const message = messageWithNonceAsUint8Array.slice(
-            nacl.secretbox.nonceLength,
-            messageWithNonce.length
-          );
-
-          const decrypted = nacl.secretbox.open(message, nonce, keyUint8Array);
-
-          if (!decrypted) {
-            throw new Error("Could not decrypt message");
-          }
-
-          const base64DecryptedMessage = nacl.util.encodeUTF8(decrypted);
-          return base64DecryptedMessage;
-        };
-
-
-        
-        
-        var keystring  = "anthonypassword";
-        var smkey = nacl.util.stringToUint8Array(keystring); // must be 32 bytes, pad it if you have to
-        var nonce = nacl.randomBytes(nacl.box.nonceLength);
-        var encryptedSecretKey = nacl.secretbox(secretKey, nonce, smkey);
-        //var key = generateKey();
-
-        var key = generateKey();
-        var eg_message = "hello world";
-        var this_encrypted = symmetric_encrypt(eg_message, key);
-        var this_decrypted = symmetric_decrypt(this_encrypted, key);
-        
-
-
-
-        nacl.secretbox("beep", //message
-                       nacl.randomBytes(nacl.secretbox.nonceLength), //nonce
-                       nacl.util.encodeBase64("UQpKNIdjttyItVKIf11xUwmXTYY3kILyZKQIBhnwPsY=")); //key
-
-        encrypted_private_key = nacl.secretbox(result_2, "ruVefn8WblL3adXv5bDkLSca/ksPHhyZ", receiverSecretKey)
-
-
 
       } else {
-        generate_keys();
-        bootbox.alert("The passwords didn't match. Let's start again.");
-      }
+        bootbox.alert("Erm, your passwords didnt match, do you want to have another go?");
+        //update this with the relevant code to clarify whether the user wants to have another go.
+
+      }  
     })
   });
 
   //need to use synchronous key here to use the researchers password to encrypt the secretKey;
-
-
-  megaUberJson.keys.secretKey = receiverSecretKey;
 
 
   function encrypt(receiverPublicKey, msgParams) {  //: string
@@ -188,6 +132,10 @@ function generate_keys(){
 
   this_encrypted_message = JSON.stringify(this_encrypted_message);
   this_encrypted_message = JSON.parse(this_encrypted_message);
+
+  bootbox.prompt("Let's quadruple check everything is working - if you put in your password you should see the message 'howdy', which has just been encrypted using your public key",result(user_password){
+
+  });
   this_decrypted_message = decrypt(receiverSecretKey,this_encrypted_message);
 }
 </script>
