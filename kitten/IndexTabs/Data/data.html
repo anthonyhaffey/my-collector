@@ -51,8 +51,14 @@ Encryption code/interface
 </script>
 
 <nav class="navbar navbar-primary bg-white fixed-top fixed-top-2" id="sim_navbar">
-  Howdy
+  <button class="btn btn-primary" id="js_decrypt_btn">Upload and decrypt file</button>
 </nav>
+
+<script>
+$("#js_decrypt_btn").on("click",function(){
+  encrypt_obj._decrypt_request(encrypted_content); 
+});
+</script>
 <br><br><br>
 
 <br><br><br>
