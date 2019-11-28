@@ -24,6 +24,44 @@
 -->
 <script src="../libraries/jquery-3.3.1.min.js"></script>
 <script src="Code/googleTriggers.js"></script>
+
+
+<!--
+
+/*
+
+The encryption code - wrap this more tidily once it is working (and make the crypto-js library local)
+
+*/
+
+-->
+
+<script src="../libraries/tweetnacl.js"></script>
+<script src="../libraries/tweetnacl-utils.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.min.js"></script>
+<script>
+
+function encrypt(receiverPublicKey, msgParams) {  //: string
+  const ephemeralKeyPair = nacl.box.keyPair()  
+  const pubKeyUInt8Array =  nacl.util.decodeBase64(receiverPublicKey)  
+  const msgParamsUInt8Array = nacl.util.decodeUTF8(msgParams)  
+  const nonce = nacl.randomBytes(nacl.box.nonceLength)
+  const encryptedMessage = nacl.box(
+    msgParamsUInt8Array,
+    nonce,
+    pubKeyUInt8Array,
+    ephemeralKeyPair.secretKey
+  )  
+  return {
+    ciphertext: nacl.util.encodeBase64(encryptedMessage),
+    ephemPubKey: nacl.util.encodeBase64(ephemeralKeyPair.publicKey),
+    nonce: nacl.util.encodeBase64(nonce),
+    version: "x25519-xsalsa20-poly1305"
+  }  
+}
+</script>
+
+
 <!--
 <script src="../libraries/tweetnacl.js"></script>
 -->
@@ -536,7 +574,8 @@ function create_exp_json_functions(){
 
       google_save(dev_obj.experiment,
                   $("#participant_code").val(),
-                  JSON.stringify(exp_json.responses));
+                  encrypt(exp_json.public_key,                  //the public key
+                          JSON.stringify(exp_json.responses))); //the data
     }
     
 		$("#experiment_progress").css("width",(100 * exp_json.trial_no/(exp_json.parsed_proc.length-1))+"%");
