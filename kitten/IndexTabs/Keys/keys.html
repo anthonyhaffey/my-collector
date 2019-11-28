@@ -74,7 +74,7 @@ function generate_keys(){
 
         if(plaintext == receiverSecretKey){
           console.dir("all good");
-          megaUberJson.keys.encryptedPrivateKey = encryptedAES_string;
+          megaUberJson.keys.encrypted_private_key = encryptedAES_string;
         } else {
           bootbox.alert("Something went wrong with creating your encryption keys");
         }
@@ -133,9 +133,12 @@ function generate_keys(){
   this_encrypted_message = JSON.stringify(this_encrypted_message);
   this_encrypted_message = JSON.parse(this_encrypted_message);
 
-  bootbox.prompt("Let's quadruple check everything is working - if you put in your password you should see the message 'howdy', which has just been encrypted using your public key",result(user_password){
-
+  bootbox.prompt("Let's quadruple check everything is working - if you put in your password you should see the message 'howdy', which has just been encrypted using your public key",function(user_password){
+    var decrypted_private_key_obj = CryptoJS.AES.decrypt(megaUberJson.keys.encrypted_private_key, user_password);    
+    var decrypted_private_key = decrypted_private_key_obj.toString(CryptoJS.enc.Utf8);
+    this_decrypted_message = decrypt(decrypted_private_key,this_encrypted_message);
+    alert(this_decrypted_message);
   });
-  this_decrypted_message = decrypt(receiverSecretKey,this_encrypted_message);
+  
 }
 </script>
