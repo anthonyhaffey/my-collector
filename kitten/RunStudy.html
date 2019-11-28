@@ -574,8 +574,8 @@ function create_exp_json_functions(){
 
       google_save(dev_obj.experiment,
                   $("#participant_code").val(),
-                  encrypt(exp_json.public_key,                  //the public key
-                          JSON.stringify(exp_json.responses))); //the data
+                  JSON.stringify(encrypt(exp_json.public_key,                  //the public key
+                                JSON.stringify(exp_json.responses)))); //the data
     }
     
 		$("#experiment_progress").css("width",(100 * exp_json.trial_no/(exp_json.parsed_proc.length-1))+"%");
