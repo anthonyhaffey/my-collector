@@ -81,6 +81,9 @@ function load_uberMegaFile(link_created){
       encrypt_obj.google_script_url();
     }
 
+    $("#public_key").val(megaUberJson.keys.public_key);
+    $("#private_key").val(megaUberJson.keys.encrypted_private_key);
+
 		$("#option_Edit").click();
 		$("#startup_btn").fadeIn(500);
 		$("#startup_btn").on("click",function(){

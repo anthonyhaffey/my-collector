@@ -28,6 +28,10 @@ if(isset($_SESSION['user_email']) == false){
 #data_script_editor {
 	height:500px;
 }
+.key_textarea{
+  width:500px;
+  height:500px;
+}
 </style>
 
 
@@ -89,10 +93,10 @@ function loadFileAsText(){
     </tr>
     <tr>
       <td>
-        <textarea class="control-form" id="public_key"></textarea>
+        <textarea class="form-control key_textarea" id="public_key"></textarea>
       </td>
       <td>
-        <textarea class="control-form" id="private_key"></textarea>
+        <textarea class="form-control key_textarea" id="private_key"></textarea>
       </td>
     </tr>
   </table>
