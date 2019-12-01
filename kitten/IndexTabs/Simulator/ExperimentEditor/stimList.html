@@ -216,7 +216,7 @@ if (isAuthenticated()) {
   
   var dbx = new Dropbox({ clientId: CLIENT_ID });
 
-  var authUrl = dbx.getAuthenticationUrl('..kitten/IndexTabs/Simulator/ExperimentEditor/stimList.html');
+  var authUrl = dbx.getAuthenticationUrl('../kitten/IndexTabs/Simulator/ExperimentEditor/stimList.html');
   document.getElementById('authlink').href = authUrl;
   $("#authlink")[0].click();
 }
