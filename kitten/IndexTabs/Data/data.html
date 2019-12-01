@@ -57,7 +57,6 @@ function loadFileAsText(){
   var fileReader = new FileReader();
   fileReader.onload = function(fileLoadedEvent){
       var textFromFileLoaded = fileLoadedEvent.target.result;
-      document.getElementById("inputTextToSave").value = textFromFileLoaded;
       decrypted_file = encrypt_obj._decrypt_request(textFromFileLoaded);
       console.dir("decrypted_file");
       console.dir(decrypted_file);
@@ -113,7 +112,12 @@ encrypt_obj = {
       this_decrypted_message = encrypt_obj.decrypt(decrypted_private_key,JSON.parse(encrypted_content));
       console.dir(this_decrypted_message);
       console.dir(JSON.parse(this_decrypted_message));
-      return JSON.parse(this_decrypted_message);
+      console.dir(Papa.unparse(JSON.parse(this_decrypted_message)))
+      //download the data file here
+      bootbox.prompt("What would you like to name this file?",function(result){
+        var filename = result.toLowerCase().replace(".csv","") + ".csv";
+        save_csv (filename, Papa.unparse(JSON.parse(this_decrypted_message)));
+      });
     });
   },
   confirm_keys:function(){
