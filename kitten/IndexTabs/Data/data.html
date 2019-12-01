@@ -113,6 +113,7 @@ encrypt_obj = {
       this_decrypted_message = encrypt_obj.decrypt(decrypted_private_key,JSON.parse(encrypted_content));
       console.dir(this_decrypted_message);
       console.dir(JSON.parse(this_decrypted_message));
+      return JSON.parse(this_decrypted_message);
     });
   },
   confirm_keys:function(){
