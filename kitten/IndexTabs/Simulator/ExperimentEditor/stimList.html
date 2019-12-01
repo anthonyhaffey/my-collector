@@ -215,10 +215,9 @@ if (isAuthenticated()) {
   // Set the login anchors href using dbx.getAuthenticationUrl()
   
   var dbx = new Dropbox({ clientId: CLIENT_ID });
-
-  //var authUrl = dbx.getAuthenticationUrl(document.URL); //'../kitten/IndexTabs/Simulator/ExperimentEditor/stimList.html'
-  //document.getElementById('authlink').href = authUrl;
-  //$("#authlink")[0].click();
+  var authUrl = dbx.getAuthenticationUrl(document.URL);
+  document.getElementById('authlink').href = authUrl;
+  $("#authlink")[0].click();
 }
  
 
