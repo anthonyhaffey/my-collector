@@ -43,11 +43,7 @@ Encryption code/interface
 
 <nav class="navbar navbar-primary bg-white fixed-top fixed-top-2" id="sim_navbar">
   <button class="btn btn-primary" id="js_decrypt_btn">Upload and decrypt file</button>
-
-  <div style="display:none">
-    <input type="file" id="fileToLoad">
-    <button onclick="loadFileAsText()">Load Selected File</button>
-  </div>
+  <input type="file" id="fileToLoad" style="display:none">
 </nav>
 
 
@@ -77,9 +73,6 @@ function loadFileAsText(){
   fileReader.readAsText(fileToLoad, "UTF-8");
 }
 
-$("#js_decrypt_btn").on("click",function(){
-  encrypt_obj._decrypt_request(encrypted_content); 
-});
 </script>
 <br><br><br>
 
