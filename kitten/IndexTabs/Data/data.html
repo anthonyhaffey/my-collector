@@ -110,13 +110,39 @@ encrypt_obj = {
       var decrypted_private_key_obj = CryptoJS.AES.decrypt(megaUberJson.keys.encrypted_private_key, user_password);    
       var decrypted_private_key = decrypted_private_key_obj.toString(CryptoJS.enc.Utf8);
       this_decrypted_message = encrypt_obj.decrypt(decrypted_private_key,JSON.parse(encrypted_content));
-      console.dir(this_decrypted_message);
-      console.dir(JSON.parse(this_decrypted_message));
-      console.dir(Papa.unparse(JSON.parse(this_decrypted_message)))
+      
+      response_headers 		 = [];
+      condition_headers 	 = [];	
+      for(var i = 0; i < this_decrypted_message.length ; i++) {
+        decrypted_data = this_decrypted_message[i];
+        Object.keys(decrypted_data).forEach(function(header){
+          if(response_headers.indexOf(header) == -1){
+            response_headers.push(header);
+          };
+        });        
+      }
+
+      for(var i =0; i < this_decrypted_message.length; i++){
+        response_headers.forEach(function(this_header){
+          if(typeof(this_decrypted_message[i][this_header]) == "undefined"){
+            this_decrypted_message[i][this_header] = "";
+          }
+        });
+      }
+      
       //download the data file here
       bootbox.prompt("What would you like to name this file?",function(result){
         var filename = result.toLowerCase().replace(".csv","") + ".csv";
-        save_csv (filename, Papa.unparse(JSON.parse(this_decrypted_message)));
+        save_csv (filename, Papa.unparse(this_decrypted_message,{
+          quotes: false, //or array of booleans
+          quoteChar: '"',
+          escapeChar: '"',
+          delimiter: ",",
+          header: true,
+          newline: "\r\n",
+          skipEmptyLines: true, //or 'greedy',
+          columns: null //or array of strings
+        }));
       });
     });
   },
