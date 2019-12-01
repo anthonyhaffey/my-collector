@@ -303,25 +303,50 @@ $("#save_btn").on("click", function(){
         dbx.sharingCreateSharedLink({path:returned_data.path_lower})
           .then(function(returned_link){
             this_exp.location = returned_link.url;
-            $.post("AjaxExperimentLocation.php",
-              {
-                location:   this_exp.location,
-                experiment: experiment
-              },
-              function(returned_data){
-                custom_alert(returned_data);
 
+            // if this is the experiment
+            switch(dev_obj.context){              
+              case "gitpod":
+                // gitpod save mayhaps?
+                break;
+              case "localhost":
+                // local save mayhaps?
+                break;
+              case "github":
                 dbx_obj.new_upload({path: "/Experiments/"+experiment+".json", contents: JSON.stringify(this_exp), mode:'overwrite'},function(location_saved){
-                  custom_alert("experiment_location sorted");
-                  $("#run_link").attr("href","../"+ megaUberJson.exp_mgmt.version + "/RunStudy.html?location="+this_exp.location);
-                  updateUberMegaFile();
-                },function(error){
-                  custom_alert("check console for error saving location");
-                  bootbox.alert(error.error + "<br> Perhaps wait a bit and save again?");;
-                },
-                "filesUpload");
-              }
-            );
+                    custom_alert("experiment_location sorted");
+                    $("#run_link").attr("href","../"+ megaUberJson.exp_mgmt.version + "/RunStudy.html?location="+this_exp.location);
+                    updateUberMegaFile();
+                  },function(error){
+                    custom_alert("check console for error saving location");
+                    bootbox.alert(error.error + "<br> Perhaps wait a bit and save again?");;
+                  },
+                  "filesUpload");
+                break;
+              case "server":
+                $.post("AjaxExperimentLocation.php",
+                  {
+                    location:   this_exp.location,
+                    experiment: experiment
+                  },
+                  function(returned_data){
+                    custom_alert(returned_data);
+
+                    dbx_obj.new_upload({path: "/Experiments/"+experiment+".json", contents: JSON.stringify(this_exp), mode:'overwrite'},function(location_saved){
+                      custom_alert("experiment_location sorted");
+                      $("#run_link").attr("href","../"+ megaUberJson.exp_mgmt.version + "/RunStudy.html?location="+this_exp.location);
+                      updateUberMegaFile();
+                    },function(error){
+                      custom_alert("check console for error saving location");
+                      bootbox.alert(error.error + "<br> Perhaps wait a bit and save again?");;
+                    },
+                    "filesUpload");
+                  }
+                );
+                break;
+            }
+
+            
           })
           .catch(function(error){
             report_error(error);
