@@ -40,21 +40,32 @@ Encryption code/interface
 <script src="../libraries/tweetnacl-utils.js"></script>
 <script src="../libraries/crypto-js.min.js"></script>
 
-<script>
-  /*
-    exemplar code
-    var encryptedAES = CryptoJS.AES.encrypt("Message", "My Secret Passphrase");
-    var decryptedBytes = CryptoJS.AES.decrypt(encryptedAES, "My Secret Passphrase");
-    var plaintext = decryptedBytes.toString(CryptoJS.enc.Utf8);
-    console.dir(plaintext);
-  */
-</script>
 
 <nav class="navbar navbar-primary bg-white fixed-top fixed-top-2" id="sim_navbar">
   <button class="btn btn-primary" id="js_decrypt_btn">Upload and decrypt file</button>
+  <input type="file" id="fileToLoad">
+  <button onclick="loadFileAsText()">Load Selected File</button>
 </nav>
 
+
+
 <script>
+
+function loadFileAsText(){
+  var fileToLoad = document.getElementById("fileToLoad").files[0];
+
+  var fileReader = new FileReader();
+  fileReader.onload = function(fileLoadedEvent){
+      var textFromFileLoaded = fileLoadedEvent.target.result;
+      document.getElementById("inputTextToSave").value = textFromFileLoaded;
+      decrypted_file = encrypt_obj._decrypt_request(textFromFileLoaded);
+      console.dir("decrypted_file");
+      console.dir(decrypted_file);
+  };
+
+  fileReader.readAsText(fileToLoad, "UTF-8");
+}
+
 $("#js_decrypt_btn").on("click",function(){
   encrypt_obj._decrypt_request(encrypted_content); 
 });
