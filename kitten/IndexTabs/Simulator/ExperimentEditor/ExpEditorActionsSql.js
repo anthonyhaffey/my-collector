@@ -205,7 +205,8 @@ $("#save_btn").on("click", function(){
 
 	var experiment = megaUberJson.exp_mgmt.experiment;
   var this_exp = megaUberJson.exp_mgmt.experiments[experiment];
-      this_exp.public_key = megaUberJson.keys.public_key;
+      this_exp.public_key    = megaUberJson.keys.public_key;
+      this_exp.google_script = megaUberJson.data.google_script;
 
 	//parse procs for survey saving next
 	if(typeof(this_exp) !== "undefined") {
