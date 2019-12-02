@@ -498,9 +498,10 @@ function process_welcome(){
 		if(pp_id_setting == "off"){																// put in a participant ID that is clearly not unique (e.g. "notUnique").
 			$("#participant_code").val("notUnique");
 			post_welcome("notUnique","skip"); 											//"skip" means that it will automatically accept non unique ids
-		} else if(pp_id_setting == "random"){
+		} else if(pp_id_setting == "random"){      
 			var this_code = Math.random().toString(36).substr(2, 16)
-			post_welcome(this_code,"random");
+			$("#participant_code").val(this_code);
+      post_welcome(this_code,"random");
 		} else if(pp_id_setting  == "on"){
 			$("#loading_exp_json").fadeOut(500);
 			$("#researcher_message").fadeIn(2000);
