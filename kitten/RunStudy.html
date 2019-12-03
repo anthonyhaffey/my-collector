@@ -246,6 +246,9 @@ if(typeof(block_save) !== "undefined"){ //i.e. simulator
 
 <script src="iframe_library.js"></script>
 <script src="TrialFunctions.js"></script>
+<script src="https://www.amcharts.com/lib/3/ammap.js"></script>
+<script src="https://www.amcharts.com/lib/3/maps/js/worldLow.js"></script>
+<script src="https://www.amcharts.com/lib/3/themes/light.js"></script>
 
 <script>
 function collectorPapaParsed(preparsed){
@@ -385,7 +388,7 @@ function final_trial(){
       }
       break;
     case "github":
-      $("#experiment_div").html("<h1>Thank you for participating</h1>");
+      $("#experiment_div").html("<h1>Thank you for participating. If you'd like to download your raw data <span id='download_json'>click here</span></h1>");
       break;
   }
 	
