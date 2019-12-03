@@ -18,10 +18,11 @@ html, body {
 <script src="https://www.amcharts.com/lib/3/maps/js/worldLow.js"></script>
 <script src="https://www.amcharts.com/lib/3/themes/light.js"></script>
 
-
-<h3 class="text-primary"> This is totally optional, but please select the country you are completing this from and then click on "Submit"</h3>
-<button id="country_selected" class="btn btn-primary">Submit</button>
-<div id="chartdiv"></div>
+<div id="participant_map_everything">
+  <h3 class="text-primary"> This is totally optional, but please select the country you are completing this from and then click on "Submit"</h3>
+  <button id="country_selected" class="btn btn-primary">Submit</button>
+  <div id="chartdiv"></div>
+</div>
 <script>
 
 var map;
@@ -54,7 +55,7 @@ document.getElementById("country_selected").addEventListener("click",function(){
     //will always return error
   })
   .catch(function(error){
-    $("#chartdiv").html("");
+    $("#participant_map_everything").html("");
   });
 });
 
