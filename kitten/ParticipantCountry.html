@@ -30,7 +30,7 @@ var map;
 function load_amchart(list){
   if(list.length > 0){
     var this_script = list.pop();
-    $.getScript( "ajax/test.js", function( data, textStatus, jqxhr ) {
+    $.getScript( this_script, function( data, textStatus, jqxhr ) { //"ajax/test.js"
       console.log( data ); // Data returned
       console.log( textStatus ); // Success
       console.log( jqxhr.status ); // 200
