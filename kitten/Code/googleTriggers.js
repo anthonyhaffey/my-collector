@@ -19,7 +19,8 @@ function google_keys(key_type){
 function google_save(experiment_id,
                      participant_id,
                      encrypted_data,
-                     google_script_url){  
+                     google_script_url,
+                     after_function){  
 
   data = {
     participant_id: participant_id,
@@ -34,15 +35,11 @@ function google_save(experiment_id,
     timeout: 120000,
     success:function(result){
       //as it stands, this will never happen as Collector doesn't allow posts to it.
+      after_function();
     }
   })
   .catch(function(error){
-    //read the google sheet 
-    /*
-    ParseGSX.parseGSX(data.question_id,function(result){
-      show_question(result);
-    });
-    */
+    after_function();
   });
 }
 
