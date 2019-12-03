@@ -13,7 +13,7 @@
                  "end_message",
                  "start_message",
                  "buffer"],
-                ["New Experiment",
+                ["condition_1",
                  "You can put more detailed notes in this field",
                  "Stimuli.csv",
                  "Procedure.csv",
