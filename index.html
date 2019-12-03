@@ -58,7 +58,7 @@ body, html {
 		<a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#navs-contributors" role="tab" aria-controls="pills-profile" aria-selected="false">Contribute!</a>
 	</li>
 	<li class="nav-item"  id="researchers_map_tab">
-		<a class="nav-link" id="pills-contact-tab" data-toggle="pill" href="#navs-map" role="tab" aria-controls="pills-contact" aria-selected="false">Researcher map</a>
+    <a class="nav-link" id="pills-contact-tab" data-toggle="pill" href="#navs-map" role="tab" aria-controls="pills-contact" aria-selected="false">Researcher map</a>
 	</li>
   <li class="nav-item"  id="participant_map_tab">
 		<a class="nav-link" id="pills-pp-tab" data-toggle="pill" href="#navs-pp_map" role="tab" aria-controls="pills-pp" aria-selected="false">Participant map</a>
@@ -263,7 +263,10 @@ $("#participant_map_tab").on("click",function(){
 $("#researchers_map_tab").on("click",function(){
   if(maps_initiated.researcher == false){
     maps_initiated.researcher = true;
-  
+
+    ParseGSX.parseGSX("1bD82OXXfna-KTtLk46glo2oUGoGy2JORTJLp47uKOh0",function(data){
+    
+    /*
     $.post("AjaxInstitutions.php",{},function(returned_data){
       data = Papa.parse(Papa.unparse(JSON.parse(returned_data)),{       
         delimiter: "",	// auto-detect
@@ -288,6 +291,7 @@ $("#researchers_map_tab").on("click",function(){
         withCredentials: undefined
       });
       data.data = data.data.filter(row => row.latitude !== "");
+      */
       areas_array  = [];
       images_array = [];
       
@@ -301,7 +305,7 @@ $("#researchers_map_tab").on("click",function(){
                             "<tbody>";
       
       
-      data.data.forEach(function(row){
+      data.forEach(function(row){
         
         table_content +=  "<tr>"+
                             "<td>" + row.institute + "</td>" +
