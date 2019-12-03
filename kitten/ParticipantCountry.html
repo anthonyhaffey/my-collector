@@ -14,15 +14,19 @@ html, body {
 	window.jQuery || document.write('<script src="../libraries/jquery-3.3.1.min.js"><\/script>');
 </script>
 
+<script src="https://www.amcharts.com/lib/3/ammap.js"></script>
+<script src="https://www.amcharts.com/lib/3/maps/js/worldLow.js"></script>
+<script src="https://www.amcharts.com/lib/3/themes/light.js"></script>
+
+
 <h3 class="text-primary"> This is totally optional, but please select the country you are completing this from and then click on "Submit"</h3>
 <button id="country_selected" class="btn btn-primary">Submit</button>
 <div id="chartdiv"></div>
 <script>
-
 var amchart_scripts = ["https://www.amcharts.com/lib/3/ammap.js",
                        "https://www.amcharts.com/lib/3/maps/js/worldLow.js",
                        "https://www.amcharts.com/lib/3/themes/light.js"];
-
+var map;
 function load_amchart(list){
   if(list.length > 0){
     var this_script = list.pop();
@@ -34,7 +38,7 @@ function load_amchart(list){
       load_amchart(list);
     });
   } else {
-    var map = AmCharts.makeChart("chartdiv", {
+    map = AmCharts.makeChart("chartdiv", {
       "type": "map",
       "theme": "light",
       "projection": "eckert3",
@@ -49,12 +53,21 @@ function load_amchart(list){
     });
   }
 }
-
+load_amchart(amchart_scripts);
 /**
  * Create the map
  */
 
 document.getElementById("country_selected").addEventListener("click",function(){
+  $.post("https://script.google.com/macros/s/AKfycbzlKxIo5TsWoN2vd-5M7X2kfbTWZrvZMqwGJY6yzgOhSRWyzvvZ/exec",{
+    country_id   : map.selectedObject.id,
+    country_name : map.selectedObject.title,
+  },function(result){
+    //will always return error
+  });
+  //$.post( need a google script to trigger
+  
+  /*
   $.post("AjaxParticipantCountry.php",{
     country_id   : map.selectedObject.id,
     country_name : map.selectedObject.title,
@@ -62,6 +75,7 @@ document.getElementById("country_selected").addEventListener("click",function(){
     console.dir(result);
     $("#participant_country").html("")
   });
+  */
 });
 
 </script>
