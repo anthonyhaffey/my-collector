@@ -253,7 +253,21 @@ if(typeof(block_save) !== "undefined"){ //i.e. simulator
 <script>
 google_obj = {
   saves_started:0,
-  saves_ended:0
+  saves_ended:0,
+  save_queue:[],
+  save_queue_add:function(save_queue_item){
+    google_obj.save_queue.push(save_queue_item);
+    if(google_obj.save_queue.length == 1){        //need to initiate run_save as it stopped before you added this item
+      google_obj.run_save();
+    }
+  },
+  run_save:function(){
+    var this_save = google_obj.save_queue.pop();
+    this_save();
+    if(google_obj.save_queue.length > 0){         //keep going until all saves done.
+      gogle_obj.run_save();
+    }
+  }
 }
 
 function collectorPapaParsed(preparsed){
@@ -595,14 +609,18 @@ function create_exp_json_functions(){
         dev_obj.experiment = split_url.split("/").pop();
       }
       google_obj.saves_started ++;
-      google_save(dev_obj.experiment,
-                  $("#participant_code").val(),
-                  JSON.stringify(encrypt(exp_json.public_key,                  //the public key
-                                JSON.stringify(exp_json.responses))),          //the data
-                  exp_json.google_script,
-                  function(){
-                    google_obj.saves_ended ++;
-                  }); 
+      google_obj.save_queue_add(
+        function(){
+          google_save(dev_obj.experiment,
+                      $("#participant_code").val(),
+                      JSON.stringify(encrypt(exp_json.public_key,    //the public key
+                      JSON.stringify(exp_json.responses))),          //the data
+          exp_json.google_script,
+          function(){
+            google_obj.saves_ended ++;
+          }); 
+        }
+      );
     }
     
 		$("#experiment_progress").css("width",(100 * exp_json.trial_no/(exp_json.parsed_proc.length-1))+"%");
