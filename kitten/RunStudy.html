@@ -323,68 +323,76 @@ function precrypted_data(decrypted_data,message){
 experiment_finished_and_emailed = false;
 function final_trial(){
   $("#participant_country").show();
-	$("#experiment_div").html("<h3 class='text-primary'>Please do not close this window until it has been confirmed that the researcher has been e-mailed your data (or you have downloaded the data yourself that you will e-mail the researcher). If you do not get a prompt to do this within 30 seconds, press CTRL-S and you should be able to directly download your data.</h3>");
-	download_at_end = exp_json.this_condition.download_at_end;
+  switch(dev_obj.context){
+    case "server":
+      $("#experiment_div").html("<h3 class='text-primary'>Please do not close this window until it has been confirmed that the researcher has been e-mailed your data (or you have downloaded the data yourself that you will e-mail the researcher). If you do not get a prompt to do this within 30 seconds, press CTRL-S and you should be able to directly download your data.</h3>");
+      download_at_end = exp_json.this_condition.download_at_end;
 
-	if(simulator_off()){
-		$.post("emailData.php",{
-			all_data   : JSON.stringify(exp_json),
-		},function(returned_data){
-			message_data = returned_data.split(" encrypted data = ");
-      if(message_data.length == 1){
-        //retrieve researcher e-mail address
-        precrypted_data(exp_json,"Problem encrypting: <b>"+ message_data +"</b>, we'll try again every 10 seconds, but in case it fails, please download and e-mail this file. What do you want to save this file as? (you will get this message each time we fail to e-mail your data to the researcher)");
-        setTimeout(function(){
-          final_trial();
-        },10000);
-			} else {
+      if(simulator_off()){
+        $.post("emailData.php",{
+          all_data   : JSON.stringify(exp_json),
+        },function(returned_data){
+          message_data = returned_data.split(" encrypted data = ");
+          if(message_data.length == 1){
+            //retrieve researcher e-mail address
+            precrypted_data(exp_json,"Problem encrypting: <b>"+ message_data +"</b>, we'll try again every 10 seconds, but in case it fails, please download and e-mail this file. What do you want to save this file as? (you will get this message each time we fail to e-mail your data to the researcher)");
+            setTimeout(function(){
+              final_trial();
+            },10000);
+          } else {
 
-				encrypted_data = message_data[1];
+            encrypted_data = message_data[1];
 
-        if(typeof(exp_json.this_condition.end_message) !== "undefined" && exp_json.this_condition.end_message !== ""){
-          $("#experiment_div").html("<h3 class='text-primary'>"+exp_json.this_condition.end_message+"</h3>");
-        } else {
-					$("#experiment_div").html("");
-				}
-        $("#experiment_div").append("<div id='download_div'></div>");
+            if(typeof(exp_json.this_condition.end_message) !== "undefined" && exp_json.this_condition.end_message !== ""){
+              $("#experiment_div").html("<h3 class='text-primary'>"+exp_json.this_condition.end_message+"</h3>");
+            } else {
+              $("#experiment_div").html("");
+            }
+            $("#experiment_div").append("<div id='download_div'></div>");
 
-				if(download_at_end == "on"){
-          $("#download_div").html("<h1 class='text-primary'>" + message_data[0] + " <br><br> You can download the encrypted version of your data <span id='encrypt_click' class='text-success'>here</span> <br><br>or an unencrypted version <span id='raw_click' class='text-success'>here</span></h1>");
+            if(download_at_end == "on"){
+              $("#download_div").html("<h1 class='text-primary'>" + message_data[0] + " <br><br> You can download the encrypted version of your data <span id='encrypt_click' class='text-success'>here</span> <br><br>or an unencrypted version <span id='raw_click' class='text-success'>here</span></h1>");
 
-            $("#encrypt_click").on("click",function(){
-              bootbox.prompt({
-                title:"What do you want to save this file as?",
-                value:$("#participant_code").val()+"_encrypted.txt",
-                callback:function(result){
-                  var blob = new Blob([encrypted_data], {type: 'text/csv'});
-                  if(window.navigator.msSaveOrOpenBlob) {
-                    window.navigator.msSaveBlob(blob, result);
-                  }
-                  else{
-                    var elem = window.document.createElement('a');
-                    elem.href = window.URL.createObjectURL(blob);
-                    elem.download = result;
-                    document.body.appendChild(elem);
-                    elem.click();
-                    document.body.removeChild(elem);
-                  }
-                }
-              });
-            });
-            $("#raw_click").on("click",function(){
-              precrypted_data(exp_json,"What do you want to save this file as?");
-            });
-				} else if(download_at_end == "off") {
-					// do nothing
-				} else {
-					bootbox.alert("It's unclear whether the researcher wants you to be able to download your data or not");
-				}
-        experiment_finished_and_emailed = true;
-			}
-		});
-	} else {
-		$("#experiment_div").html("<h1>You have finished. You can download the data by clicking <b><span id='download_json'>here</span></b>.</h1>");
-	}
+                $("#encrypt_click").on("click",function(){
+                  bootbox.prompt({
+                    title:"What do you want to save this file as?",
+                    value:$("#participant_code").val()+"_encrypted.txt",
+                    callback:function(result){
+                      var blob = new Blob([encrypted_data], {type: 'text/csv'});
+                      if(window.navigator.msSaveOrOpenBlob) {
+                        window.navigator.msSaveBlob(blob, result);
+                      }
+                      else{
+                        var elem = window.document.createElement('a');
+                        elem.href = window.URL.createObjectURL(blob);
+                        elem.download = result;
+                        document.body.appendChild(elem);
+                        elem.click();
+                        document.body.removeChild(elem);
+                      }
+                    }
+                  });
+                });
+                $("#raw_click").on("click",function(){
+                  precrypted_data(exp_json,"What do you want to save this file as?");
+                });
+            } else if(download_at_end == "off") {
+              // do nothing
+            } else {
+              bootbox.alert("It's unclear whether the researcher wants you to be able to download your data or not");
+            }
+            experiment_finished_and_emailed = true;
+          }
+        });
+      } else {
+        $("#experiment_div").html("<h1>You have finished. You can download the data by clicking <b><span id='download_json'>here</span></b>.</h1>");
+      }
+      break;
+    case "github":
+      $("#experiment_div").html("Thank you for participating");
+      break;
+  }
+	
 	$("#download_json").on("click",function(){
 		precrypted_data(exp_json,"What do you want to save this file as?");
 	});
