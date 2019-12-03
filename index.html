@@ -124,6 +124,11 @@ maps_initiated = {
 $("#participant_map_tab").on("click",function(){
   if(maps_initiated.participant == false){
     maps_initiated.participant = true;
+
+
+    //next step is to retrieve the map from:
+    //https://docs.google.com/spreadsheets/d/17Tbxt8AVwX4XgvuGYcBk_NqXv0zBdNUj62ZyonW8_hg/edit?usp=sharing
+
     $.post("AjaxPPCountries.php",{},function(returned_data){
       
       data = Papa.parse(Papa.unparse(JSON.parse(returned_data)),{       
