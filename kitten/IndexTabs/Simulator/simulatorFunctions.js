@@ -20,7 +20,12 @@
 function clean_conditions(){
   exp_json = megaUberJson.exp_mgmt.experiments[megaUberJson.exp_mgmt.experiment];	
 	exp_json.conditions = collectorPapaParsed(exp_json.cond_array);	
-	exp_json.conditions = exp_json.conditions.filter(row => row.procedure !== "");  
+  exp_json.conditions = exp_json.conditions.filter(row => row.procedure !== "");  
+  exp_json.conditions.forEach(function(row){
+    if(row.name.indexOf("_") !== -1){
+      bootbox.alert("You have a space in your condition: " + row.name + ". Please change the name to not have any spaces");
+    }
+  });
 }
 
 function simulate_experiment() {    
