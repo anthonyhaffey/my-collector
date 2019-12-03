@@ -65,12 +65,15 @@ $("#fileToLoad").on("change",function(){
 
 function loadFileAsText(){
   var fileToLoad = document.getElementById("fileToLoad").files[0];
-
+  var default_filename = document.getElementById("fileToLoad").files[0]
+                                                              .name
+                                                              .toLowerCase()
+                                                              .replace(".txt",".csv");
   var fileReader = new FileReader();
   fileReader.onload = function(fileLoadedEvent){
       var textFromFileLoaded = fileLoadedEvent.target.result;
-      encrypt_obj._decrypt_request(textFromFileLoaded,                                   //file_content
-                                   document.getElementById("fileToLoad").files[0].name); //default filename
+      encrypt_obj._decrypt_request(textFromFileLoaded,        //file_content
+                                   default_filename);         //default filename
       
   };
 
@@ -145,7 +148,7 @@ encrypt_obj = {
       //
       bootbox.prompt({
         title: "What would you like to name this file?",
-        placeholder: default_filename,
+        value: default_filename,
         callback: function(result) {
           var filename = result.toLowerCase().replace(".csv","") + ".csv";
           save_csv (filename, Papa.unparse(this_decrypted_message,{
