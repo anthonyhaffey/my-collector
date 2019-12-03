@@ -50,7 +50,11 @@ document.getElementById("country_selected").addEventListener("click",function(){
     country_id   : map.selectedObject.id,
     country_name : map.selectedObject.title,
   },function(result){
+    $("#chartdiv").html("");
     //will always return error
+  })
+  .catch(function(error){
+    $("#chartdiv").html("");
   });
 });
 
