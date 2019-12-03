@@ -14,11 +14,6 @@ html, body {
 	window.jQuery || document.write('<script src="../libraries/jquery-3.3.1.min.js"><\/script>');
 </script>
 
-<script src="https://www.amcharts.com/lib/3/ammap.js"></script>
-<script src="https://www.amcharts.com/lib/3/maps/js/worldLow.js"></script>
-<script src="https://www.amcharts.com/lib/3/themes/light.js"></script>
-
-
 <h3 class="text-primary"> This is totally optional, but please select the country you are completing this from and then click on "Submit"</h3>
 <button id="country_selected" class="btn btn-primary">Submit</button>
 <div id="chartdiv"></div>
@@ -65,17 +60,6 @@ document.getElementById("country_selected").addEventListener("click",function(){
   },function(result){
     //will always return error
   });
-  //$.post( need a google script to trigger
-  
-  /*
-  $.post("AjaxParticipantCountry.php",{
-    country_id   : map.selectedObject.id,
-    country_name : map.selectedObject.title,
-  },function(result){
-    console.dir(result);
-    $("#participant_country").html("")
-  });
-  */
 });
 
 </script>
