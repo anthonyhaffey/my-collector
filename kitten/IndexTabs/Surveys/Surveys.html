@@ -22,17 +22,11 @@
   /*
     This code is to facilitate editing of a file in isolation
   */
-  // Collector specific
-  window.collector_map || document.write('<script src="https://anthonyhaffey.github.io/my-collector/kitten/CollectorMap.js"><\/script>');
+  if(typeof(dev_obj) == "undefined"){    // initiate code needed to run this file in isolation
+    document.write('<script src="https://anthonyhaffey.github.io/my-collector/kitten/IsolationCode.js');
+  }
+  
 
-  //Publicly available libraries
-  window.bootstrap || document.write('<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"><\/script><link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">');
-  
-  
-  window.jQuery        || document.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"><\/script>');
-
-  
-  window.Papa          || document.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.1.0/papaparse.min.js"><\/script>');
 
 </script>
 <script>
@@ -152,7 +146,7 @@ function list_surveys(){
 		megaUberJson.surveys = {
 			preview         : false,
 			user_surveys    : {}
-		}
+		};
   }
 	megaUberJson.surveys = typeof(megaUberJson.surveys) == "undefined" ? {} : megaUberJson.surveys;
 	megaUberJson.surveys.default_surveys = default_surveys;
@@ -417,7 +411,21 @@ $("#pills-preview-tab").on("click",function(){
 });
 
 $("#survey_select").on("change",function(){
+  
+  // Below code is to enable isolated development of surveys code
 
+  if(typeof(megaUberJson) == "undefined"){
+    megaUberJson = {
+      surveys: {
+        default_surveys:{},
+      },
+      trialtypes : {
+        user_trialtypes : {},
+        default_trialtypes: {}
+      }
+    }
+  }
+  load_default_surveys();
   var this_survey = $("#survey_select").val().split("|");
 
   if(this_survey[0] == "default"){
