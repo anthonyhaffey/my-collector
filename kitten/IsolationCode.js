@@ -16,3 +16,122 @@ window.jQuery        || document.write('<script src="https://cdnjs.cloudflare.co
 window.bootstrap || document.write('<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"><\/script><link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">');
 
 window.Papa          || document.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.1.0/papaparse.min.js"><\/script>');
+
+
+// Below code is to enable isolated development of surveys code
+
+if(typeof(megaUberJson) == "undefined"){
+  megaUberJson = {
+    surveys: {
+      default_surveys:{},
+    },
+    trialtypes : {
+      user_trialtypes : {},
+      default_trialtypes: {}
+    }
+  }
+}
+
+var isolation_map = {
+  //IndexTabs
+  IndexTabs:{
+    Data:{
+      "ListData.php" : "file",
+    },  
+
+    Help:{
+      "CondHelp.json" : "file",
+      "GrapHelp.json" : "file",
+      "MainHelp.json" : "file",
+      "ProcHelp.json" : "file",
+      "SurvHelp.json" : "file",
+    },
+    Simulator:{
+      ExperimentEditor:{
+        "default_experiment.json" : "file",
+        "ExperimentEditor.html"   : "file"
+      },
+      TrialTypeEditor:{
+        "TrialTypeEditor.html" : "file",
+        "Graphic.html"         : "file",
+        Default:{
+          "DefaultTrialtypeList.txt" :"file",
+        }
+      }
+    },
+    Surveys : {
+      Default : {
+        'autism_quotient.csv'  : 'file',
+        'demographics.csv'     : 'file',
+        'empathy_quotient.csv' : 'file',
+      },
+      'Surveys.html'    : 'file',
+      'surveyTypes.csv' : 'file'
+    }
+  },
+  "CollectorMap.js" : "file",
+  "jsFunctions.js"  : "file",
+  "libraries.html"  : "file",
+}
+
+function this_map(this_location){
+  //generate a map based on the user being at the top level
+  //list everything on this level
+  complete_map = {};
+  
+  function populate_map(current_directory){
+    selected_directory = isolation_map;
+    if(current_directory !== ""){
+      split_directory = current_directory.split("/");
+      split_directory.forEach(function(this_direct){
+        selected_directory = selected_directory[this_direct];
+      });
+      current_directory += "/";
+    }
+
+    current_level_contents = Object.keys(selected_directory);
+    current_level_files = current_level_contents.filter(function(item){
+      return item.indexOf(".") !== -1;
+    });
+    current_level_folders = current_level_contents.filter(function(item){
+      return item.indexOf(".") == -1;
+    });
+
+    current_level_files.forEach(function(this_file){      
+      complete_map[this_file] = current_directory + this_file;
+    });
+    current_level_folders.forEach(function(this_folder){
+      complete_map[this_folder] = current_directory + this_folder;
+      populate_map(current_directory + this_folder);
+    });
+
+  }
+  populate_map("");
+  
+
+
+  /*
+  // loop through all the variables 
+  function build_map(current_directory,current_map){
+    if(this_location.length == 1){                               // look in the top directory
+      if(typeof(isolation_map[this_location]) !== "undefined"){  //
+        //look at all files in subfolder
+        var this_level_files = Object.keys(isolation_map[this_location]).filter(function(item){
+          return (isolation_map[this_location][item] == "file");
+        });
+
+        //list files
+
+        //list folders
+
+      } else {
+        //
+      }
+    } else {                                                     // focus in subdirectory
+
+    }
+  } 
+  
+  build_map(this_location,{});
+  */
+}

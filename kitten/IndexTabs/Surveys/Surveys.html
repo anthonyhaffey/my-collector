@@ -22,12 +22,9 @@
   /*
     This code is to facilitate editing of a file in isolation
   */
-  if(typeof(dev_obj) == "undefined"){    // initiate code needed to run this file in isolation
-    document.write('<script src="https://anthonyhaffey.github.io/my-collector/kitten/IsolationCode.js');
+  if(typeof(dev_obj) == "undefined"){
+    document.write('<script src="../../IsolationCode.js"><\/script>');
   }
-  
-
-
 </script>
 <script>
 default_surveys = {};
@@ -412,19 +409,6 @@ $("#pills-preview-tab").on("click",function(){
 
 $("#survey_select").on("change",function(){
   
-  // Below code is to enable isolated development of surveys code
-
-  if(typeof(megaUberJson) == "undefined"){
-    megaUberJson = {
-      surveys: {
-        default_surveys:{},
-      },
-      trialtypes : {
-        user_trialtypes : {},
-        default_trialtypes: {}
-      }
-    }
-  }
   load_default_surveys();
   var this_survey = $("#survey_select").val().split("|");
 
