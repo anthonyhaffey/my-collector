@@ -931,10 +931,13 @@ function write_survey(this_survey,this_id){
 //////////////////
 // Load survey  //
 //////////////////
-
-Trial.set_timer(function(){
+if(typeof(Trial) !== "undefined"){  // This check is to help this code work when previewing trialtypes
+  Trial.set_timer(function(){       // This chunk is for when the survey is run within an actual trial
+    load_survey("{{survey}}");
+  },100);
+} else {                            // This chunk is for when the survey is being previewed in the "survey editor"
   load_survey("{{survey}}");
-},100);
+}
 
 
 </script>
