@@ -74,12 +74,13 @@ var isolation_map = {
   "libraries.html"  : "file",
 }
 
-function this_map(this_location){
+function this_map(this_item){
   //generate a map based on the user being at the top level
   //list everything on this level
-  complete_map = {};
-  
-  function populate_map(current_directory){
+  var complete_map = {};
+  var item_level   = -1;
+  var split_directory = [];
+  function populate_map(current_directory,this_item){
     selected_directory = isolation_map;
     if(current_directory !== ""){
       split_directory = current_directory.split("/");
@@ -87,6 +88,11 @@ function this_map(this_location){
         selected_directory = selected_directory[this_direct];
       });
       current_directory += "/";
+    }
+    if(typeof(selected_directory[this_item]) !== "undefined"){
+      //we've found the item
+      console.dir(split_directory);
+      item_level = split_directory.length;
     }
 
     current_level_contents = Object.keys(selected_directory);
@@ -102,36 +108,13 @@ function this_map(this_location){
     });
     current_level_folders.forEach(function(this_folder){
       complete_map[this_folder] = current_directory + this_folder;
-      populate_map(current_directory + this_folder);
+      populate_map(current_directory + this_folder,this_item);
     });
-
   }
-  populate_map("");
-  
-
-
-  /*
-  // loop through all the variables 
-  function build_map(current_directory,current_map){
-    if(this_location.length == 1){                               // look in the top directory
-      if(typeof(isolation_map[this_location]) !== "undefined"){  //
-        //look at all files in subfolder
-        var this_level_files = Object.keys(isolation_map[this_location]).filter(function(item){
-          return (isolation_map[this_location][item] == "file");
-        });
-
-        //list files
-
-        //list folders
-
-      } else {
-        //
-      }
-    } else {                                                     // focus in subdirectory
-
-    }
-  } 
-  
-  build_map(this_location,{});
-  */
+  populate_map("",this_item);
+  var dots_before = "../".repeat(item_level);
+  Object.keys(complete_map).forEach(function(item){
+    complete_map[item] = "../".repeat(item_level) + complete_map[item]
+  });
+  return complete_map;
 }
