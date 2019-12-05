@@ -23,6 +23,9 @@
     This code is to facilitate editing of a file in isolation
   */
   if(typeof(dev_obj) == "undefined"){
+    dev_obj = {
+      dev_location:"Surveys.html"
+    }
     document.write('<script src="../../CollectorMap.js"><\/script>');
   }
 </script>
@@ -53,26 +56,6 @@ function load_default_surveys(){
     }
   }
   load_survey(default_survey_files);
-  /*
-  default_survey_files.forEach(function(file){
-
-  });
-
-  Object.keys(default_surveys).forEach(function(survey){
-    default_surveys[survey] = Papa.parse(default_surveys[survey]).data;
-  });
-
-  $default_surveys 				 = glob('IndexTabs/Surveys/default/*.csv');
-  $default_surveys_content = new stdClass();
-
-  foreach($default_surveys as $default_survey){
-    $default_survey_name = str_replace("IndexTabs/Surveys/default/","",$default_survey);
-    $default_surveys_content ->  $default_survey_name = file_get_contents($default_survey);
-  }
-  */
-
-
-
 }
 load_default_surveys();
 </script>
@@ -169,7 +152,9 @@ function list_surveys(){
 			class:"bg-white text-dark"
 		}));
 	});
-	synch_surveys();
+  if(typeof(dev_obj.dev_location) == "undefined"){
+    synch_surveys();
+  }
 }
 
 function synch_surveys(){
@@ -431,4 +416,7 @@ $("#survey_select").on("change",function(){
   }
 });
 
+if(dev_obj.dev_location == "Surveys.html"){
+  list_surveys();
+}
 </script>

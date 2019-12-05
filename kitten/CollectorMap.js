@@ -2,14 +2,6 @@
 // Libraries //
 ///////////////
 
-// Collector specific
-
-window.collector_map || document.write('<script src="https://anthonyhaffey.github.io/my-collector/kitten/CollectorMap.js"><\/script>');
-
-window.Handsontable || document.write('<link rel="stylesheet" href="https://anthonyhaffey.github.io/my-collector/kitten/IndexTabs/Simulator/handsontables/handsontables.full.css">' +
-'<script type="text/javascript" charset="utf-8" src="https://anthonyhaffey.github.io/my-collector/kitten/IndexTabs/Simulator/handsontables/handsontables.full.js">' + 
-'<\/script><script type="text/javascript" charset="utf-8" src="https://anthonyhaffey.github.io/my-collector/kitten/IndexTabs/Simulator/HandsontableFunctions.js"><\/script>');
-
 //Publicly available libraries
 window.jQuery        || document.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"><\/script>');
 
@@ -17,20 +9,15 @@ window.bootstrap || document.write('<script src="https://stackpath.bootstrapcdn.
 
 window.Papa          || document.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.1.0/papaparse.min.js"><\/script>');
 
+// Collector specific
 
-// Below code is to enable isolated development of surveys code
+window.Handsontable || document.write('<link rel="stylesheet" href="https://anthonyhaffey.github.io/my-collector/kitten/IndexTabs/Simulator/handsontables/handsontables.full.css">' +
+'<script type="text/javascript" charset="utf-8" src="https://anthonyhaffey.github.io/my-collector/kitten/IndexTabs/Simulator/handsontables/handsontables.full.js">' + 
+'<\/script><script type="text/javascript" charset="utf-8" src="https://anthonyhaffey.github.io/my-collector/kitten/IndexTabs/Simulator/HandsontableFunctions.js"><\/script>');
 
-if(typeof(megaUberJson) == "undefined"){
-  megaUberJson = {
-    surveys: {
-      default_surveys:{},
-    },
-    trialtypes : {
-      user_trialtypes : {},
-      default_trialtypes: {}
-    }
-  }
-}
+window.clean_obj_keys || document.write('<script src="https://anthonyhaffey.github.io/my-collector/kitten/jsFunctions.js"><\/script>');
+
+
 
 var isolation_map = {
   //IndexTabs
@@ -131,5 +118,23 @@ function this_map(this_item){
   return complete_map;
 }
 
-collector_map = this_map("");
+if(typeof(dev_obj.dev_location) !== "undefined"){
+  collector_map = this_map(dev_obj.dev_location);
+} else {
+  collector_map = this_map("");
+}
 
+
+// Below code is to enable isolated development of surveys code
+
+if(typeof(megaUberJson) == "undefined"){
+  megaUberJson = {
+    surveys: {
+      default_surveys:{},
+    },
+    trialtypes : {
+      user_trialtypes : {},
+      default_trialtypes: {}
+    }
+  }
+}
