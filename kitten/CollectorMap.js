@@ -34,6 +34,19 @@ if(typeof(megaUberJson) == "undefined"){
 
 var isolation_map = {
   //IndexTabs
+  Default:{
+    DefaultSurveys:{
+      'autism_quotient.csv'  : 'file',
+      'demographics.csv'     : 'file',
+      'empathy_quotient.csv' : 'file'
+    },
+    DefaultTrialtypes:{
+      "instruct.html"  : "file",
+      "surveycat.html" : "file" 
+    },
+    "default_experiment.json" : "file",
+      //stuff here
+  },
   IndexTabs:{
     Data:{
       "ListData.php" : "file",
@@ -47,9 +60,8 @@ var isolation_map = {
       "SurvHelp.json" : "file",
     },
     Simulator:{
-      ExperimentEditor:{
-        "default_experiment.json" : "file",
-        "ExperimentEditor.html"   : "file"
+      ExperimentEditor:{        
+        "ExperimentEditor.html" : "file"
       },
       TrialTypeEditor:{
         "TrialTypeEditor.html" : "file",
@@ -60,11 +72,6 @@ var isolation_map = {
       }
     },
     Surveys : {
-      Default : {
-        'autism_quotient.csv'  : 'file',
-        'demographics.csv'     : 'file',
-        'empathy_quotient.csv' : 'file',
-      },
       'Surveys.html'    : 'file',
       'surveyTypes.csv' : 'file'
     }
