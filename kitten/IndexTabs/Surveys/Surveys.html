@@ -19,15 +19,28 @@
 		Kitten release (2019) author: Dr. Anthony Haffey (a.haffey@reading.ac.uk)
 -->
 <script>
-  /*
-    This code is to facilitate editing of a file in isolation
-  */
-  if(typeof(dev_obj) == "undefined"){
-    dev_obj = {
-      dev_location:"Surveys.html"
-    }
-    document.write('<script src="../../CollectorMap.js"><\/script>');
+/*
+  This code is to facilitate editing of a file in isolation
+*/
+
+if(typeof(dev_obj) == "undefined"){
+  dev_obj = {
+    dev_location:"Surveys.html"
   }
+  document.write('<script src="../../CollectorMap.js"><\/script>');
+  
+  function get_map(){
+    if(typeof(isolation_map) !== "undefined"){
+      collector_map = this_map(dev_obj.dev_location);
+    } else {
+      setTimeout(function(){
+        get_map();
+        load_default_surveys();
+      },1000);
+    }
+  }
+  get_map();
+}
 </script>
 <script>
 default_surveys = {};
@@ -57,7 +70,6 @@ function load_default_surveys(){
   }
   load_survey(default_survey_files);
 }
-load_default_surveys();
 </script>
 
 

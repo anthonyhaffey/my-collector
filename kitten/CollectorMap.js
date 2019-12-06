@@ -118,11 +118,6 @@ function this_map(this_item){
   return complete_map;
 }
 
-if(typeof(dev_obj.dev_location) !== "undefined"){
-  collector_map = this_map(dev_obj.dev_location);
-} else {
-  collector_map = this_map("");
-}
 
 
 // Below code is to enable isolated development of surveys code
