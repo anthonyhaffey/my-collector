@@ -102,9 +102,11 @@ langTools = ace.require('ace/ext/language_tools');
 editor.completers.push({
 	getCompletions: function(editor, session, pos, prefix, callback) {
 		callback(null, [
-			{value: "Trial.submit()", score: 1000, meta: "end trial - C"},
-			{value: "Trial.elapsed()", score: 1000, meta: "since trial start - C"},
+			{value: "Trial.submit()",    score: 1000, meta: "end trial - C"},
+			{value: "Trial.elapsed()",   score: 1000, meta: "since trial start - C"},
 			{value: "Trial.set_timer()", score: 1000, meta: "at trial start - C"},
+      {value: "Trial.store()",     score: 1000, meta: "keep for another trial -C"},
+      {value: "Trial.retrieve()",  score: 1000, meta: "retrieve from an earlier trial -C"}
 		]);
 	}
 });
