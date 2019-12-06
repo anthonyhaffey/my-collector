@@ -179,8 +179,8 @@ function list_trialtypes(){
         if(list.length > 0){
           var item = list.pop();
           $.get(collector_map[item],function(trial_content){
-            default_trialtypes[item] = trial_content;
-            git_default_trialtypes(list)
+            default_trialtypes[item.toLowerCase().replace(".html","")] = trial_content;
+            git_default_trialtypes(list);
           });
         } else {
           process_returned(JSON.stringify(default_trialtypes));
