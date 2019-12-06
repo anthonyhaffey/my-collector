@@ -157,25 +157,6 @@ collector_map = this_map("");
     $(this).addClass("bg-white");
     $(this).addClass("text-primary");
     var this_id = this.id;
-    if(this_id == "option_Simulator"){
-      $("#help_content").animate(
-      {
-        top:"100px"
-      },
-      {
-        duration:200
-      });
-    } else {
-      setTimeout(function(){
-        $("#help_content").animate(
-        {
-          top:"60px"
-        },
-        {
-          duration:200
-        });
-      },300);
-    }
   });
   if($("#collector_account_email").html() == "--undefined--"){
     highlight_account("dropbox_account_email");
