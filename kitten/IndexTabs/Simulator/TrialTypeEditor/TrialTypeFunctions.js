@@ -171,10 +171,9 @@ function list_trialtypes(){
     case "gitpod":
     case "github":
       //retrieve the default trialtypes
-      var default_list = Object.keys(isolation_map["Default"]["DefaultSurveys"]);
+      var default_list = Object.keys(isolation_map["Default"]["DefaultTrialtypes"]);
 
       default_trialtypes = {};
-      default_list = default_list.split(",");
       //Need a recursive function here to loop through the trialtypes and then, once all loaded, update the dropdown list. Hmm. Or update the dropdown list asap?
       function git_default_trialtypes(list){
         if(list.length > 0){
