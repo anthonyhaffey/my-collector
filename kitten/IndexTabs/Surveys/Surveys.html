@@ -138,64 +138,6 @@ function load_default_surveys(){
 
 var survey_HoT;
 
-function list_surveys(){
-	if(typeof(megaUberJson.surveys) == "undefined"){
-		megaUberJson.surveys = {
-			preview         : false,
-			user_surveys    : {}
-		};
-  }
-	megaUberJson.surveys = typeof(megaUberJson.surveys) == "undefined" ? {} : megaUberJson.surveys;
-	megaUberJson.surveys.default_surveys = default_surveys;
-
-	megaUberJson.surveys.user_surveys = typeof(megaUberJson.surveys.user_surveys) == "undefined" ? {} : megaUberJson.surveys.user_surveys;
-	megaUberJson.surveys.default_surveys = clean_obj_keys(megaUberJson.surveys.default_surveys);
-
-	var def_survey_list  = Object.keys(megaUberJson.surveys.default_surveys).sort();
-	var user_survey_list = Object.keys(megaUberJson.surveys.user_surveys).sort();
-
-  def_survey_list.forEach(function(survey){
-    $("#survey_select").append($("<option>",{
-			text:survey,
-			value:"default|" + survey,
-			class:"bg-info text-white"
-		}));
-	});
-	user_survey_list.forEach(function(user_survey){
-    $("#survey_select").append($("<option>",{
-			text:user_survey,
-			value:"user|" + user_survey,
-			class:"bg-white text-dark"
-		}));
-	});
-  if(typeof(dev_obj.dev_location) == "undefined"){
-    synch_surveys();
-  }
-}
-
-function synch_surveys(){
-	dbx.filesListFolder({path:"/surveys"})
-		.then(function(result){
-			result.entries.forEach(function(entry){
-				if(typeof(megaUberJson.surveys.user_surveys[entry.name.toLowerCase()]) == "undefined"){
-					dbx.sharingCreateSharedLink({path:entry.path_lower})
-						.then(function(shared_link){
-							$.get(shared_link.url.replace("www.","dl."),function(result){
-								var survey_name = entry.name.toLowerCase().replace(".csv","");
-								megaUberJson.surveys.user_surveys[survey_name] = Papa.parse(result).data;
-							});
-						})
-						.catch(function(error){
-							report_error(error);
-						});
-				}
-			});
-		})
-		.catch(function(error){
-			report_error(error);
-		});
-};
-
 function create_survey_HoT(this_survey){
 	var container = document.getElementById('survey_HoT');
 	$("#survey_HoT").html("");
@@ -280,10 +222,82 @@ function create_survey_HoT(this_survey){
 			var this_survey = this.getData().filter(function(row){ return row.join("") !== '' });
 		}
 	});
-
 	var this_survey_name = $("#survey_select").val();
   preview_survey(this_survey);
 }
+
+function list_surveys(){
+	if(typeof(megaUberJson.surveys) == "undefined"){
+		megaUberJson.surveys = {
+			preview         : false,
+			user_surveys    : {}
+		};
+  }
+	megaUberJson.surveys = typeof(megaUberJson.surveys) == "undefined" ? {} : megaUberJson.surveys;
+	megaUberJson.surveys.default_surveys = default_surveys;
+
+	megaUberJson.surveys.user_surveys = typeof(megaUberJson.surveys.user_surveys) == "undefined" ? {} : megaUberJson.surveys.user_surveys;
+	megaUberJson.surveys.default_surveys = clean_obj_keys(megaUberJson.surveys.default_surveys);
+
+  
+
+	var def_survey_list  = Object.keys(megaUberJson.surveys.default_surveys).sort();
+	var user_survey_list = Object.keys(megaUberJson.surveys.user_surveys).sort();
+
+
+  load_default_surveys();
+  /*
+  def_survey_list.forEach(function(survey){
+    $("#survey_select").append($("<option>",{
+			text:survey,
+			value:"default|" + survey,
+			class:"bg-info text-white"
+		}));
+	});
+  */
+	user_survey_list.forEach(function(user_survey){
+    $("#survey_select").append($("<option>",{
+			text:user_survey,
+			value:"user|" + user_survey,
+			class:"bg-white text-dark"
+		}));
+	});
+  if(typeof(dev_obj.dev_location) == "undefined"){
+    synch_surveys();
+  }
+}
+
+function preview_survey(this_survey){
+  megaUberJson.surveys.preview = true;
+  survey_template = $.get(collector_map["survey.html"], function(survey_template){
+    survey_template = survey_template.replace('"{{survey}}"',
+                                              JSON.stringify(this_survey));
+    $("#survey_preview").html(survey_template);
+  });
+}
+
+function synch_surveys(){
+	dbx.filesListFolder({path:"/surveys"})
+		.then(function(result){
+			result.entries.forEach(function(entry){
+				if(typeof(megaUberJson.surveys.user_surveys[entry.name.toLowerCase()]) == "undefined"){
+					dbx.sharingCreateSharedLink({path:entry.path_lower})
+						.then(function(shared_link){
+							$.get(shared_link.url.replace("www.","dl."),function(result){
+								var survey_name = entry.name.toLowerCase().replace(".csv","");
+								megaUberJson.surveys.user_surveys[survey_name] = Papa.parse(result).data;
+							});
+						})
+						.catch(function(error){
+							report_error(error);
+						});
+				}
+			});
+		})
+		.catch(function(error){
+			report_error(error);
+		});
+};
 
 function update_exp_survey(survey_name,survey_content){
 	if(typeof(exp_json.surveys) == "undefined"){
@@ -312,14 +326,7 @@ function update_user_survey(){
 }
 
 
-function preview_survey(this_survey){
-  megaUberJson.surveys.preview = true;
-  survey_template = $.get(collector_map["survey.html"], function(survey_template){
-    survey_template = survey_template.replace('"{{survey}}"',
-                                              JSON.stringify(this_survey));
-    $("#survey_preview").html(survey_template);
-  });
-}
+
 
 
 
@@ -378,6 +385,13 @@ $("#new_survey_button").on("click",function(){
 	}
 });
 
+
+
+$("#pills-preview-tab").on("click",function(){
+  var this_survey =  survey_HoT.getData();
+  preview_survey(this_survey);
+});
+
 $("#save_survey_btn").on("click",function(){
 	if($("#survey_select").val() !== null){
 		var survey_name     = $("#survey_select").val().split("|");
@@ -395,11 +409,6 @@ $("#save_survey_btn").on("click",function(){
 		},
 		"filesUpload");
 	}
-});
-
-$("#pills-preview-tab").on("click",function(){
-  var this_survey =  survey_HoT.getData();
-  preview_survey(this_survey);
 });
 
 $("#survey_select").on("change",function(){  
