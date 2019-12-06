@@ -41,17 +41,18 @@ if(typeof(Trial) !== "undefined"){
 			duration : duration,
 			this_func: this_function
 		});
-	}
-}
-Trial.retrieve = function(this_name){
-  return parent.parent.parent.exp_json.storage[this_name];
-}
-Trial.store = function(this_name,this_content){
-  if(typeof(parent.parent.exp_json.storage) == "undefined"){
-    parent.parent.exp_json.storage = {};
   }
-  parent.parent.parent.exp_json.storage[this_name] = this_content;
+  Trial.retrieve = function(this_name){
+    return parent.parent.parent.exp_json.storage[this_name];
+  }
+  Trial.store = function(this_name,this_content){
+    if(typeof(parent.parent.exp_json.storage) == "undefined"){
+      parent.parent.exp_json.storage = {};
+    }
+    parent.parent.parent.exp_json.storage[this_name] = this_content;
+  }
 }
+
 Trial.submit = function(){
   parent.parent.exp_json.inputs = jQuery( "[name]" );
   parent.parent.exp_json.finish_trial();
