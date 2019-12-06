@@ -34,38 +34,21 @@ $.get(collector_map["default_experiment.json"],function(new_experiment_json){
 I'm unclear whether the following does anything
 
 
-//List experiment functionality here
-switch(dev_obj.context){
-  case "github":
-    $.post("GOOGLE/DROPBOX/OTHER LINK",function(experiments){
-      megaUberJson.exp_mgmt.experiments = experiments;
-      list_experiments();
-      });
-      break;
-  case "localhost":
-    $.post("LocalExperiments.php",function(experiments){
-      megaUberJson.exp_mgmt.experiments = experiments;
-      list_experiments();
-    });
-    break;
-  case "ocollector":
-    $.post("oCollectorExperiments.php",function(experiments){
-      megaUberJson.exp_mgmt.experiments = experiments;
-      list_experiments();
-    });
-    break;
-}
-
 */
 
 //List published experiments info
 switch(dev_obj.context){
   case "github":
+    /*
+
+    I don't think I need the below
+
     $.post("GOOGLE/DROPBOX/OTHER LINK",function(experiments){
       megaUberJson.exp_mgmt.experiments = experiments;
       list_experiments();
       });
       break;
+    */
   case "localhost":
     $.post("LocalExperiments.php",function(published_links){
       dev_obj.published_links = published_links;
