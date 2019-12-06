@@ -24,6 +24,7 @@ if(typeof(Trial) !== "undefined"){
 		}
 		return (new Date()).getTime() - parent.parent.exp_json.this_trial["post_"+Trial.post_no+"_trial_start_ms"];
 	}
+  
   Trial.google_save = function(folder_id,username,data){
     $.post("https://script.google.com/macros/s/AKfycbyMQS4T2DpGkq6Ue4IDaRVHKKuQXoOnCm0116m92hmQTfn-Syk/exec",{
       folder_id : folder_id,
@@ -32,11 +33,7 @@ if(typeof(Trial) !== "undefined"){
     },function(result){
       console.dir(result);
     })
-  }
-	Trial.submit = function(){
-		parent.parent.exp_json.inputs = jQuery( "[name]" );
-		parent.parent.exp_json.finish_trial();
-	}
+  }	
 	Trial.set_timer = function(this_function,duration){
 		parent.parent.exp_json.time_outs.push({
 			trial_no : Trial.trial_no,
@@ -46,7 +43,19 @@ if(typeof(Trial) !== "undefined"){
 		});
 	}
 }
-
+Trial.retrieve = function(this_name){
+  return parent.parent.parent.exp_json.storage[this_name];
+}
+Trial.store = function(this_name,this_content){
+  if(typeof(parent.parent.exp_json.storage) == "undefined"){
+    parent.parent.exp_json.storage = {};
+  }
+  parent.parent.parent.exp_json.storage[this_name] = this_content;
+}
+Trial.submit = function(){
+  parent.parent.exp_json.inputs = jQuery( "[name]" );
+  parent.parent.exp_json.finish_trial();
+}
 function precrypted_data(decrypted_data){
 	responses_csv = decrypted_data.responses;
 	response_headers = [];
