@@ -145,7 +145,6 @@ function list_surveys(){
 
 	megaUberJson.surveys.user_surveys = typeof(megaUberJson.surveys.user_surveys) == "undefined" ? {} : megaUberJson.surveys.user_surveys;
 	megaUberJson.surveys.default_surveys = clean_obj_keys(megaUberJson.surveys.default_surveys);
-	//megaUberJson.surveys.user_surveys = clean_obj_keys(megaUberJson.surveys.user_surveys);
 
 	var def_survey_list  = Object.keys(megaUberJson.surveys.default_surveys).sort();
 	var user_survey_list = Object.keys(megaUberJson.surveys.user_surveys).sort();
@@ -310,16 +309,11 @@ function update_user_survey(){
 
 function preview_survey(preview_survey){
 
-  megaUberJson.surveys.preview = true;
-  if(typeof(megaUberJson.trialtypes.user_trialtypes.surveycat) !== "undefined"){
-    survey_template = megaUberJson.trialtypes.user_trialtypes.surveycat;
-  } else {
-    survey_template = megaUberJson.trialtypes.default_trialtypes.surveycat;
-  }
-
-	//NOTE that this needs to change to "default" once the trialtype is finally finalised
-	survey_template = survey_template.replace('load_survey("{{survey}}");','load_survey('+JSON.stringify(preview_survey)+')');
-	$("#survey_preview").html(survey_template);
+  survey_template = $.get(collector_map["survey.html"], function(survey_template){
+    survey_template = survey_template.replace('load_survey("{{survey}}");',
+                                              'load_survey(' + JSON.stringify(preview_survey) + ')');
+	  $("#survey_preview").html(survey_template);
+  });
 }
 
 
@@ -404,11 +398,9 @@ $("#pills-preview-tab").on("click",function(){
   preview_survey(this_survey);
 });
 
-$("#survey_select").on("change",function(){
-  
+$("#survey_select").on("change",function(){  
   load_default_surveys();
   var this_survey = $("#survey_select").val().split("|");
-
   if(this_survey[0] == "default"){
     $("#survey_select").removeClass("bg-light");
     $("#survey_select").addClass("bg-info");

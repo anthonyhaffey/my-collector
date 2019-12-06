@@ -28,8 +28,8 @@ var isolation_map = {
       'empathy_quotient.csv' : 'file'
     },
     DefaultTrialtypes:{
-      "instruct.html"  : "file",
-      "surveycat.html" : "file" 
+      "instruct.html" : "file",
+      "survey.html"   : "file" 
     },
     "default_experiment.json" : "file",
       //stuff here
@@ -66,6 +66,7 @@ var isolation_map = {
   "CollectorMap.js" : "file",
   "jsFunctions.js"  : "file",
   "libraries.html"  : "file",
+  "RunStudy.html"   : "file"
 }
 
 function this_map(this_item){
