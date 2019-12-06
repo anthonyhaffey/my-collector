@@ -410,7 +410,7 @@ $("#pills-preview-tab").on("click",function(){
 });
 
 $("#survey_select").on("change",function(){  
-  load_default_surveys();
+  //load_default_surveys();
   var this_survey = $("#survey_select").val().split("|");
   if(this_survey[0] == "default"){
     $("#survey_select").removeClass("bg-light");
