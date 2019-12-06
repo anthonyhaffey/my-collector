@@ -53,9 +53,6 @@ var isolation_map = {
       TrialTypeEditor:{
         "TrialTypeEditor.html" : "file",
         "Graphic.html"         : "file",
-        Default:{
-          "DefaultTrialtypeList.txt" :"file",
-        }
       }
     },
     Surveys : {
