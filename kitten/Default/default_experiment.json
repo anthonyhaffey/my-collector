@@ -25,21 +25,11 @@
                  5]],
   "Conditions.csv":[["Name","Notes","Stimuli 1","Procedure 1"],
     ["New Experiment","You can put more detailed notes in this field","Stimuli.csv","Procedure.csv"]],
-  "Procedure":{
-    "Procedure.csv":[["Item","Trial Type","Max Time","Text","Shuffle 1"],
-                     ["0","instruct","user","This is the start of a new experiment.","off"]]
-    },
-
   "all_stims":{
     "Stimuli.csv":[
       ["Cue","Answer"],
       ["A","Apple"],
       ["B","Banana"]
     ]
-  },
-  "Stimuli":{
-    "Stimuli.csv":[["Cue","Answer"],
-                    ["A","Apple"],
-                    ["B","Banana"]]
   }
 }
