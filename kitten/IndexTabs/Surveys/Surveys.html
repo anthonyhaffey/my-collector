@@ -19,9 +19,6 @@
 		Kitten release (2019) author: Dr. Anthony Haffey (a.haffey@reading.ac.uk)
 -->
 <script>
-/*
-  This code is to facilitate editing of a file in isolation
-*/
 
 if(typeof(dev_obj) == "undefined"){
   dev_obj = {
@@ -113,21 +110,17 @@ function load_default_surveys(){
         </ul>
       </td>
     </tr>
-    <tr>
-      <td colspan = "4">
-        <div class="tab-content" id="pills-tabContent">
-          <div class="tab-pane fade show active" id="pills-spreadsheet" role="tabpanel" aria-labelledby="pills-spreadsheet-tab">
-            <div id="survey_HoT"></div>
-          </div>
-          <div class="tab-pane fade" id="pills-preview" role="tabpanel" aria-labelledby="pills-preview-tab">
-            <div id="survey_preview"></div>
-          </div>
-        </div>
-      </td>
-    </tr>
   </table>
-  
 </nav>
+<div class="tab-content" id="pills-tabContent" style="top:100px; position: absolute;">
+  <div class="tab-pane fade show active" id="pills-spreadsheet" role="tabpanel" aria-labelledby="pills-spreadsheet-tab">
+    <div id="survey_HoT"></div>
+  </div>
+  <div class="tab-pane fade" id="pills-preview" role="tabpanel" aria-labelledby="pills-preview-tab">
+    <div id="survey_preview"></div>
+  </div>
+</div>
+
 
 
 <script>
@@ -324,11 +317,6 @@ function update_user_survey(){
 		});
   }
 }
-
-
-
-
-
 
 //////////////////////
 // element triggers //
