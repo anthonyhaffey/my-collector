@@ -54,7 +54,7 @@ function load_default_surveys(){
     if(list.length > 0){
       var this_survey = list.pop();
       $.get(collector_map[this_survey],function(survey_content){
-        default_surveys[this_survey] = Papa.parse(survey_content).data;
+        default_surveys[this_survey.toLowerCase().replace(".csv","")] = Papa.parse(survey_content).data;
         load_survey(list);
       });
     } else {
