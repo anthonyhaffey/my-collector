@@ -285,11 +285,23 @@ $("#save_btn").on("click", function(){
       this_exp.trialtypes = {};
     }
 
+
+    // First loop is to make sure the experiment has all the trialtypes
+    ///////////////////////////////////////////////////////////////////
     trialtypes.forEach(function(trialtype){
       if(typeof(megaUberJson.trialtypes.user_trialtypes[trialtype]) == "undefined"){
         this_exp.trialtypes[trialtype] = megaUberJson.trialtypes.default_trialtypes[trialtype];
       } else {
         this_exp.trialtypes[trialtype] = megaUberJson.trialtypes.user_trialtypes[trialtype];
+      }
+    });
+
+
+    /*
+    // Second loop is to update the trialtypes on dropbox - redundant
+    /////////////////////////////////////////////////////////////////
+    trialtypes.forEach(function(trialtype){
+      if(typeof(megaUberJson.trialtypes.user_trialtypes[trialtype]) !== "undefined"){
         dbx_obj.new_upload({path:"/TrialTypes/"+trialtype+".html",contents:megaUberJson.trialtypes.user_trialtypes[trialtype],mode:'overwrite'},function(result){
           //console.dir(result);
         },function(error){
@@ -298,6 +310,7 @@ $("#save_btn").on("click", function(){
 				"filesUpload");
       }
     });
+    */
 
     dbx_obj.new_upload({path: "/Experiments/"+experiment+".json", contents: JSON.stringify(this_exp), mode:'overwrite'},
       function(returned_data){
