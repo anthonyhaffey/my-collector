@@ -23,9 +23,9 @@ var isolation_map = {
   //IndexTabs
   Default:{
     DefaultSurveys:{
-      'autism_quotient.csv'  : 'file',
-      'demographics.csv'     : 'file',
-      'empathy_quotient.csv' : 'file'
+      'autism_quotient.csv'     : 'file',
+      'demographics.csv'        : 'file',
+      'empathy_quotient_40.csv' : 'file'
     },
     DefaultTrialtypes:{
       "instruct.html" : "file",

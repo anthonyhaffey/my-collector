@@ -48,7 +48,7 @@ default_surveys = {};
 function load_default_surveys(){
   var default_survey_files = ["autism_quotient.csv",
                               "demographics.csv",
-                              "empathy_quotient"];
+                              "empathy_quotient_40.csv"];
 
   function load_survey(list){
     if(list.length > 0){
@@ -282,9 +282,7 @@ function create_survey_HoT(this_survey){
 	});
 
 	var this_survey_name = $("#survey_select").val();
-  console.dir("this_survey");
-  console.dir(this_survey);
-	preview_survey(this_survey);
+  preview_survey(this_survey);
 }
 
 function update_exp_survey(survey_name,survey_content){
@@ -315,15 +313,11 @@ function update_user_survey(){
 
 
 function preview_survey(this_survey){
-  console.dir("this_survey");
-  console.dir(this_survey);
   megaUberJson.surveys.preview = true;
   survey_template = $.get(collector_map["survey.html"], function(survey_template){
     survey_template = survey_template.replace('"{{survey}}"',
                                               JSON.stringify(this_survey));
-    console.dir("survey_template");
-    console.dir(survey_template);
-	  $("#survey_preview").html(survey_template);
+    $("#survey_preview").html(survey_template);
   });
 }
 
@@ -340,7 +334,6 @@ $("#delete_survey_btn").on("click",function(){
 			delete megaUberJson.surveys.user_surveys[survey_name];
 			dbx.filesDelete({path:"/surveys/" + survey_name})
 				.then(function(result){
-					console.dir(result);
 					custom_alert("Succesfully deleted <b>" + survey_name + "</b>");
 					$('#survey_select option[value="' + $("#survey_select").val() + '"]').remove();
 					$("#survey_select").val("default|demographics.csv");
@@ -410,7 +403,6 @@ $("#pills-preview-tab").on("click",function(){
 });
 
 $("#survey_select").on("change",function(){  
-  //load_default_surveys();
   var this_survey = $("#survey_select").val().split("|");
   if(this_survey[0] == "default"){
     $("#survey_select").removeClass("bg-light");
