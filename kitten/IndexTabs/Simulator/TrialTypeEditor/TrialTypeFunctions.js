@@ -171,23 +171,24 @@ function list_trialtypes(){
     case "gitpod":
     case "github":
       //retrieve the default trialtypes
-      $.get(collector_map["DefaultTrialtypeList.txt"],function(default_list){
-        default_trialtypes = {};
-        default_list = default_list.split(",");
-        //Need a recursive function here to loop through the trialtypes and then, once all loaded, update the dropdown list. Hmm. Or update the dropdown list asap?
-        function git_default_trialtypes(list){
-          if(list.length > 0){
-            var item = list.pop();
-            $.get("IndexTabs/Simulator/TrialTypeEditor/Default/" + item + ".html",function(trial_content){
-              default_trialtypes[item] = trial_content;
-              git_default_trialtypes(list)
-            });
-          } else {
-            process_returned(JSON.stringify(default_trialtypes));
-          }
+      var default_list = Object.keys(isolation_map["Default"]["DefaultSurveys"]);
+
+      default_trialtypes = {};
+      default_list = default_list.split(",");
+      //Need a recursive function here to loop through the trialtypes and then, once all loaded, update the dropdown list. Hmm. Or update the dropdown list asap?
+      function git_default_trialtypes(list){
+        if(list.length > 0){
+          var item = list.pop();
+          $.get(collector_map[item],function(trial_content){
+            default_trialtypes[item] = trial_content;
+            git_default_trialtypes(list)
+          });
+        } else {
+          process_returned(JSON.stringify(default_trialtypes));
         }
-        git_default_trialtypes(default_list);
-      });
+      }
+      git_default_trialtypes(default_list);
+      
       break;
 
   }
