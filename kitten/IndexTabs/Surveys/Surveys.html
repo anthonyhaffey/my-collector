@@ -277,6 +277,8 @@ function create_survey_HoT(this_survey){
 	});
 
 	var this_survey_name = $("#survey_select").val();
+  console.dir("this_survey");
+  console.dir(this_survey);
 	preview_survey(this_survey);
 }
 
@@ -307,11 +309,15 @@ function update_user_survey(){
 }
 
 
-function preview_survey(preview_survey){
-
+function preview_survey(this_survey){
+  console.dir("this_survey");
+  console.dir(this_survey);
+  megaUberJson.surveys.preview = true;
   survey_template = $.get(collector_map["survey.html"], function(survey_template){
-    survey_template = survey_template.replace('load_survey("{{survey}}");',
-                                              'load_survey(' + JSON.stringify(preview_survey) + ')');
+    survey_template = survey_template.replace('"{{survey}}"',
+                                              JSON.stringify(this_survey));
+    console.dir("survey_template");
+    console.dir(survey_template);
 	  $("#survey_preview").html(survey_template);
   });
 }

@@ -278,6 +278,8 @@ $("#proceed_button").on("click",function(){
 function load_survey(survey){
   // are we in preview?
   /////////////////////
+  console.dir("survey");
+  console.dir(survey);
   if(typeof(megaUberJson) !== "undefined" && megaUberJson.surveys.preview){     // Yes
     survey_content = survey;                                                    // i.e. the content has been passed through directly
     survey_obj.boosts = megaUberJson.boosts;                                //no need to be efficient in preview
@@ -285,7 +287,8 @@ function load_survey(survey){
   } else {                                                                      // No
     survey = survey.toLowerCase().replace(".csv","");
 
-    if(typeof(parent.parent.exp_json.surveys) !== "undefined" && typeof(parent.parent.exp_json.surveys[survey]) !== "undefined"){
+    if(typeof(parent.parent.exp_json.surveys) !== "undefined" && 
+       typeof(parent.parent.exp_json.surveys[survey]) !== "undefined"){
       survey_content = parent.parent.exp_json.surveys[survey];
       survey_obj.boosts = parent.parent.exp_json.boosts;                     //take boosts from exp_json
 
@@ -931,12 +934,13 @@ function write_survey(this_survey,this_id){
 //////////////////
 // Load survey  //
 //////////////////
+current_survey = "{{survey}}";
 if(typeof(Trial) !== "undefined"){  // This check is to help this code work when previewing trialtypes
   Trial.set_timer(function(){       // This chunk is for when the survey is run within an actual trial
-    load_survey("{{survey}}");
+    load_survey(current_survey);
   },100);
 } else {                            // This chunk is for when the survey is being previewed in the "survey editor"
-  load_survey("{{survey}}");
+  load_survey(current_survey);
 }
 
 
