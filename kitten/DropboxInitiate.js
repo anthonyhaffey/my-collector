@@ -1,4 +1,3 @@
-<script>
 // get dropbox token for user
 var CLIENT_ID = '6xumb4iloq9sz1u';
 
@@ -155,4 +154,3 @@ switch(dev_obj.context){
     check_authenticated();
     break;
 }
-</script>
