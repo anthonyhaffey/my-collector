@@ -17,9 +17,10 @@ function saveData(e) {
   var experiment_id  = response.experiment_id;
   var encrypted_data = response.encrypted_data;  
   
-  var data_folder = getOrCreateSubFolder('Data','Collector');
-  
-  updateFile(data_folder,experiment_id + "-" + participant_id + ".txt", encrypted_data);
+  var data_folder       = getOrCreateSubFolder('Data','Collector');
+  var experiment_folder = getOrCreateSubFolder(experiment_id,'Data');
+  updateFile(data_folder,experiment_id + "-" + participant_id + ".txt", encrypted_data);  //keeping this until the next line has worked reliably for a while
+  updateFile(experiment_folder, participant_id + ".txt",encrypted_data);
 }
 
 //solution by Craig on https://stackoverflow.com/questions/14965442/how-to-delete-overwrite-csv-file-using-google-apps-script
