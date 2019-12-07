@@ -130,10 +130,6 @@ $("#proc_select").on("change",function(){
 });
 $("#publish_link").on("click", function () {
 	$(this).select();
-	survey_cell_view_activate(this.value);
-});
-$("#publish_link").on("blur", function () {
-	survey_cell_view_deactivate(this.value);
 });
 $("#rename_proc_button").on("click",function(){
 	bootbox.prompt("What do you want to rename this <b>Procedure</b> sheet to?",function(new_proc_name){
@@ -395,10 +391,3 @@ $("#upload_experiment_input").on("change",function(){
 		reader.readAsBinaryString(myFile);
 	}
 });
-function survey_cell_view_activate(this_value){
-	$("#survey_cell_view").val(this_value);
-	$(".survey_cell_view_td").show();
-}
-function survey_cell_view_deactivate(){
-	$(".survey_cell_view_td").hide();
-}

@@ -52,10 +52,6 @@ window.onbeforeunload = function() {
   <script>
   $("#load_experiment_div").load("IndexTabs/Simulator/ExperimentEditor/LoadSqlExperiment.html");
   </script>
-  <span class='not_survey_cell_view_td' align="right">
-
-    <?php require("SupportBars/interfaces.php"); ?>
-  </span>
 </nav>
 
 <script>
@@ -141,33 +137,5 @@ $("#stop_button").on("click",function(){
 	$(".progress").hide();
 	$("#experiment_progress").css("width","0%");
 	delete(stim_interval);
-});
-
-$(document).keyup(function(e) {
-	if($("#ACE_editor").is(":focus")){
-		alert("whoop");
-	}
-	switch(e.which){
-		case 27:
-			$("#survey_cell_view").hide();
-			break;
-		case 37:
-		case 38:
-		case 39:
-		case 40:
-			if(typeof(survey_hot) !== "undefined"){
-				var thisCellValue = survey_hot.getValue();
-				$("#survey_cell_view").val(thisCellValue);
-			};
-			$("#survey_cell_view").show();
-			break;
-		default:
-			if(typeof($(".handsontableInput")[0]) !== "undefined"){
-				var thisCellValue = $(".handsontableInput")[0].value; // bit of a hack
-				$("#survey_cell_view").val(thisCellValue);
-				$("#survey_cell_view").show();
-			}
-			break;
-	}
 });
 </script>

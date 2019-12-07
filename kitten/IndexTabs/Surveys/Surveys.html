@@ -76,9 +76,6 @@ function load_default_surveys(){
 #spreadsheet_preview_tabs{
 	display:none;
 }
-#survey_cell_view{
-	width:100%
-}
 #survey_interface{
 	padding: 5px;
 }
@@ -147,8 +144,6 @@ function create_survey_HoT(this_survey){
 		observeChanges: true,
 		afterSelectionEnd: function(){
 			thisCellValue = this.getValue();
-			$("#survey_cell_view").val(thisCellValue);
-			$("#survey_cell_view").show();
 
 			//clearTimeout(disable_cell_timeout);
 			var coords        = this.getSelected();
@@ -158,9 +153,6 @@ function create_survey_HoT(this_survey){
 			column        = column        == null ? column        = "" : column;
 
 			helperActivate(column, thisCellValue,"survey");
-		},
-		afterDeselect: function(){
-			$("#survey_cell_view").hide();
 		},
 		afterChange: function(){
       if(typeof(survey_HoT) !== "undefined"){
