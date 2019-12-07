@@ -113,7 +113,9 @@ $("#collector_logo").on("click", function(){
 });
 
 $("#google_logo").on("click",function(){
-  alert("beep");
+  bootbox.confirm("Would you like to open your google drive in a new tab?",function(response){
+    window.open('https://drive.google.com/drive/u/0/my-drive','_blank');
+  });
 });
 
 $("#dropbox_logo").on("click", function(){
