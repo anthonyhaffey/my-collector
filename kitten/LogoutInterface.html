@@ -55,7 +55,7 @@
 			<img class='logo' style="border-radius: 50%; background-color:white; padding:2px" src="../logos/collector.ico.png" id="collector_logo">
 		</td>
     <td>
-			<img class='logo' style="border-radius: 50%; background-color:white; padding:2px" src="../logos/Github.ico.png" id="github_logo">
+			<img class='logo' style="border-radius: 50%; background-color:white; padding:2px" src="../logos/Github.png" id="github_logo">
 		</td>
     <td>
       <form action="login.php" method="post" style="padding:0px">
@@ -72,7 +72,7 @@ console.dir("dev_obj");
 console.dir(dev_obj);
 console.dir(JSON.stringify(dev_obj));
 
-if(switch(dev_obj.context){
+switch(dev_obj.context){
   case "github":
     //show the github icon
     $("#github_logo").show();
@@ -81,7 +81,7 @@ if(switch(dev_obj.context){
     $("#logout_btn").show();
     $("#collector_logo").show();
     break;
-})
+};
 
 user_data = {
 	//email used to be here
