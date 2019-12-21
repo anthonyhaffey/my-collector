@@ -23,6 +23,10 @@
 	height:30px;
 	width:30px;
 }
+#logout_btn, 
+#collector_logo{
+  display:none;
+}
 </style>
 <table id="logout_table">
 	<tr>
@@ -50,6 +54,9 @@
 			<img class='logo' style="border-radius: 50%; background-color:white; padding:2px" src="../logos/collector.ico.png" id="collector_logo">
 		</td>
     <td>
+			<img class='logo' style="border-radius: 50%; background-color:white; padding:2px" src="../logos/.ico.png" id="collector_logo">
+		</td>
+    <td>
       <form action="login.php" method="post" style="padding:0px">
         <button id="logout_btn" type="submit" name="login_type" value="logout" class="btn btn-primary">Log out</button>
         <input type="hidden" name="return_page" value="index.php"/>
@@ -63,6 +70,16 @@
 console.dir("dev_obj");
 console.dir(dev_obj);
 console.dir(JSON.stringify(dev_obj));
+
+if(switch(dev_obj.context){
+  case "github":
+    //show the github icon
+    break;
+  default:
+    $("#logout_btn").show();
+    $("#collector_logo").show();
+    break;
+})
 
 user_data = {
 	//email used to be here
