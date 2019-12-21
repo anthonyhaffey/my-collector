@@ -23,8 +23,9 @@
 	height:30px;
 	width:30px;
 }
-#logout_btn, 
-#collector_logo{
+#collector_logo,
+#github_logo,
+#logout_btn{
   display:none;
 }
 </style>
@@ -54,7 +55,7 @@
 			<img class='logo' style="border-radius: 50%; background-color:white; padding:2px" src="../logos/collector.ico.png" id="collector_logo">
 		</td>
     <td>
-			<img class='logo' style="border-radius: 50%; background-color:white; padding:2px" src="../logos/.ico.png" id="collector_logo">
+			<img class='logo' style="border-radius: 50%; background-color:white; padding:2px" src="../logos/Github.ico.png" id="github_logo">
 		</td>
     <td>
       <form action="login.php" method="post" style="padding:0px">
@@ -74,6 +75,7 @@ console.dir(JSON.stringify(dev_obj));
 if(switch(dev_obj.context){
   case "github":
     //show the github icon
+    $("#github_logo").show();
     break;
   default:
     $("#logout_btn").show();
@@ -132,9 +134,19 @@ $("#collector_logo").on("click", function(){
   });
 });
 
+$("#github_logo").on("click",function(){
+  bootbox.confirm("Would you like to view the repository this is based on?",function(response){
+    if(response){
+      window.open(io_to_git_rep(),'_blank');
+    }
+  });
+});
+
 $("#google_logo").on("click",function(){
   bootbox.confirm("Would you like to open your google drive in a new tab?",function(response){
-    window.open('https://drive.google.com/drive/u/0/my-drive','_blank');
+    if(response){
+      window.open('https://drive.google.com/drive/u/0/my-drive','_blank');
+    }
   });
 });
 
