@@ -236,9 +236,6 @@ google_obj = {
   saves_started:0,
   saves_ended:0,
   save_queue:[],
-  local_save:function(){
-    window.localStorage.setItem("exp_json",JSON.stringify(exp_json));
-  },
   run_save:function(){
     var this_save = google_obj.save_queue.pop();
     this_save();
@@ -269,6 +266,10 @@ function collectorPapaParsed(preparsed){
 	}).data;
 
 	return post_parsed;
+}
+
+function local_save(){
+  window.localStorage.setItem("exp_json",JSON.stringify(exp_json));
 }
 
 function simulator_off(){
@@ -1118,31 +1119,38 @@ function write_trial_iframe(index){
 //////////////////////
 // Start experiment //
 //////////////////////
-
 var exp_json = ""; //this will get updated
-if(typeof(exp_location) !== "undefined" && exp_location !== ""){
-  console.dir(exp_location);
+  
 
-	if(exp_location.indexOf("www.dropbox") !== -1){
-		get_location = exp_location.replace("www.","dl.");
-	} else {
-		get_location = exp_location;
-	}
-
-  $.get(get_location,function(this_experiment){
-    exp_json = JSON.parse(this_experiment);
-    if(typeof(dev_obj.simulator_on) == "undefined" || dev_obj.simulator_on == "false"){ //note this HAS TO BE IN QUOTES to pass properly from PhP to js.
-      initiate_experiment();
-    }
-  });
+if(window.localStorage.getItem("exp_json") !== null){
+  exp_json = window.localStorage.getItem("exp_json");
 } else {
-  //assume it's gitpod
-  get_location = "https://dl.dropbox.com/s/46xw6a4pkfery75/PY1PR_Autumn_Workshop_1.json?dl";
-  $.get(get_location,function(this_experiment){
-    exp_json = JSON.parse(this_experiment);
-    initiate_experiment();
-  });
+  if(typeof(exp_location) !== "undefined" && exp_location !== ""){
+    console.dir(exp_location);
+
+    if(exp_location.indexOf("www.dropbox") !== -1){
+      get_location = exp_location.replace("www.","dl.");
+    } else {
+      get_location = exp_location;
+    }
+
+    $.get(get_location,function(this_experiment){
+      exp_json = JSON.parse(this_experiment);
+      if(typeof(dev_obj.simulator_on) == "undefined" || dev_obj.simulator_on == "false"){ //note this HAS TO BE IN QUOTES to pass properly from PhP to js.
+        initiate_experiment();
+      }
+    });
+  } else {
+    //assume it's gitpod
+    get_location = "https://dl.dropbox.com/s/46xw6a4pkfery75/PY1PR_Autumn_Workshop_1.json?dl";
+    $.get(get_location,function(this_experiment){
+      exp_json = JSON.parse(this_experiment);
+      initiate_experiment();
+    });
+  }
 }
+
+
 
 function select_condition(){
 	exp_json.conditions = collectorPapaParsed(exp_json.cond_array);
