@@ -237,7 +237,7 @@ google_obj = {
   saves_ended:0,
   save_queue:[],
   local_save:function(){
-    window.localStorage.setItem("exp_json",exp_json);
+    window.localStorage.setItem("exp_json",JSON.stringify(exp_json));
   },
   run_save:function(){
     var this_save = google_obj.save_queue.pop();
