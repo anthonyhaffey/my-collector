@@ -445,7 +445,9 @@ function initiate_experiment(resume){
     create_exp_json_variables();
     parse_sheets("stimuli");
     parse_sheets("procedure");
-    create_exp_json_functions();
+  }
+  create_exp_json_functions();
+  if(typeof(resume) == "undefined"){
     parse_current_proc();
     clean_trialtypes();
     insert_start();
