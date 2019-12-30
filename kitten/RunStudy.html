@@ -444,13 +444,12 @@ function initiate_experiment(resume){
   if(typeof(resume) == "undefined"){
     create_exp_json_variables();
     parse_sheets("stimuli");
-  	parse_sheets("procedure");
+    parse_sheets("procedure");
     create_exp_json_functions();
     parse_current_proc();
     clean_trialtypes();
     insert_start();
   	shuffle_start_exp();
-    process_welcome();
   }	 else {
     buffer_trials();
   }
@@ -617,9 +616,8 @@ function create_exp_json_functions(){
         function(){
           google_save(dev_obj.experiment,
                       $("#participant_code").val(),
-                      JSON.stringify(encrypt(exp_json.public_key, //the public key
-                      JSON.stringify(exp_json.responses)),        //the data
-                      local_save()),                              //trigger save of experiment_state
+                      JSON.stringify(encrypt(exp_json.public_key,    //the public key
+                      JSON.stringify(exp_json.responses))),          //the data
           exp_json.google_script,
           function(){
             google_obj.saves_ended ++;
@@ -805,6 +803,7 @@ function create_exp_json_functions(){
 					}
 				},parseFloat(max_time));
 			}
+      local_save();
 
 			//deal with any Trial.set_timer or Trial.time_elapsed functions here
 			//var this_timeout = exp_json.time_outs.filter(row => row.trial_no == parseFloat(exp_json.trial_no));
@@ -814,11 +813,7 @@ function create_exp_json_functions(){
       });
 
 			if(this_timeout.length !== 0){ //should have  && this_timeout.length == 1 - need to deal with when there are multiple
-				console.dir("this_timeout");
-				console.dir(this_timeout);
-        this_timeout.forEach(function(spec_timeout){
-          console.dir("spec_timeout");
-          console.dir(spec_timeout);
+				this_timeout.forEach(function(spec_timeout){
           setTimeout(function(){
             spec_timeout.this_func();
           }, spec_timeout.duration);
