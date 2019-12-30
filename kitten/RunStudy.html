@@ -455,6 +455,7 @@ function initiate_experiment(resume){
   	shuffle_start_exp();
   }	 else {
     buffer_trials();
+    process_welcome();
   }
   process_welcome();
 }
@@ -1224,18 +1225,13 @@ $(window).bind('keydown', function(event) {
 	}
 });
 
-
 //prevent closing without warning
 window.onbeforeunload = function() {
   if(experiment_finished_and_emailed == false){
-
     precrypted_data(exp_json,"It looks like you're trying to leave the experiment before you're finished (or at least before the data has been e-mailed to the researcher. Please choose a filename to save your data as and e-mail it to the researcher. It should appear in your downloads folder.");
-
     return "Please do not try to refresh - you will have to restart if you do so.";
   }
 };
-
 $("body").css("text-align","center");
 $("body").css("margin","auto");
-
 </script>
