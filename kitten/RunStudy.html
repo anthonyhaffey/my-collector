@@ -427,10 +427,12 @@ $("#complete_task").on("click",function(){
 // Pipeline
 /////////////
 
-function initiate_experiment(){
+function initiate_experiment(resume){
 	select_condition();
-	full_screen();
-  create_exp_json_variables();
+  full_screen();
+  if(typeof(resume) == "undefined"){
+    create_exp_json_variables();
+  }
 	parse_sheets("stimuli");
 	parse_sheets("procedure");
   create_exp_json_functions();
@@ -1124,6 +1126,7 @@ var exp_json = ""; //this will get updated
 
 if(window.localStorage.getItem("exp_json") !== null){
   exp_json = JSON.parse(window.localStorage.getItem("exp_json"));
+  initiate_experiment("resume");
 } else {
   if(typeof(exp_location) !== "undefined" && exp_location !== ""){
     console.dir(exp_location);
