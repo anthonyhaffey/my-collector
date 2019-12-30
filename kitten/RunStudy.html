@@ -448,8 +448,10 @@ function initiate_experiment(resume){
   parse_current_proc();
   clean_trialtypes();
   insert_start();
-	shuffle_start_exp();
-	process_welcome();
+  if(typeof(resume) == "undefined"){
+  	shuffle_start_exp();
+    process_welcome();
+  }	
 }
 
 
