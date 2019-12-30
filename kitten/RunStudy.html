@@ -450,8 +450,10 @@ function initiate_experiment(resume){
   insert_start();
   if(typeof(resume) == "undefined"){
   	shuffle_start_exp();
-    process_welcome();
-  }	
+  }	 else {
+    buffer_trials();
+  }
+  process_welcome();
 }
 
 
