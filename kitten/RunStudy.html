@@ -403,10 +403,13 @@ function final_trial(){
       function google_save_check(){
         setTimeout(function(){
           if(google_obj.saves_started == google_obj.saves_ended){
-            $("#experiment_div").html("<h1>Thank you for participating. If you'd like to download your raw data <span id='download_json'>click here</span></h1>");
-            $("#participant_country").show();
-            $("#participant_country").load("ParticipantCountry.html");
-            window.localStorage.removeItem("exp_json");
+            $("#google_progress").css("width","100%");
+            setTimeout(function(){
+              $("#experiment_div").html("<h1>Thank you for participating. If you'd like to download your raw data <span id='download_json'>click here</span></h1>");
+              $("#participant_country").show();
+              $("#participant_country").load("ParticipantCountry.html");
+              window.localStorage.removeItem("exp_json");
+            },1000);
           } else {
             var google_prog_perc = (100*google_obj.saves_ended/google_obj.saves_started) + "%";
             $("#google_progress").css("width",google_prog_perc);
