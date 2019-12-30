@@ -453,11 +453,13 @@ function initiate_experiment(resume){
   insert_start();
   if(typeof(resume) == "undefined"){
   	shuffle_start_exp();
+    process_welcome();
   }	 else {
     buffer_trials();
-    process_welcome();
+    setTimeout(function(){
+      process_welcome();
+    },3000);
   }
-  process_welcome();
 }
 
 
