@@ -393,14 +393,23 @@ function final_trial(){
       }
       break;
     case "github":
-      $("#experiment_div").html("<h1 class='text-danger'>Please wait while we confirm that all your data has been saved</h1>");
+      $("#experiment_div").html("<h1 class='text-danger'>" +
+                                  "Please wait while we confirm that all your data has been saved" +
+                                "</h1>" +
+                                '<div class="progress">'+
+                                  '<div id="google_progress" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 75%">' +
+                                  '</div>' +
+                                '</div>');
       function google_save_check(){
         setTimeout(function(){
           if(google_obj.saves_started == google_obj.saves_ended){
             $("#experiment_div").html("<h1>Thank you for participating. If you'd like to download your raw data <span id='download_json'>click here</span></h1>");
             $("#participant_country").show();
             $("#participant_country").load("ParticipantCountry.html");
+            window.localStorage.removeItem("exp_json");
           } else {
+            var google_prog_perc = (100*google_obj.saves_ended/google_obj.saves_started) + "%";
+            $("#google_progress").css("width",google_prog_perc);
             google_save_check();
           }
         },1000);
