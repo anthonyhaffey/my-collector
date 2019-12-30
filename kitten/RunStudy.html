@@ -24,18 +24,6 @@
 -->
 <script src="../libraries/jquery-3.3.1.min.js"></script>
 <script src="Code/googleTriggers.js"></script>
-
-
-<!--
-
-/*
-
-The encryption code - wrap this more tidily once it is working (and make the crypto-js library local)
-
-*/
-
--->
-
 <script src="../libraries/tweetnacl.js"></script>
 <script src="../libraries/tweetnacl-utils.js"></script>
 <script src="../libraries/crypto-js.min.js"></script>
@@ -60,13 +48,6 @@ function encrypt(receiverPublicKey, msgParams) {  //: string
   }  
 }
 </script>
-
-
-<!--
-<script src="../libraries/tweetnacl.js"></script>
--->
-
-
 <div id="initiate_collector_div"></div>
 <script src="Code/initiateCollector.js"></script>
 
@@ -255,19 +236,23 @@ google_obj = {
   saves_started:0,
   saves_ended:0,
   save_queue:[],
+  local_save:function(){
+    window.localStorage.setItem("exp_json",exp_json);
+  },
+  run_save:function(){
+    var this_save = google_obj.save_queue.pop();
+    this_save();
+    local_save();
+    if(google_obj.save_queue.length > 0){         //keep going until all saves done.
+      gogle_obj.run_save();
+    }
+  },
   save_queue_add:function(save_queue_item){
     google_obj.save_queue.push(save_queue_item);
     if(google_obj.save_queue.length == 1){        //need to initiate run_save as it stopped before you added this item
       google_obj.run_save();
     }
-  },
-  run_save:function(){
-    var this_save = google_obj.save_queue.pop();
-    this_save();
-    if(google_obj.save_queue.length > 0){         //keep going until all saves done.
-      gogle_obj.run_save();
-    }
-  }
+  }  
 }
 
 function collectorPapaParsed(preparsed){
