@@ -443,22 +443,18 @@ function initiate_experiment(resume){
   full_screen();
   if(typeof(resume) == "undefined"){
     create_exp_json_variables();
-  }
-	parse_sheets("stimuli");
-	parse_sheets("procedure");
-  create_exp_json_functions();
-  parse_current_proc();
-  clean_trialtypes();
-  insert_start();
-  if(typeof(resume) == "undefined"){
+    parse_sheets("stimuli");
+  	parse_sheets("procedure");
+    create_exp_json_functions();
+    parse_current_proc();
+    clean_trialtypes();
+    insert_start();
   	shuffle_start_exp();
     process_welcome();
   }	 else {
     buffer_trials();
-    setTimeout(function(){
-      process_welcome();
-    },3000);
   }
+  process_welcome();
 }
 
 
