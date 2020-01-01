@@ -101,7 +101,7 @@ def load_master_json():
     print("hi")
     #check if the uber mega file exists yet
     try:
-        master_json = open("web/local/master.json", "r")
+        master_json = open("web/Local/master.json", "r")
     except:
         master_json = open("web/kitten/Default/master.json", "r")
     finally:
@@ -116,7 +116,7 @@ def save_master_json(master_json):
     if os.path.isdir("web/Local") == False:
         os.mkdir("web/Local")
 
-    master_file = open("web/local/master.json", "w")
+    master_file = open("web/Local/master.json", "w")
     master_file.write(json.dumps(master_json))
 
 eel.init('web') #allowed_extensions=[".js",".html"]

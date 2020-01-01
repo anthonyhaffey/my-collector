@@ -194,22 +194,26 @@ $("#rename_stim_button").on("click",function(){
 	});
 });
 $("#save_btn").on("click", function(){
-	if(dev_obj.context == "localhost"){
-		eel.save_master_json(master_json);
-		//save the master_json
-		//save the specific experiment
-	}
-
-	
 	$("#save_trial_type_button").click();
 	$("#save_survey_btn").click();
   $("#save_snip_btn").click();
 	$("#save_data_script_btn").click();
 
+  if(typeof(master_json.keys) == "undefined" ||
+		 typeof(master_json.keys.public_key) == "undefined"){
+			 encrypt_obj.generate_keys();
+	}
+
 	var experiment = master_json.exp_mgmt.experiment;
   var this_exp = master_json.exp_mgmt.experiments[experiment];
       this_exp.public_key    = master_json.keys.public_key;
       this_exp.google_script = master_json.data.google_script;
+
+	if(dev_obj.context == "localhost"){
+		eel.save_master_json(master_json);
+		//save the master_json
+		//save the specific experiment
+	}
 
 	//parse procs for survey saving next
 	if(typeof(this_exp) !== "undefined") {
