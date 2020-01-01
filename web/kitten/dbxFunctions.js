@@ -4,48 +4,55 @@ dbx_obj = {
 	queing:false,
 	queue : [],
 	new_upload : function(item,successFunction,failFunction,upload_type){
-		dbx_obj.queue.push([item,successFunction,failFunction,upload_type]);
-		if(dbx_obj.queing == false){
-			$("#save_status").html("Synching...");
-			$("#save_status").show(500);
-			dbx_obj.queing = true;
-			dbx_obj.upload();
+		if(dropbox_check()){
+			dbx_obj.queue.push([item,successFunction,failFunction,upload_type]);
+			if(dbx_obj.queing == false){
+				$("#save_status").html("Synching...");
+				$("#save_status").show(500);
+				dbx_obj.queing = true;
+				dbx_obj.upload();
+			}
 		}
 	},
 	upload:function(){
-		[item,successFunction,failFunction,upload_type] = dbx_obj.queue.shift();
-		dbx[upload_type](item)
-			.then(function(result){
-				successFunction(result);
-				if(dbx_obj.queue.length > 0){
-					dbx_obj.queing = true;
-					dbx_obj.upload();
-				}	else 	{
-					dbx_obj.queing = false;
-					$("#save_status").html("Up to date");
-					setTimeout(function(){
-						$("#save_status").hide(500);
-					},500);
-				}
-			})
-			.catch(function(error){
-				failFunction(error);
-			});
+		if(dropbox_check()){
+			[item,successFunction,failFunction,upload_type] = dbx_obj.queue.shift();
+			dbx[upload_type](item)
+				.then(function(result){
+					successFunction(result);
+					if(dbx_obj.queue.length > 0){
+						dbx_obj.queing = true;
+						dbx_obj.upload();
+					}	else 	{
+						dbx_obj.queing = false;
+						$("#save_status").html("Up to date");
+						setTimeout(function(){
+							$("#save_status").hide(500);
+						},500);
+					}
+				})
+				.catch(function(error){
+					failFunction(error);
+				});
+		}
 	}
+}
+function dropbox_check(){
+  return $("#dropbox_account_email").html() !== "No dropbox account linked yet";
 }
 function initiate_master_json(){
 	dbx.sharingCreateSharedLink({path:"/master.json"})
 		.then(function(link_created){
 			load_master_json(link_created);
 		})
-    .catch(function(error){   //i.e. this is the first login 
+    .catch(function(error){   //i.e. this is the first login
       legacy_initiate_uber(); //or they have a legacy account
 		});
 }
 function legacy_initiate_uber(){
   dbx.sharingCreateSharedLink({path:"/uberMegaFile.json"})
 		.then(function(link_created){
-      
+
       $.get(link_created,function(master_json){
         dbx_obj.new_upload({path:"/master.json",
                             contents:master_json,
@@ -58,7 +65,7 @@ function legacy_initiate_uber(){
                             function(error){
                               console.dir("Initial file causing error");
                               report_error(error);
-                            },"filesUpload");        
+                            },"filesUpload");
       });
 		})
     .catch(function(error){ //i.e. this is the first login
@@ -74,7 +81,7 @@ function legacy_initiate_uber(){
 function load_master_json(link_created){
 	$.get(link_created.url.replace("www.","dl."),function(returned_data){
     master_json = JSON.parse(returned_data);
-    
+
     //probable would be good to have a list of things that follow, but for now:
     if(typeof(master_json.keys) == "undefined"){
       encrypt_obj.generate_keys();

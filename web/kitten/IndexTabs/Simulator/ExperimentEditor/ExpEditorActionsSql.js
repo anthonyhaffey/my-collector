@@ -194,6 +194,13 @@ $("#rename_stim_button").on("click",function(){
 	});
 });
 $("#save_btn").on("click", function(){
+	if(dev_obj.context == "localhost"){
+		eel.save_master_json(master_json);
+		//save the master_json
+		//save the specific experiment
+	}
+
+	
 	$("#save_trial_type_button").click();
 	$("#save_survey_btn").click();
   $("#save_snip_btn").click();
@@ -273,14 +280,9 @@ $("#save_btn").on("click", function(){
 
     });
     trialtypes = trialtypes.filter(Boolean); //remove blanks
-
-    console.dir("trialtypes below:");
-    console.dir(trialtypes);
-
     if(typeof(this_exp.trialtypes) == "undefined"){
       this_exp.trialtypes = {};
     }
-
 
     // First loop is to make sure the experiment has all the trialtypes
     ///////////////////////////////////////////////////////////////////
@@ -293,28 +295,7 @@ $("#save_btn").on("click", function(){
     });
 
 
-    /*
-    // Second loop is to update the trialtypes on dropbox - redundant
-    /////////////////////////////////////////////////////////////////
-    trialtypes.forEach(function(trialtype){
-      if(typeof(master_json.trialtypes.user_trialtypes[trialtype]) !== "undefined"){
-        dbx_obj.new_upload({path:"/TrialTypes/"+trialtype+".html",contents:master_json.trialtypes.user_trialtypes[trialtype],mode:'overwrite'},function(result){
-          //console.dir(result);
-        },function(error){
-          report_error(error);
-        },
-				"filesUpload");
-      }
-    });
-    */
-    
-    
-    if(dev_obj.context == "localhost"){
-      eel.save_master_json(master_json);
-      //save the master_json
-      //save the specific experiment
-    }
-    
+
     //dropbox check here
     if(dropbox_check()){
       dbx_obj.new_upload({path: "/Experiments/"+experiment+".json", contents: JSON.stringify(this_exp), mode:'overwrite'},
@@ -324,7 +305,7 @@ $("#save_btn").on("click", function(){
               this_exp.location = returned_link.url;
 
               // if this is the experiment
-              switch(dev_obj.context){              
+              switch(dev_obj.context){
                 case "github":
                   dbx_obj.new_upload({path: "/Experiments/"+experiment+".json", contents: JSON.stringify(this_exp), mode:'overwrite'},function(location_saved){
                       custom_alert("experiment_location sorted");
@@ -359,7 +340,7 @@ $("#save_btn").on("click", function(){
                   break;
               }
 
-              
+
             })
             .catch(function(error){
               report_error(error);
@@ -368,7 +349,7 @@ $("#save_btn").on("click", function(){
         },function(error){
           alert(error);
         },
-        "filesUpload");  
+        "filesUpload");
     }
   }
 });

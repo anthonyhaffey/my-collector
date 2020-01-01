@@ -7,15 +7,13 @@ function load_master_json(this_json){
   master_json = this_json;
   //renderItems();
   list_surveys();
+  first_load = true;
+  list_experiments();
   list_boosts();
   list_trialtypes();
 	list_graphics();
-  list_experiments();
-	
-}
 
-function dropbox_check(){
-  return $("#dropbox_account_email").html() !== "No dropbox account linked yet";
+
 }
 
 switch(dev_obj.context){

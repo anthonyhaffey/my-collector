@@ -98,34 +98,26 @@ def update_collector(location,
 
 @eel.expose
 def load_master_json():
+    print("hi")
     #check if the uber mega file exists yet
     try:
-        master_json = open("kitten/Local/master.json", "r")
-        master_json = master_json.read();
+        master_json = open("web/local/master.json", "r")
     except:
         master_json = open("web/kitten/Default/master.json", "r")
+    finally:
         master_json = master_json.read()
         master_json = json.loads(master_json)
-        #add default experiments - not yet present
-
-        #add default surveys
-        #default_surveys = os.listdir("web/" + user_repository + "/kitten/Default/DefaultSurveys")
-
-        #for default_survey in default_surveys:
-        #    this_survey = open("web/" + user_repository + "/kitten/Default/DefaultSurveys/" + default_survey)
-        #    uber_mega_json[]
-
-        #add default trialtypes
-
-
-    finally:
-        # if not, then proceed with the default uberMega.json
         eel.load_master_json(master_json)
 
 @eel.expose
 def save_master_json(master_json):
-    master_file = open("Local/master.json", "w")
-    master_file .write(master_json)
+    print("trying to save")
+    #detect if the "Local" folder exists yet
+    if os.path.isdir("web/Local") == False:
+        os.mkdir("web/Local")
+
+    master_file = open("web/local/master.json", "w")
+    master_file.write(json.dumps(master_json))
 
 eel.init('web') #allowed_extensions=[".js",".html"]
 eel.start('kitten/index.html')
