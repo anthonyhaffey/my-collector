@@ -9,11 +9,22 @@ function load_master_json(this_json){
   list_surveys();
   first_load = true;
   list_experiments();
+  wait_till_exists("list_graphics");
   list_boosts();
   list_trialtypes();
-	list_graphics();
+  initiate_actions();
+  autoload_boosts();
+}
 
-
+// this is a hack to deal with asynchronous order of parts of the page loading
+function wait_till_exists(this_function){
+  if(typeof(window[this_function]) == "undefined"){
+    setTimeout(function(){
+      wait_till_exists(this_function);
+    },100);
+  } else {
+    window[this_function]();
+  }
 }
 
 switch(dev_obj.context){

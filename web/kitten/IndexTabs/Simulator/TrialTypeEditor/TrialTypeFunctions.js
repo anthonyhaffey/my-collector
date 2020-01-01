@@ -120,22 +120,24 @@ trialtypes_obj = {
 		"filesUpload");
 	},
 	synchTrialtypesFolder:function(){
-		dbx.filesListFolder({path:"/trialtypes"})
-			.then(function(returned_data){
-				var trialtypes = returned_data.entries.filter(item => item[".tag"] == "file");
-				trialtypes.forEach(function(trialtype){
-					trialtype.name = trialtype.name.replace(".html","");
-					if(typeof(master_json.trialtypes.user_trialtypes[trialtype.name]) == "undefined"){
-						dbx.sharingCreateSharedLink({path:trialtype.path_lower})
-							.then(function(returned_path_info){
-								$.get(returned_path_info.url.replace("www.","dl."),function(content){
-									master_json.trialtypes.user_trialtypes[trialtype.name] = content;
-									$("#trial_type_select").append("<option class='user_trialtype'>"+trialtype.name+"</option>");
+		if(dropbox_check()){
+			dbx.filesListFolder({path:"/trialtypes"})
+				.then(function(returned_data){
+					var trialtypes = returned_data.entries.filter(item => item[".tag"] == "file");
+					trialtypes.forEach(function(trialtype){
+						trialtype.name = trialtype.name.replace(".html","");
+						if(typeof(master_json.trialtypes.user_trialtypes[trialtype.name]) == "undefined"){
+							dbx.sharingCreateSharedLink({path:trialtype.path_lower})
+								.then(function(returned_path_info){
+									$.get(returned_path_info.url.replace("www.","dl."),function(content){
+										master_json.trialtypes.user_trialtypes[trialtype.name] = content;
+										$("#trial_type_select").append("<option class='user_trialtype'>"+trialtype.name+"</option>");
+									});
 								});
-							});
-					}
+						}
+					});
 				});
-			});
+		}
 	}
 }
 function list_trialtypes(){
@@ -170,6 +172,7 @@ function list_trialtypes(){
       break;
     case "gitpod":
     case "github":
+		case "localhost":
       //retrieve the default trialtypes
       var default_list = Object.keys(isolation_map["Default"]["DefaultTrialtypes"]);
 
@@ -187,7 +190,7 @@ function list_trialtypes(){
         }
       }
       git_default_trialtypes(default_list);
-      
+
       break;
 
   }
