@@ -120,8 +120,8 @@ function this_map(this_item){
 
 // Below code is to enable isolated development of surveys code
 
-if(typeof(megaUberJson) == "undefined"){
-  megaUberJson = {
+if(typeof(master_json) == "undefined"){
+  master_json = {
     surveys: {
       default_surveys:{},
     },

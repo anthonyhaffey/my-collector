@@ -26,7 +26,6 @@
 }
 
 #github_login,
-#localhost_login,
 #ocollector_login{
   display:none;
 }
@@ -91,14 +90,6 @@ function check_errors(){
   </div>
 </div>
 
-
-<!--
-<div id="github_login"></div>
-<div id="localhost_login">
-  <div class="login_card"></div>
-</div>
--->
-
 <!--
 To Do:
 
@@ -113,19 +104,7 @@ To Do:
   </script>
   <input style="display:none" type="submit" class="collectorButton" id="register_submit" name='login_type' value="register">
 </form>
-
-
-
-
 <script>
-
-$("#register_proceed_button").on("click",function(){
-  $("#country_selected").click();
-});
-$("#skip_map_button").on("click",function(){
-  $("#register_submit").click();
-});
-
 $("#forgot_button").on("click",function(){
 	var email_val = $("#username_input").val();
 	bootbox.prompt({
@@ -136,9 +115,27 @@ $("#forgot_button").on("click",function(){
 		}
 	});
 });
+$("#login_button").on("click",function(){
+  switch(dev_obj.context){
+    case "server":
+      $("#login_button_submit").click(); // to submit form
+      break;
+    case "localhost":
 
-
-
+      var username = $("#username_input").val();
+      var password = $("#password_input").val();
+      $.post("developerLogin.php",{
+        username:username,
+        password:password
+      },function(local_key){
+        window.localStorage.setItem("local_key",local_key);
+        window.localStorage.setItem("user_email",username);
+        //refresh the page.
+        window.location.href = window.location.href;
+      });
+      break;
+  }
+});
 $("#register_button").on("click",function(){
   // checks
 	// password long enough?
@@ -162,35 +159,10 @@ $("#register_button").on("click",function(){
 		});
 	}
 });
-
-$("#login_button").on("click",function(){
-  switch(dev_obj.context){
-    case "server":
-      $("#login_button_submit").click(); // to submit form
-      break;
-    case "localhost":
-
-      var username = $("#username_input").val();
-      var password = $("#password_input").val();
-      $.post("developerLogin.php",{
-        username:username,
-        password:password
-      },function(local_key){
-        window.localStorage.setItem("local_key",local_key);
-        window.localStorage.setItem("user_email",username);
-        //refresh the page.
-        window.location.href = window.location.href;
-      });
-      break;
-  }
+$("#register_proceed_button").on("click",function(){
+  $("#country_selected").click();
 });
-
-switch(dev_obj.context){
-  case "server":
-
-    break;
-  case "localhost":
-    $("#localhost_login").show();
-    break;
-}
+$("#skip_map_button").on("click",function(){
+  $("#register_submit").click();
+});
 </script>

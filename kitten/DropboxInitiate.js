@@ -93,7 +93,7 @@ function check_authenticated(){
     help_div_content = $(".help_general").html();
     startup_dialog = bootbox.dialog({
       title: 'Welcome!',
-      message: '<p id="startup_prog"><i class="fa fa-spin fa-spinner"></i> Loading your uberMegaFile <br><br> Refresh page if this message is here for a while</p>' +
+      message: '<p id="startup_prog"><i class="fa fa-spin fa-spinner"></i> Loading your master file <br><br> Refresh page if this message is here for more than a minute</p>' +
       help_div_content +
       '<button class="btn btn-primary change_tip">Previous</button>' +
       '<button class="btn btn-primary change_tip">Next</button>' +
@@ -131,7 +131,7 @@ function check_authenticated(){
       $("#intro_switch_dbx").on("click",function(){
         force_reauth_dbx();
       });
-      initiate_uberMegaFile(); //detect mega_uber file
+      initiate_master_json();
     })
     .catch(function(error){
       console.dir("Dropbox not logged in yet");
@@ -146,11 +146,4 @@ function check_authenticated(){
     // Set the login anchors href using dbx.getAuthenticationUrl()
     dropbox_login();
   }
-}
-switch(dev_obj.context){
-  case "gitpod":
-  case "server":
-  case "github":
-    check_authenticated();
-    break;
 }

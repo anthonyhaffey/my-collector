@@ -27,8 +27,8 @@ function initiate_actions(){
     }
   }
   function valid_new_name(this_name){
-    var current_trialtypes = Object.keys(megaUberJson.trialtypes.user_trialtypes)
-                     .concat(Object.keys(megaUberJson.trialtypes.default_trialtypes));
+    var current_trialtypes = Object.keys(master_json.trialtypes.user_trialtypes)
+                     .concat(Object.keys(master_json.trialtypes.default_trialtypes));
     current_trialtypes = Array.from(new Set(current_trialtypes));
     if(current_trialtypes.indexOf(this_name.toLowerCase()) == -1){
       return true;
@@ -39,15 +39,15 @@ function initiate_actions(){
   }
   $("#ACE_editor").on("keyup input",function(){
 		var ace_content = editor.getValue();
-		var trialtype 	= megaUberJson.trialtypes.trialtype;
-		var filetype 		= megaUberJson.trialtypes.filetype;
-		if(typeof(megaUberJson.trialtypes.user_trialtypes[trialtype]) == "undefined"){
-			megaUberJson.trialtypes.user_trialtypes[trialtype] = {
+		var trialtype 	= master_json.trialtypes.trialtype;
+		var filetype 		= master_json.trialtypes.filetype;
+		if(typeof(master_json.trialtypes.user_trialtypes[trialtype]) == "undefined"){
+			master_json.trialtypes.user_trialtypes[trialtype] = {
 				files : {}
 			}
 		}
-		megaUberJson.trialtypes.user_trialtypes[trialtype].updated = true;
-		megaUberJson.trialtypes.user_trialtypes[trialtype]= ace_content;		
+		master_json.trialtypes.user_trialtypes[trialtype].updated = true;
+		master_json.trialtypes.user_trialtypes[trialtype]= ace_content;		
 	});
 	
 	$("#delete_trial_type_button").on("click",function(){
@@ -75,8 +75,8 @@ function initiate_actions(){
 						content = "";
             if(protected_name_check(new_name)){
               if(valid_new_name(new_name)){
-                megaUberJson.trialtypes.user_trialtypes[new_name] = content;
-                megaUberJson.trialtypes.trialtype = new_name;
+                master_json.trialtypes.user_trialtypes[new_name] = content;
+                master_json.trialtypes.trialtype = new_name;
                 trialtypes_obj.save_trialtype(content,new_name,"new","code");
                 editor.textInput.getElement().onkeydown = "";
               } 
@@ -91,24 +91,24 @@ function initiate_actions(){
             if(protected_name_check(new_name)){
               if(valid_new_name(new_name)){
                 content = "";
-                megaUberJson.trialtypes.user_trialtypes[new_name] = content;
-                megaUberJson.trialtypes.trialtype = new_name;
+                master_json.trialtypes.user_trialtypes[new_name] = content;
+                master_json.trialtypes.trialtype = new_name;
                 trialtypes_obj.save_trialtype(content,new_name,"new","graphic");
                 $("#graphic_editor").show();
                 editor.setOption("readOnly",true);
                 editor.textInput.getElement().onkeydown = graphic_editor_obj.graphic_warning;
-                megaUberJson.trialtypes.graphic.trialtypes[new_name] = {
+                master_json.trialtypes.graphic.trialtypes[new_name] = {
                   elements: {}
                 };
-                megaUberJson.trialtypes.graphic.trialtypes[new_name].width = "600";
-                megaUberJson.trialtypes.graphic.trialtypes[new_name].height = "600";
-                megaUberJson.trialtypes.graphic.trialtypes[new_name]["background-color"] = "white";
-                megaUberJson.trialtypes.graphic.trialtypes[new_name].mouse_visible = true;
-                megaUberJson.trialtypes.graphic.trialtypes[new_name].keyboard = {				
+                master_json.trialtypes.graphic.trialtypes[new_name].width = "600";
+                master_json.trialtypes.graphic.trialtypes[new_name].height = "600";
+                master_json.trialtypes.graphic.trialtypes[new_name]["background-color"] = "white";
+                master_json.trialtypes.graphic.trialtypes[new_name].mouse_visible = true;
+                master_json.trialtypes.graphic.trialtypes[new_name].keyboard = {				
                   valid_keys: '',
                   end_press: true
                 };												
-                megaUberJson.trialtypes.trialtype = new_name;						
+                master_json.trialtypes.trialtype = new_name;						
                 graphic_editor_obj.update_main_settings();
                 graphic_editor_obj.clean_canvas();
                 
@@ -138,8 +138,8 @@ function initiate_actions(){
 		}
 	});
 	$("#view_graphic_btn").on("click",function(){
-		var trialtype = megaUberJson.trialtypes.trialtype;
-		if(typeof(megaUberJson.trialtypes.graphic.trialtypes[trialtype]) == "undefined"){
+		var trialtype = master_json.trialtypes.trialtype;
+		if(typeof(master_json.trialtypes.graphic.trialtypes[trialtype]) == "undefined"){
 			bootbox.alert("This trialtype was not created using the graphic editor, so cannot be edited with it");
 		} else {			
 			if($("#view_graphic_btn").hasClass("btn-primary")){  // then hide
@@ -166,12 +166,12 @@ function initiate_actions(){
 	$("#trial_type_select").on("change",function(){	
 		//detect if it's a graphic trialtype
 		var trialtype = this.value;
-		if(typeof(megaUberJson.trialtypes.graphic.trialtypes[trialtype]) !== "undefined"){
-			megaUberJson.trialtypes.trialtype = trialtype;
+		if(typeof(master_json.trialtypes.graphic.trialtypes[trialtype]) !== "undefined"){
+			master_json.trialtypes.trialtype = trialtype;
 			editor.textInput.getElement().onkeydown = graphic_editor_obj.graphic_warning;
 			
 			//clear canvas	
-      graphic_editor_obj.load_canvas(megaUberJson.trialtypes.graphic.trialtypes[trialtype].elements);
+      graphic_editor_obj.load_canvas(master_json.trialtypes.graphic.trialtypes[trialtype].elements);
 			graphic_editor_obj.clean_canvas();
 			
 			load_trialtype_boosts();
@@ -179,19 +179,19 @@ function initiate_actions(){
 		} else {		
 			editor.textInput.getElement().onkeydown = "";
 			$("#ACE_editor").show();
-			megaUberJson.trialtypes.trialtype = trialtype;
+			master_json.trialtypes.trialtype = trialtype;
 			var user_default = this.children[this.selectedIndex].className;		
 			$("#trial_type_select").attr("class",user_default);
 			
 			$("#default_user_trialtype_span").html(user_default);
 			trialtypes_obj.load_trial_file(user_default);
 			
-			if(typeof(megaUberJson.trialtypes.user_trialtypes[megaUberJson.trialtypes.trialtype]) !== "undefined"){	
-				var sql_content = megaUberJson.trialtypes.user_trialtypes[megaUberJson.trialtypes.trialtype];		
+			if(typeof(master_json.trialtypes.user_trialtypes[master_json.trialtypes.trialtype]) !== "undefined"){	
+				var sql_content = master_json.trialtypes.user_trialtypes[master_json.trialtypes.trialtype];		
 				editor.setValue(sql_content);
 				
-			} else if (typeof(megaUberJson.trialtypes.default_trialtypes[megaUberJson.trialtypes.trialtype]) !== "undefined"){		
-				var sql_content = megaUberJson.trialtypes.default_trialtypes[megaUberJson.trialtypes.trialtype];
+			} else if (typeof(master_json.trialtypes.default_trialtypes[master_json.trialtypes.trialtype]) !== "undefined"){		
+				var sql_content = master_json.trialtypes.default_trialtypes[master_json.trialtypes.trialtype];
 				editor.setValue(sql_content);
 			}
 		}
@@ -200,7 +200,7 @@ function initiate_actions(){
 		if($("#trial_type_select").val() !== null){
 			var content = editor.getValue()
 			var name 	= $("#trial_type_select").val();
-      if(typeof(megaUberJson.trialtypes.default_trialtypes[name]) == "undefined"){
+      if(typeof(master_json.trialtypes.default_trialtypes[name]) == "undefined"){
         trialtypes_obj.save_trialtype(content,name,"old");
       } else {
         bootbox.prompt("You cannot overwrite default trialtypes. Would you like to create a new trialtype?",function(new_name){

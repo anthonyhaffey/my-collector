@@ -212,22 +212,22 @@ function create_survey_HoT(this_survey){
 }
 
 function list_surveys(){
-	if(typeof(megaUberJson.surveys) == "undefined"){
-		megaUberJson.surveys = {
+	if(typeof(master_json.surveys) == "undefined"){
+		master_json.surveys = {
 			preview         : false,
 			user_surveys    : {}
 		};
   }
-	megaUberJson.surveys = typeof(megaUberJson.surveys) == "undefined" ? {} : megaUberJson.surveys;
-	megaUberJson.surveys.default_surveys = default_surveys;
+	master_json.surveys = typeof(master_json.surveys) == "undefined" ? {} : master_json.surveys;
+	master_json.surveys.default_surveys = default_surveys;
 
-	megaUberJson.surveys.user_surveys = typeof(megaUberJson.surveys.user_surveys) == "undefined" ? {} : megaUberJson.surveys.user_surveys;
-	megaUberJson.surveys.default_surveys = clean_obj_keys(megaUberJson.surveys.default_surveys);
+	master_json.surveys.user_surveys = typeof(master_json.surveys.user_surveys) == "undefined" ? {} : master_json.surveys.user_surveys;
+	master_json.surveys.default_surveys = clean_obj_keys(master_json.surveys.default_surveys);
 
   
 
-	var def_survey_list  = Object.keys(megaUberJson.surveys.default_surveys).sort();
-	var user_survey_list = Object.keys(megaUberJson.surveys.user_surveys).sort();
+	var def_survey_list  = Object.keys(master_json.surveys.default_surveys).sort();
+	var user_survey_list = Object.keys(master_json.surveys.user_surveys).sort();
 
 
   load_default_surveys();
@@ -247,13 +247,14 @@ function list_surveys(){
 			class:"bg-white text-dark"
 		}));
 	});
-  if(typeof(dev_obj.dev_location) == "undefined"){
-    synch_surveys();
+  if(typeof(dev_obj.dev_location) == "undefined" &
+     dev_obj.context !== "localhost"){
+      synch_surveys();
   }
 }
 
 function preview_survey(this_survey){
-  megaUberJson.surveys.preview = true;
+  master_json.surveys.preview = true;
   survey_template = $.get(collector_map["survey.html"], function(survey_template){
     survey_template = survey_template.replace('"{{survey}}"',
                                               JSON.stringify(this_survey));
@@ -265,12 +266,12 @@ function synch_surveys(){
 	dbx.filesListFolder({path:"/surveys"})
 		.then(function(result){
 			result.entries.forEach(function(entry){
-				if(typeof(megaUberJson.surveys.user_surveys[entry.name.toLowerCase()]) == "undefined"){
+				if(typeof(master_json.surveys.user_surveys[entry.name.toLowerCase()]) == "undefined"){
 					dbx.sharingCreateSharedLink({path:entry.path_lower})
 						.then(function(shared_link){
 							$.get(shared_link.url.replace("www.","dl."),function(result){
 								var survey_name = entry.name.toLowerCase().replace(".csv","");
-								megaUberJson.surveys.user_surveys[survey_name] = Papa.parse(result).data;
+								master_json.surveys.user_surveys[survey_name] = Papa.parse(result).data;
 							});
 						})
 						.catch(function(error){
@@ -294,7 +295,7 @@ function update_exp_survey(survey_name,survey_content){
 function update_user_survey(){
   var survey_name    = $("#survey_select").val().split("|")[1];
   var survey_content = survey_HoT.getData();
-  megaUberJson.surveys.user_surveys[survey_name] = survey_content;
+  master_json.surveys.user_surveys[survey_name] = survey_content;
 
   //update the currently loaded experiment?
   if(exp_json !== ""){							//check it has this survey in any of the proc sheets
@@ -318,13 +319,13 @@ $("#delete_survey_btn").on("click",function(){
 	bootbox.confirm("Are you sure you want to delete this survey?",function(confirmed){
 		if(confirmed){
 			var survey_name = $("#survey_select").val().split("|")[1].toLowerCase().replace(".csv","") + ".csv";
-			delete megaUberJson.surveys.user_surveys[survey_name];
+			delete master_json.surveys.user_surveys[survey_name];
 			dbx.filesDelete({path:"/surveys/" + survey_name})
 				.then(function(result){
 					custom_alert("Succesfully deleted <b>" + survey_name + "</b>");
 					$('#survey_select option[value="' + $("#survey_select").val() + '"]').remove();
 					$("#survey_select").val("default|demographics.csv");
-					create_survey_HoT(megaUberJson.surveys.default_surveys["demographics.csv"]);
+					create_survey_HoT(master_json.surveys.default_surveys["demographics.csv"]);
 					$("#save_btn").click();
 				})
 				.catch(function(error){
@@ -344,9 +345,9 @@ $("#new_survey_button").on("click",function(){
 					title: "New Survey",
 					callback: function(survey_name){
 						survey_name = survey_name.toLowerCase().replaceAll(".csv","");
-						if(typeof(megaUberJson.surveys.user_surveys[survey_name] == "undefined")){
+						if(typeof(master_json.surveys.user_surveys[survey_name] == "undefined")){
 							var survey_content = survey_HoT.getData();
-							megaUberJson.surveys.user_surveys[survey_name] = survey_content;
+							master_json.surveys.user_surveys[survey_name] = survey_content;
 							var survey_value   = "user|" + survey_name;
 							$("#survey_select").append($("<option>",{
 								text  : survey_name,
@@ -382,7 +383,7 @@ $("#save_survey_btn").on("click",function(){
 			mode    : "overwrite"
 		},function(){
 			custom_alert("Success!");
-			updateUberMegaFile();
+			update_master_json();
 		},function(error){
 			custom_alert("error - check console!");
 			console.dir(error);
@@ -398,14 +399,14 @@ $("#survey_select").on("change",function(){
     $("#survey_select").addClass("bg-info");
     $("#survey_select").addClass("text-white");
 
-    create_survey_HoT(megaUberJson.surveys.default_surveys[this_survey[1]]);
+    create_survey_HoT(master_json.surveys.default_surveys[this_survey[1]]);
     $("#spreadsheet_preview_tabs").show();
   } else if(this_survey[0] == "user"){
     $("#survey_select").removeClass("bg-info");
     $("#survey_select").removeClass("text-white");
     $("#survey_select").addClass("bg-light");
 
-		create_survey_HoT(megaUberJson.surveys.user_surveys[this_survey[1]]);
+		create_survey_HoT(master_json.surveys.user_surveys[this_survey[1]]);
     $("#spreadsheet_preview_tabs").show();
   } else {
     bootbox.alert("It's not clear whether this is supposed to be a default or user_trialtype");

@@ -33,12 +33,35 @@ dbx_obj = {
 			});
 	}
 }
-function initiate_uberMegaFile(){
-	dbx.sharingCreateSharedLink({path:"/uberMegaFile.json"})
+function initiate_master_json(){
+	dbx.sharingCreateSharedLink({path:"/master.json"})
 		.then(function(link_created){
-			load_uberMegaFile(link_created);
+			load_master_json(link_created);
 		})
-		.catch(function(error){ //i.e. this is the first login
+    .catch(function(error){   //i.e. this is the first login 
+      legacy_initiate_uber(); //or they have a legacy account
+		});
+}
+function legacy_initiate_uber(){
+  dbx.sharingCreateSharedLink({path:"/uberMegaFile.json"})
+		.then(function(link_created){
+      
+      $.get(link_created,function(master_json){
+        dbx_obj.new_upload({path:"/master.json",
+                            contents:master_json,
+                            mode:'overwrite'},
+                            function(result){
+                              dropbox_dialog.modal('hide');
+                              //location.reload();
+                              initiate_master_json();
+                            },
+                            function(error){
+                              console.dir("Initial file causing error");
+                              report_error(error);
+                            },"filesUpload");        
+      });
+		})
+    .catch(function(error){ //i.e. this is the first login
 			dropbox_dialog = bootbox.dialog({
 				title: "Your first login",
 				message: '<p class="text-center mb-0"><i class="fa fa-spin fa-cog"></i> Welcome to Collector! We are just setting up your dropbox files, <br><div id="dropbox_prog_div"></div><br> Please wait while these are created ready for your use!</p>'
@@ -48,20 +71,20 @@ function initiate_uberMegaFile(){
 			new_dropbox_account(dropbox_dialog);
 		});
 }
-function load_uberMegaFile(link_created){
+function load_master_json(link_created){
 	$.get(link_created.url.replace("www.","dl."),function(returned_data){
-    megaUberJson = JSON.parse(returned_data);
+    master_json = JSON.parse(returned_data);
     
     //probable would be good to have a list of things that follow, but for now:
-    if(typeof(megaUberJson.keys) == "undefined"){
+    if(typeof(master_json.keys) == "undefined"){
       encrypt_obj.generate_keys();
     }
-    if(typeof(megaUberJson.data.google_script)== "undefined"){
+    if(typeof(master_json.data.google_script)== "undefined"){
       encrypt_obj.google_script_url();
     }
 
-    $("#public_key").val(megaUberJson.keys.public_key);
-    $("#private_key").val(megaUberJson.keys.encrypted_private_key);
+    $("#public_key").val(master_json.keys.public_key);
+    $("#private_key").val(master_json.keys.encrypted_private_key);
 
 		$("#option_Edit").click();
 		$("#startup_btn").fadeIn(500);
@@ -70,8 +93,8 @@ function load_uberMegaFile(link_created){
 		});
 		// add boosts if not already present
 		//////////////////////////////////////
-		if(typeof(megaUberJson.boosts) == "undefined"){
-			megaUberJson.boosts = {};
+		if(typeof(master_json.boosts) == "undefined"){
+			master_json.boosts = {};
 		}
 		renderItems();
 		dbx.filesListFolder({path: '/experiments'})
@@ -91,9 +114,9 @@ function load_uberMegaFile(link_created){
 	});
 }
 function new_dropbox_account(dropbox_dialog){
-  $.get("uberMega.json",function(uberMega){
-    console.dir(uberMega);
-    megaUberJson = uberMega;
+  $.get("Default/master.json",function(this_json){
+    console.dir(this_json);
+    master_json = this_json;
     //create more general dropbox update function that queues any dropbox request?
     var these_folders = ["boosts",
                          "experiments",
@@ -122,13 +145,13 @@ function new_dropbox_account(dropbox_dialog){
                             });
                           },
                           "filesCreateFolder");
-    dbx_obj.new_upload({path:"/uberMegaFile.json",
-                        contents:JSON.stringify(megaUberJson),
+    dbx_obj.new_upload({path:"/master.json",
+                        contents:JSON.stringify(master_json),
                         mode:'overwrite'},
                         function(result){
                           dropbox_dialog.modal('hide');
                           //location.reload();
-                          initiate_uberMegaFile();
+                          initiate_master_json();
                         },
                         function(error){
                           console.dir("Initial file causing error");

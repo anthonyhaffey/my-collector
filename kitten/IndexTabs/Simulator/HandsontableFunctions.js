@@ -176,8 +176,8 @@ function createHoT(container, data,sheet_name) {
 				}
 			}
 
-			var experiment = megaUberJson.exp_mgmt.experiment;
-			var this_exp   = megaUberJson.exp_mgmt.experiments[experiment];
+			var experiment = master_json.exp_mgmt.experiment;
+			var this_exp   = master_json.exp_mgmt.experiments[experiment];
 			
 			if(sheet_name.toLowerCase() == "conditions.csv"){
 				this_exp.cond_array = this.getData();

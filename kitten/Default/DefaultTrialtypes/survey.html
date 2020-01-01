@@ -280,9 +280,9 @@ function load_survey(survey){
   /////////////////////
   console.dir("survey");
   console.dir(survey);
-  if(typeof(megaUberJson) !== "undefined" && megaUberJson.surveys.preview){     // Yes
+  if(typeof(master_json) !== "undefined" && master_json.surveys.preview){     // Yes
     survey_content = survey;                                                    // i.e. the content has been passed through directly
-    survey_obj.boosts = megaUberJson.boosts;                                //no need to be efficient in preview
+    survey_obj.boosts = master_json.boosts;                                //no need to be efficient in preview
 
   } else {                                                                      // No
     survey = survey.toLowerCase().replace(".csv","");

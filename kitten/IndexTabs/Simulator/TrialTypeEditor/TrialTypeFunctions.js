@@ -21,19 +21,19 @@ $.ajaxSetup({ cache: false }); // prevents caching, which disrupts $.get calls
 
 trialtypes_obj = {
 	delete_trialtype:function(){
-    megaUberJson.trialtypes.trialtype = $("#trial_type_select").val();
-		var this_loc = "/trialtypes/"+megaUberJson.trialtypes.trialtype;
+    master_json.trialtypes.trialtype = $("#trial_type_select").val();
+		var this_loc = "/trialtypes/"+master_json.trialtypes.trialtype;
 		bootbox.confirm("Are you sure you want to delete this "+this_loc+"?",function(result){
 			if(result == true){
-				if(typeof(megaUberJson.trialtypes.graphic.trialtypes[megaUberJson.trialtypes.trialtype]) !== "undefined"){
-					delete(megaUberJson.trialtypes.graphic.trialtypes[megaUberJson.trialtypes.trialtype]);
+				if(typeof(master_json.trialtypes.graphic.trialtypes[master_json.trialtypes.trialtype]) !== "undefined"){
+					delete(master_json.trialtypes.graphic.trialtypes[master_json.trialtypes.trialtype]);
 				}
-				delete(megaUberJson.trialtypes.user_trialtypes[megaUberJson.trialtypes.trialtype]);
+				delete(master_json.trialtypes.user_trialtypes[master_json.trialtypes.trialtype]);
 				$("#trial_type_select  option:selected").remove(); 																	//remove from dropdown list
-				megaUberJson.trialtypes.trialtype = $("#trial_type_select").val();
+				master_json.trialtypes.trialtype = $("#trial_type_select").val();
 				trialtypes_obj.load_trial_file("default_trialtype");
 				custom_alert("Successfully deleted "+this_loc);
-				updateUberMegaFile();
+				update_master_json();
 				dbx.filesDelete({path:this_loc+".html"})
 					.then(function(returned_data){
 						//do nothing more
@@ -55,8 +55,8 @@ trialtypes_obj = {
 		} else {
 			$("#delete_trial_type_button").show();
 		}
-		var trialtype = megaUberJson.trialtypes.trialtype;
-		var content = megaUberJson.trialtypes[user_default+"s"][trialtype];
+		var trialtype = master_json.trialtypes.trialtype;
+		var content = master_json.trialtypes[user_default+"s"][trialtype];
 		editor.setValue(content);
 	},
 	rename_trial_type:function(new_name){
@@ -72,8 +72,8 @@ trialtypes_obj = {
 				console.dir(returned_data);
 				custom_alert(returned_data);
 				//update user_trialtypes
-				megaUberJson.trialtypes.user_trialtypes[new_name] = megaUberJson.trialtypes.user_trialtypes[original_name];
-				delete (megaUberJson.trialtypes.user_trialtypes[original_name]);
+				master_json.trialtypes.user_trialtypes[new_name] = master_json.trialtypes.user_trialtypes[original_name];
+				delete (master_json.trialtypes.user_trialtypes[original_name]);
 
 				//update dropdown list
 				$("#trial_type_select").append("<option class='user_trialtype'>"+new_name+"</option>");
@@ -125,11 +125,11 @@ trialtypes_obj = {
 				var trialtypes = returned_data.entries.filter(item => item[".tag"] == "file");
 				trialtypes.forEach(function(trialtype){
 					trialtype.name = trialtype.name.replace(".html","");
-					if(typeof(megaUberJson.trialtypes.user_trialtypes[trialtype.name]) == "undefined"){
+					if(typeof(master_json.trialtypes.user_trialtypes[trialtype.name]) == "undefined"){
 						dbx.sharingCreateSharedLink({path:trialtype.path_lower})
 							.then(function(returned_path_info){
 								$.get(returned_path_info.url.replace("www.","dl."),function(content){
-									megaUberJson.trialtypes.user_trialtypes[trialtype.name] = content;
+									master_json.trialtypes.user_trialtypes[trialtype.name] = content;
 									$("#trial_type_select").append("<option class='user_trialtype'>"+trialtype.name+"</option>");
 								});
 							});
@@ -141,9 +141,9 @@ trialtypes_obj = {
 function list_trialtypes(){
   function process_returned(returned_data){
     default_trialtypes = JSON.parse(returned_data);
-		user_trialtypes 	 = megaUberJson.trialtypes.user_trialtypes;
+		user_trialtypes 	 = master_json.trialtypes.user_trialtypes;
 
-		megaUberJson.trialtypes.default_trialtypes = default_trialtypes;
+		master_json.trialtypes.default_trialtypes = default_trialtypes;
 		default_trialtypes_keys = Object.keys(default_trialtypes).sort((a, b) => a.localeCompare(b, undefined, {sensitivity: 'base'}));
 
 		user_trialtypes_keys = Object.keys(user_trialtypes).sort((a, b) => a.localeCompare(b, undefined, {sensitivity: 'base'}));
@@ -151,7 +151,7 @@ function list_trialtypes(){
 		default_trialtypes_keys.forEach(function(element){
 			$("#trial_type_select").append("<option class='default_trialtype'>"+element+"</option>");
 		});
-		megaUberJson.trialtypes.user_trialtypes = user_trialtypes;
+		master_json.trialtypes.user_trialtypes = user_trialtypes;
 
 		user_trialtypes_keys.forEach(function(element){
 			$("#trial_type_select").append("<option class='user_trialtype'>"+element+"</option>");

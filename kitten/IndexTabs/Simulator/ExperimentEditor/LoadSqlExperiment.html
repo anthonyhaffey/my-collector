@@ -44,20 +44,23 @@ switch(dev_obj.context){
     I don't think I need the below
 
     $.post("GOOGLE/DROPBOX/OTHER LINK",function(experiments){
-      megaUberJson.exp_mgmt.experiments = experiments;
+      master_json.exp_mgmt.experiments = experiments;
       list_experiments();
       });
       break;
     */
       break;
+  /* this seems redundant (and messy)
   case "localhost":
+    
     $.post("LocalExperiments.php",function(published_links){
       dev_obj.published_links = published_links;
     });
     break;
+  */
   case "server":
     $.post("oCollectorExperiments.php",function(experiments){
-      megaUberJson.exp_mgmt.experiments = experiments;
+      master_json.exp_mgmt.experiments = experiments;
       list_experiments();
     });
     break;
@@ -103,7 +106,7 @@ switch(dev_obj.context){
 
 <script> /* authenticating dropbox account */
 $("#links_btn").on("click",function(){
-	var experiment = megaUberJson.exp_mgmt.experiment.replaceAll(" ","");
+	var experiment = master_json.exp_mgmt.experiment.replaceAll(" ","");
 
 	participant_link = $("#publish_link").val();
 	preview_link = $("#preview_link").val();
@@ -152,15 +155,15 @@ $("#rename_exp_btn").on("click",function(){
 			var original_name = $("#experiment_list").val();
 			dbx.filesMove({from_path:"/Experiments/"+original_name+".json",to_path:"/Experiments/"+new_name+".json"})
 				.then(function(result){
-					megaUberJson.exp_mgmt.experiments[new_name] =
-					megaUberJson.exp_mgmt.experiments[original_name];
-					delete(megaUberJson.exp_mgmt.experiments[original_name]);
+					master_json.exp_mgmt.experiments[new_name] =
+					master_json.exp_mgmt.experiments[original_name];
+					delete(master_json.exp_mgmt.experiments[original_name]);
 					$.post("IndexTabs/Simulator/AjaxMySQL.php",{
 						action:"rename",
 						original_name:original_name,
 						new_name:new_name
 					}, function(returned_result){
-						updateUberMegaFile();
+						update_master_json();
 						list_experiments();
 						$("#experiment_list").val(new_name);
 					});
@@ -214,7 +217,7 @@ $("#versions_btn").on("click",function(){
 	if(typeof($_GET) == "undefined" || typeof($_GET.uid) == "undefined"){
 		bootbox.alert("If you login a dropbox account, it'll automatically backup your experiment files");
 	} else {
-		experiment = megaUberJson.exp_mgmt.experiment;
+		experiment = master_json.exp_mgmt.experiment;
 		var version_address = "https://www.dropbox.com/history/Apps/Open-Collector/experiments/"+experiment+".json?_subject_uid="+ $_GET.uid +"&undelete=1";
 
 		$("#synch_btn").on("click",function(){
@@ -229,9 +232,9 @@ $("#versions_btn").on("click",function(){
 							label: "Synch",
 							className: 'btn-primary',
 							callback: function(){
-								$.get(megaUberJson.exp_mgmt.experiments[experiment].location.replace("www.","dl."),function(result){
-									megaUberJson.exp_mgmt.experiments[experiment] = JSON.parse(result);
-									updateUberMegaFile();
+								$.get(master_json.exp_mgmt.experiments[experiment].location.replace("www.","dl."),function(result){
+									master_json.exp_mgmt.experiments[experiment] = JSON.parse(result);
+									update_master_json();
 									update_handsontables();
 								});
 							}
@@ -249,8 +252,8 @@ $("#versions_btn").on("click",function(){
 });
 
 function check_trialtypes_in_proc(procedure,post_trialtype){
-	var experiment 		= megaUberJson.exp_mgmt.experiment;
-	var this_exp   		= megaUberJson.exp_mgmt.experiments[experiment];
+	var experiment 		= master_json.exp_mgmt.experiment;
+	var this_exp   		= master_json.exp_mgmt.experiments[experiment];
 	var this_proc  		= this_exp.all_procs[procedure];
 	var trialtypes 		= [];
 	var trial_type_col  = this_proc[0].map(function(element){
@@ -267,14 +270,14 @@ function check_trialtypes_in_proc(procedure,post_trialtype){
 	}
 	trialtypes = trialtypes.filter(n => n);
 	console.dir(trialtypes);
-	if(typeof(megaUberJson.exp_mgmt.experiments[experiment].trialtypes) == "undefined"){
-		megaUberJson.exp_mgmt.experiments[experiment].trialtypes = {};
+	if(typeof(master_json.exp_mgmt.experiments[experiment].trialtypes) == "undefined"){
+		master_json.exp_mgmt.experiments[experiment].trialtypes = {};
 	}
 	trialtypes.forEach(function(trialtype){
-		if(typeof(megaUberJson.trialtypes.user_trialtypes[trialtype]) !== "undefined"){
-			megaUberJson.exp_mgmt.experiments[experiment].trialtypes[trialtype] = megaUberJson.trialtypes.user_trialtypes[trialtype];
-		} else if(typeof(megaUberJson.trialtypes.default_trialtypes[trialtype]) !== "undefined"){
-			megaUberJson.exp_mgmt.experiments[experiment].trialtypes[trialtype] = megaUberJson.trialtypes.default_trialtypes[trialtype];
+		if(typeof(master_json.trialtypes.user_trialtypes[trialtype]) !== "undefined"){
+			master_json.exp_mgmt.experiments[experiment].trialtypes[trialtype] = master_json.trialtypes.user_trialtypes[trialtype];
+		} else if(typeof(master_json.trialtypes.default_trialtypes[trialtype]) !== "undefined"){
+			master_json.exp_mgmt.experiments[experiment].trialtypes[trialtype] = master_json.trialtypes.default_trialtypes[trialtype];
 		} else {
 			custom_alert("Invalid trialtype <b>"+trialtype+"</b> in at least one of your procedure sheets. The file will save, but the experiment won't run until you use a valid trialtype.",4000);
 		}
@@ -282,50 +285,61 @@ function check_trialtypes_in_proc(procedure,post_trialtype){
 }
 
 function list_experiments(){
-	name_list = Object.keys(megaUberJson.exp_mgmt.experiments);
-	//synch with dropbox
-	dbx.filesListFolder({path:"/experiments"})
-		.then(function(experiments){
-			experiments.entries.forEach(function(entry){
-				if(entry[".tag"] == "file" && entry.name.indexOf(".json") !== -1 ){
-					var entry_name = entry.name.toLowerCase().replace(".json","");
-					//do not write over uberMegaFile for now if there is an experiment json with the same name
-					if(name_list.indexOf(entry_name) == -1){
-						name_list.push(entry_name);
-						synch_experiment(entry_name);
-					}
-				}
-			});
-			var select_html = "<select id='experiment_list'  class='custom-select'><option hidden disabled selected>Select an experiment</option>";
-			name_list.sort(function(a,b){
-				return a.toLowerCase().localeCompare(b.toLowerCase());
-			});
-			name_list.forEach(function(item_name){
-				select_html += "<option>" + item_name + "</option>";
-			});
-			select_html += "</select>";
-			$("#experiments").html(select_html);
-			$("#experiment_list").on("change",function(){
-				if(first_load == false){
-					megaUberJson.exp_mgmt.any_loaded = true;
-					$("#save_btn").click();
-				} else {
-					remove_from_list("Select a dropbox experiment");
-					first_load = false;
-				}
-				megaUberJson.exp_mgmt.experiment = this.value;
-				exp_json = megaUberJson.exp_mgmt.experiments[megaUberJson.exp_mgmt.experiment];
+	name_list = Object.keys(master_json.exp_mgmt.experiments);
+  function update_exp_list(){
+    var select_html = "<select id='experiment_list'  class='custom-select'><option hidden disabled selected>Select an experiment</option>";
+    name_list.sort(function(a,b){
+      return a.toLowerCase().localeCompare(b.toLowerCase());
+    });
+    name_list.forEach(function(item_name){
+      select_html += "<option>" + item_name + "</option>";
+    });
+    select_html += "</select>";
+    $("#experiments").html(select_html);
+    $("#experiment_list").on("change",function(){
+      if(first_load == false){
+        master_json.exp_mgmt.any_loaded = true;
+        $("#save_btn").click();
+      } else {
+        remove_from_list("Select a dropbox experiment");
+        first_load = false;
+      }
+      master_json.exp_mgmt.experiment = this.value;
+      exp_json = master_json.exp_mgmt.experiments[master_json.exp_mgmt.experiment];
 
-				var this_exp = megaUberJson.exp_mgmt.experiments[this.value];
-				$("#dropbox_inputs").show();
-				$("#run_link").attr("href","../"+ dev_obj.version + "/RunStudy.html?location="+this_exp.location);
-				$("#run_btn").attr("title","../"+ dev_obj.version + "/RunStudy.html?location="+this_exp.location);
-				update_handsontables();
-			});
-		})
-		.catch(function(error){
-			report_error(error);
-		});
+      var this_exp = master_json.exp_mgmt.experiments[this.value];
+      $("#dropbox_inputs").show();
+      $("#run_link").attr("href","../"+ dev_obj.version + "/RunStudy.html?location="+this_exp.location);
+      $("#run_btn").attr("title","../"+ dev_obj.version + "/RunStudy.html?location="+this_exp.location);
+      update_handsontables();
+    });
+  }
+	//do longer synch with dropbox if the user is using dropbox
+  if(dropbox_check()){
+    dbx.filesListFolder({path:"/experiments"})
+        .then(function(experiments){
+          experiments.entries.forEach(function(entry){
+            if(entry[".tag"] == "file" && entry.name.indexOf(".json") !== -1 ){
+              var entry_name = entry.name.toLowerCase().replace(".json","");
+              //do not write over master_json for now if there is an experiment json with the same name
+              if(name_list.indexOf(entry_name) == -1){
+                name_list.push(entry_name);
+                synch_experiment(entry_name);
+              }
+            }
+          });
+          update_exp_list();
+        })
+        .catch(function(error){
+          report_error(error);
+        });
+  } else { //just a sanity check that the user is in fact using a localhost version
+    switch(dev_obj.context){
+      case "localhost":
+        update_exp_list()
+        break;
+    }  
+  }
 }
 
 function renderItems() {
@@ -343,9 +357,9 @@ function renderItems() {
 	list_graphics();
 
 	var published_list = dev_obj.published_links;
-	megaUberJson.exp_mgmt.published_ids = {};
+	master_json.exp_mgmt.published_ids = {};
 	for(var i = 0; i< name_list.length; i++){
-		megaUberJson.exp_mgmt.published_ids[name_list[i]] = published_list[i];
+		master_json.exp_mgmt.published_ids[name_list[i]] = published_list[i];
 	}
 	initiate_actions();
   autoload_boosts();
@@ -355,7 +369,7 @@ function synch_experiment(entry_name){
 		.then(function(result){
 			console.dir(result);
 			$.get(result.url.replace("www.","dl."), function(exp_json){
-				megaUberJson.exp_mgmt.experiments[entry_name] = JSON.parse(exp_json);
+				master_json.exp_mgmt.experiments[entry_name] = JSON.parse(exp_json);
 			});
 		})
 		.catch(function(error){
@@ -363,8 +377,8 @@ function synch_experiment(entry_name){
 		});
 }
 function stim_proc_defaults(proc_values,stim_values){
-	var experiment = megaUberJson.exp_mgmt.experiment;
-	var this_exp   = megaUberJson.exp_mgmt.experiments[experiment];
+	var experiment = master_json.exp_mgmt.experiment;
+	var this_exp   = master_json.exp_mgmt.experiments[experiment];
 
 	// selecting Stimuli.csv and Procedure.csv as default
 	if(proc_values.indexOf("Procedure.csv") !== -1){
@@ -381,8 +395,8 @@ function stim_proc_defaults(proc_values,stim_values){
 	}
 }
 function update_dropdown_lists(){
-	var experiment = megaUberJson.exp_mgmt.experiment;
-	var this_exp   = megaUberJson.exp_mgmt.experiments[experiment];
+	var experiment = master_json.exp_mgmt.experiment;
+	var this_exp   = master_json.exp_mgmt.experiments[experiment];
 	var stim_values = [];
 	var proc_values = [];
 
@@ -409,8 +423,8 @@ function update_dropdown_lists(){
 	stim_proc_defaults(proc_values,stim_values);
 }
 function update_handsontables(){
-	var experiment = megaUberJson.exp_mgmt.experiment;
-	var this_exp   = megaUberJson.exp_mgmt.experiments[experiment];
+	var experiment = master_json.exp_mgmt.experiment;
+	var this_exp   = master_json.exp_mgmt.experiments[experiment];
 
 	update_dropdown_lists();
 	var stim_file = this_exp.stimuli; //location_to_filename(this_exp.stimuli);
@@ -425,13 +439,13 @@ function update_handsontables(){
 	createExpEditorHoT(this_exp.cond_array,"Conditions","Conditions.csv");
 
 	$("#run_stop_buttons").show();
-	megaUberJson.exp_mgmt.any_loaded = true;
+	master_json.exp_mgmt.any_loaded = true;
 	$("#dropbox_inputs").show();
 }
 function update_trial_json(){
 	// list all the trialtypes currently existing;
-	var experiment 		= megaUberJson.exp_mgmt.experiment;
-	var this_exp   		= megaUberJson.exp_mgmt.experiments[experiment];
+	var experiment 		= master_json.exp_mgmt.experiment;
+	var this_exp   		= master_json.exp_mgmt.experiments[experiment];
 	var proc_trialtypes = {};
 	var proc_keys		= Object.keys(this_exp.all_procs);
 
@@ -445,8 +459,8 @@ function update_trial_json(){
 		});
 	});
 }
-function updateUberMegaFile(){
-	dbx_obj.new_upload({path:"/uberMegaFile.json",contents:JSON.stringify(megaUberJson),mode:'overwrite'},function(result){
+function update_master_json(){
+	dbx_obj.new_upload({path:"/master.json",contents:JSON.stringify(master_json),mode:'overwrite'},function(result){
 		if($("#simulator_table").is(":hidden")){
 			$("#option_Edit").click();
 		}

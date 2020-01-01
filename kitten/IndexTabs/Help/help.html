@@ -154,23 +154,23 @@ function helperActivate(help_title, cellValue,help_type){
 			item_type_html += "<div id='snippet_help'></div>";
 			$("#help_text").html(item_type_html);
 
-			if(Object.keys(megaUberJson.snippets).length > 0){
+			if(Object.keys(master_json.snippets).length > 0){
 				var snippet_help_text = "";
-				if(typeof(megaUberJson.snippets._help)	 == "undefined"){
-					megaUberJson.snippets._help = {};
+				if(typeof(master_json.snippets._help)	 == "undefined"){
+					master_json.snippets._help = {};
 				}
-				var snippet_names = Object.keys(megaUberJson.snippets).filter(snippet_name => snippet_name !== "_help");
+				var snippet_names = Object.keys(master_json.snippets).filter(snippet_name => snippet_name !== "_help");
 				snippet_names.forEach(function(snippet_name){
-					if(typeof(megaUberJson.snippets._help[snippet_name]) == "undefined"){
-						var snippet_content = megaUberJson.snippets[snippet_name];
+					if(typeof(master_json.snippets._help[snippet_name]) == "undefined"){
+						var snippet_content = master_json.snippets[snippet_name];
 						if(snippet_content.indexOf("/*-----help-----") == -1){
 							snippet_help_text += 	"<h6>"+snippet_name+"</h6>"+
 																	  "The author of this snippet hasn't (yet) given any advice how to use it. If you are the author, you can add help by writing <br> /*-----help----- <br> then your advice, and then <br>----help-----*/";
 						}
 						snippet_help_text += snippet_content.split("-----help-----")[1];
-						megaUberJson.snippets._help[snippet_name] = snippet_help_text;
+						master_json.snippets._help[snippet_name] = snippet_help_text;
 					} else {
-						snippet_help_text += megaUberJson.snippets._help[snippet_name];
+						snippet_help_text += master_json.snippets._help[snippet_name];
 					}
 				});
 				$("#snippet_help").html("<br><h5 class='text-primary'>snippets</h5>" + snippet_help_text);
@@ -195,8 +195,8 @@ function helperActivate(help_title, cellValue,help_type){
 	if(proc_sheets.indexOf(help_type) !== -1){
     if(help_title == "survey"){
       $("#help_subtitle").html("Currently available surveys");
-      var def_surveys  = Object.keys(megaUberJson.surveys.default_surveys).sort();
-      var user_surveys = Object.keys(megaUberJson.surveys.user_surveys).sort();
+      var def_surveys  = Object.keys(master_json.surveys.default_surveys).sort();
+      var user_surveys = Object.keys(master_json.surveys.user_surveys).sort();
 
       def_surveys  = def_surveys.join("<br>");
       user_surveys = user_surveys.join("<br>");

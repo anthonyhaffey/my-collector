@@ -107,15 +107,8 @@ function initiate_collector(){
       break;
     case "github":
     case "gitpod":
-      $("#logged_in").show();
-      break;
     case "localhost":
-      var user_email = window.localStorage.getItem("user_email");
-      if(user_email == null){
-        $("#login_div").show();
-      } else {
-        $("#logged_in").show();
-      }
+      $("#logged_in").show();
       break;
   }
 }

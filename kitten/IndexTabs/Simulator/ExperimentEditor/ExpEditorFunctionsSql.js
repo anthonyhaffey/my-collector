@@ -78,11 +78,11 @@ function new_experiment(experiment){
 	} else {
 
 		//create it first in dropbox, THEN update table with location - duh
-		megaUberJson.exp_mgmt.experiment 			  			= experiment;
-		megaUberJson.exp_mgmt.experiments[experiment] = new_experiment_data;
+		master_json.exp_mgmt.experiment 			  			= experiment;
+		master_json.exp_mgmt.experiments[experiment] = new_experiment_data;
 
     update_handsontables();
-    updateUberMegaFile();
+    update_master_json();
 
 		var this_path = "/Experiments/"+experiment+".json";
 
@@ -132,7 +132,7 @@ function new_experiment(experiment){
 function remove_from_list(experiment){
 	var x = document.getElementById("experiment_list");
 	x.remove(experiment);
-	megaUberJson.exp_mgmt.experiment =  $("#experiment_list").val();
+	master_json.exp_mgmt.experiment =  $("#experiment_list").val();
 	if(experiment !== "Select a dropbox experiment"){
 		update_handsontables();
 	}
@@ -145,8 +145,8 @@ function show_run_stop_buttons(){
 }
 
 function stim_proc_selection(stim_proc,sheet_selected){
-	var experiment = megaUberJson.exp_mgmt.experiment;
-	var this_exp   = megaUberJson.exp_mgmt.experiments[experiment];
+	var experiment = master_json.exp_mgmt.experiment;
+	var this_exp   = master_json.exp_mgmt.experiments[experiment];
 	createExpEditorHoT(this_exp.all_stims[sheet_selected],stim_proc,sheet_selected);	//sheet_name
 }
 
@@ -183,9 +183,9 @@ function upload_exp_contents(these_contents,this_filename){
 	cleaned_filename = this_filename.toLowerCase().replace(".json","");
 
 	// note that this is a local function. right?
-	function upload_to_megaUberJson(exp_name,this_content) {
-		megaUberJson.exp_mgmt.experiment = exp_name;
-		megaUberJson.exp_mgmt.experiments[exp_name] = this_content;
+	function upload_to_master_json(exp_name,this_content) {
+		master_json.exp_mgmt.experiment = exp_name;
+		master_json.exp_mgmt.experiments[exp_name] = this_content;
 		list_experiments();
 		upload_trialtypes(this_content);
 	}
@@ -209,12 +209,12 @@ function upload_exp_contents(these_contents,this_filename){
 		value: cleaned_filename,
 
 		callback: function(exp_name){
-			if(typeof(megaUberJson.exp_mgmt.experiments[exp_name]) == "undefined"){
-				upload_to_megaUberJson(exp_name,parsed_contents);
+			if(typeof(master_json.exp_mgmt.experiments[exp_name]) == "undefined"){
+				upload_to_master_json(exp_name,parsed_contents);
 			} else {
 				bootbox.confirm("This experiment_name already exists, would you like to overwrite it?",function(result){
 					if(result){
-						upload_to_megaUberJson(exp_name,parsed_contents);
+						upload_to_master_json(exp_name,parsed_contents);
 					}
 				});
 			}
