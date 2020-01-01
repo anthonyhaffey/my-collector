@@ -4,9 +4,9 @@ block_cipher = None
 
 
 a = Analysis(['Collector.py'],
-             pathex=['C:\\Users\\Anthony Haffey\\OneDrive - University of Reading\\Github\\my-collector-new'],
+             pathex=['/home/anthony/github/my-collector'],
              binaries=[],
-             datas=[('C:\\Users\\Anthony Haffey\\AppData\\Local\\Packages\\PythonSoftwareFoundation.Python.3.7_qbz5n2kfra8p0\\LocalCache\\local-packages\\Python37\\site-packages\\eel\\eel.js', 'eel'), ('web', 'web')],
+             datas=[('/home/anthony/.local/lib/python3.6/site-packages/eel/eel.js', 'eel'), ('web', 'web')],
              hiddenimports=['bottle_websocket'],
              hookspath=[],
              runtime_hooks=[],
