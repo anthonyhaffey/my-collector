@@ -209,11 +209,11 @@ $("#save_btn").on("click", function(){
       this_exp.public_key    = master_json.keys.public_key;
       this_exp.google_script = master_json.data.google_script;
 
-	if(dev_obj.context == "localhost"){
-		eel.save_master_json(master_json);
-		//save the master_json
-		//save the specific experiment
-	}
+  if(dev_obj.context == "localhost"){
+    eel.save_master_json(master_json);
+    eel.save_experiment(experiment,     //experiment name
+                        this_exp);      //experiment content
+  }  
 
 	//parse procs for survey saving next
 	if(typeof(this_exp) !== "undefined") {

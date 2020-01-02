@@ -178,6 +178,13 @@ $("#rename_exp_btn").on("click",function(){
 });
 
 $("#run_btn").on("click",function(){
+  if(typeof(master_json.data.google_script) == "undefined" ||
+     //test here for whether there is a github repository linked
+     master_json.data.google_script == ""){
+     var no_script_warning = '<h2 class="text-danger">You have not set up where the data will be saved online yet. Whilst your experiment will work locally, it WILL NOT work online. <span onclick="online_settings()"><em><u>Click here</u></em></span> to review your online settings.</h2>';
+  } else {
+    var no_script_warning = '';
+  }
 	var select_html = '<select id="select_condition" class="custom-select">';
 	clean_conditions();
   exp_json.conditions.forEach(function(condition){
@@ -187,10 +194,19 @@ $("#run_btn").on("click",function(){
 
 	bootbox.dialog({
 		title:"Select a Condition",
-		message:"The multiple conditions functionality <b>HAS ONLY</b> just been finalised. Please pilot this carefully when using it in your own research. <br><br> Which condition would you like to run? <br><br>" + select_html,
+		message: no_script_warning + "Which condition would you like to run? <br><br>" + select_html,
 		buttons: {
+      local:{
+        label: "Local",
+				className: 'btn-primary',
+				callback: function(){
+					window.open("RunStudy.html?platform=local&" +
+                                    "location=" + master_json.exp_mgmt.experiment +"&" +
+                                    "name=" + $("#select_condition").val(),"_blank");
+				}
+      },
 			start: {
-				label: "Start",
+				label: "Online",
 				className: 'btn-primary',
 				callback: function(){
 					var selected_cond_name = $("#select_condition").val();
@@ -340,6 +356,67 @@ function list_experiments(){
         break;
     }  
   }
+}
+
+function update_this_setting(setting){
+  console.dir("howdy");
+  console.dir(setting);
+  new_val = $("#online-" + setting.replaceAll(".","-")).val();
+  eval( "master_json." + setting + " = " + "'" + new_val + "'");
+  eel.save_master_json(master_json);
+}
+
+function online_settings(){
+  if(typeof(master_json.github) == "undefined"){
+    master_json.github = {}
+  } 
+  if(typeof(master_json.github.username) == "undefined"){
+    master_json.github.username = ""
+  }
+  if(typeof(master_json.github.repository) == "undefined"){
+    master_json.github.repository = ""
+  }
+  
+  function generate_prepend(setting){
+    prepend_html = 
+      '<div class="input-group mb-3">' +
+        '<div class="input-group-prepend">' +
+          '<span class="input-group-text" id="prepend-' + setting.replaceAll(".","-") + '">' +  setting.replaceAll(".","-") + '</span>' +
+        '</div>' +
+        '<input id="online-' + setting.replaceAll(".","-") + '" type="text" class="form-control" placeholder="" aria-label="Username" value="' + eval( "master_json." + setting) + '" aria-describedby="prepend-' + setting.replaceAll(".","-") + '">' +
+      '</div>';
+    return prepend_html;
+  }
+  bootbox.dialog({
+		title:"Your online settings",
+		message:
+      "<table>"+
+        "<tr>"+
+          "<td>"+
+            generate_prepend("github.username")+
+          "</td>" +
+          "<td>"+
+            '<button id="apply_filter_btn" type="button" class="btn btn-primary" onclick="update_this_setting(\'github.username\')">Update</button>'+
+          "</td>"+
+        "</tr>"+
+        "<tr>"+
+          "<td>"+
+            generate_prepend("github.repository")+
+          "</td>"+
+          "<td>" + 
+            '<button id="apply_filter_btn" type="button" class="btn btn-primary" onclick="update_this_setting(\'github.repository\')">Update</button>'+
+          "</td>"+
+        "</tr>"+
+        "<tr>"+
+          "<td>"+
+            generate_prepend("data.google_script")+
+          "</td>"+
+          "<td>" + 
+            '<button id="apply_filter_btn" type="button" class="btn btn-primary" onclick="update_this_setting(\'data.google_script\')">Update</button>'+
+          "</td>"+
+        "</tr>"+
+      "</table>",
+	});
 }
 
 function renderItems() {
