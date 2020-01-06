@@ -86,8 +86,8 @@ function load_master_json(link_created){
     if(typeof(master_json.keys) == "undefined"){
       encrypt_obj.generate_keys();
     }
-    if(typeof(master_json.data.google_script)== "undefined"){
-      encrypt_obj.google_script_url();
+    if(typeof(master_json.data.save_script)== "undefined"){
+      encrypt_obj.save_script_url();
     }
 
     $("#public_key").val(master_json.keys.public_key);

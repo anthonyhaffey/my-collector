@@ -26,10 +26,10 @@
 		Kitten release (2019) author: Dr. Anthony Haffey (a.haffey@reading.ac.uk)
 -->
 <script src="../libraries/jquery-3.3.1.min.js"></script>
-<script src="Code/googleTriggers.js"></script>
 <script src="../libraries/tweetnacl.js"></script>
 <script src="../libraries/tweetnacl-utils.js"></script>
 <script src="../libraries/crypto-js.min.js"></script>
+<script src="Code/googleTriggers.js"></script>
 <script>
 
 function encrypt(receiverPublicKey, msgParams) {  //: string
@@ -184,38 +184,7 @@ if(typeof(dev_obj.simulator_on) !== "undefined" &&
 </div>
 <div id="participant_country"></div>
 <script>
-
-
-//solution to retrieve get values from url by weltraumpirat
-function getSearchParameters() {
-  var prmstr = window.location.search.substr(1);
-  return prmstr != null && prmstr != "" ? transformToAssocArray(prmstr) : {};
-}
-
-function transformToAssocArray( prmstr ) {
-  var params = {};
-  var prmarr = prmstr.split("&");
-  for ( var i = 0; i < prmarr.length; i++) {
-    var tmparr = prmarr[i].split("=");
-    params[tmparr[0]] = tmparr[1];
-  }
-  return params;
-}
-
-var get_vars = getSearchParameters();
-
-exp_location = get_vars["location"];
-
-
-if(typeof(get_vars["name"]) !== "undefined"){
-  exp_condition = get_vars["name"];
-} else {
-  exp_condition = "";
-}
-
 //need some default values if these variables don't yet exist
-
-
 
 if(typeof(block_save) !== "undefined"){ //i.e. simulator
 	$("#calibrate_div").hide();
@@ -623,7 +592,7 @@ function create_exp_json_functions(){
                       $("#participant_code").val(),
                       JSON.stringify(encrypt(exp_json.public_key,    //the public key
                       JSON.stringify(exp_json.responses))),          //the data
-          exp_json.google_script,
+          exp_json.save_script,
           function(){
             google_obj.saves_ended ++;
           }); 
@@ -1136,36 +1105,101 @@ function write_trial_iframe(index){
 //////////////////////
 // Start experiment //
 //////////////////////
+
+//solution to retrieve get values from url by weltraumpirat
+function getSearchParameters() {
+  var prmstr = window.location.search.substr(1);
+  return prmstr != null && prmstr != "" ? transformToAssocArray(prmstr) : {};
+}
+
+function transformToAssocArray( prmstr ) {
+  var params = {};
+  var prmarr = prmstr.split("&");
+  for ( var i = 0; i < prmarr.length; i++) {
+    var tmparr = prmarr[i].split("=");
+    params[tmparr[0]] = tmparr[1];
+  }
+  return params;
+}
+
+var get_vars = getSearchParameters();
+
+get_vars.location;
+
+
+if(typeof(get_vars["name"]) !== "undefined"){
+  exp_condition = get_vars["name"];
+} else {
+  exp_condition = "";
+}
+
+
 var exp_json = ""; //this will get updated
-  
+
+function start_study(){
+  switch(get_vars.platform){
+    case "localhost":
+      console.dir("HI");
+      $.get("../Local/Experiments/" + get_vars.location + ".json",function(result){
+        console.dir(result);
+        exp_json = result;
+        if(typeof(dev_obj.simulator_on) == "undefined" || dev_obj.simulator_on == "false"){ //note this HAS TO BE IN QUOTES to pass properly from PhP to js.
+          initiate_experiment();
+        }
+      });
+      break;
+    default:
+      console.dir("Ho");
+      if(typeof(get_vars.location) !== "undefined" && get_vars.location !== ""){
+        console.dir(get_vars.location);        
+        if(get_vars.location.indexOf("www.dropbox") !== -1){
+          get_location = get_vars.location.replace("www.","dl.");
+        } else {
+          get_location = get_vars.location;
+        }
+        $.get(get_location,function(this_experiment){
+          exp_json = JSON.parse(this_experiment);
+          if(typeof(dev_obj.simulator_on) == "undefined" || dev_obj.simulator_on == "false"){ //note this HAS TO BE IN QUOTES to pass properly from PhP to js.
+            initiate_experiment();
+          }
+        });
+      }
+      break;
+  }
+}
 
 if(window.localStorage.getItem("exp_json") !== null){
-  exp_json = JSON.parse(window.localStorage.getItem("exp_json"));
-  initiate_experiment("resume");
+   
+  bootbox.dialog({
+		title:"Restart?",
+		message: "It looks like you have already started this experiment, would you like to resume or restart?",
+		buttons: {
+      local:{
+        label: "Resume",
+				className: 'btn-primary',
+				callback: function(){
+          exp_json = JSON.parse(window.localStorage.getItem("exp_json"));
+          initiate_experiment("resume");				
+				}
+      },
+			start: {
+				label: "Restart",
+				className: 'btn-danger',
+				callback: function(){
+          start_study();
+				}
+			},
+			cancel: {
+				label: "Cancel",
+				className: 'btn-secondary',
+				callback: function(){
+					//nada;
+				}
+			}
+		}
+	});
 } else {
-  if(typeof(exp_location) !== "undefined" && exp_location !== ""){
-    console.dir(exp_location);
-
-    if(exp_location.indexOf("www.dropbox") !== -1){
-      get_location = exp_location.replace("www.","dl.");
-    } else {
-      get_location = exp_location;
-    }
-
-    $.get(get_location,function(this_experiment){
-      exp_json = JSON.parse(this_experiment);
-      if(typeof(dev_obj.simulator_on) == "undefined" || dev_obj.simulator_on == "false"){ //note this HAS TO BE IN QUOTES to pass properly from PhP to js.
-        initiate_experiment();
-      }
-    });
-  } else {
-    //assume it's gitpod
-    get_location = "https://dl.dropbox.com/s/46xw6a4pkfery75/PY1PR_Autumn_Workshop_1.json?dl";
-    $.get(get_location,function(this_experiment){
-      exp_json = JSON.parse(this_experiment);
-      initiate_experiment();
-    });
-  }
+  start_study();
 }
 
 

@@ -207,13 +207,7 @@ $("#save_btn").on("click", function(){
 	var experiment = master_json.exp_mgmt.experiment;
   var this_exp = master_json.exp_mgmt.experiments[experiment];
       this_exp.public_key    = master_json.keys.public_key;
-      this_exp.google_script = master_json.data.google_script;
-
-  if(dev_obj.context == "localhost"){
-    eel.save_master_json(master_json);
-    eel.save_experiment(experiment,     //experiment name
-                        this_exp);      //experiment content
-  }  
+      this_exp.save_script = master_json.data.save_script;
 
 	//parse procs for survey saving next
 	if(typeof(this_exp) !== "undefined") {
@@ -298,7 +292,11 @@ $("#save_btn").on("click", function(){
       }
     });
 
-
+    if(dev_obj.context == "localhost"){
+      eel.save_master_json(master_json);
+      eel.save_experiment(experiment,     //experiment name
+                          this_exp);      //experiment content
+    }  
 
     //dropbox check here
     if(dropbox_check()){

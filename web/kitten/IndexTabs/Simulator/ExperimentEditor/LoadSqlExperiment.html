@@ -178,9 +178,10 @@ $("#rename_exp_btn").on("click",function(){
 });
 
 $("#run_btn").on("click",function(){
-  if(typeof(master_json.data.google_script) == "undefined" ||
+  alert("beep");
+  if(typeof(master_json.data.save_script) == "undefined" ||
      //test here for whether there is a github repository linked
-     master_json.data.google_script == ""){
+     master_json.data.save_script == ""){
      var no_script_warning = '<h2 class="text-danger">You have not set up where the data will be saved online yet. Whilst your experiment will work locally, it WILL NOT work online. <span onclick="online_settings()"><em><u>Click here</u></em></span> to review your online settings.</h2>';
   } else {
     var no_script_warning = '';
@@ -200,7 +201,7 @@ $("#run_btn").on("click",function(){
         label: "Local",
 				className: 'btn-primary',
 				callback: function(){
-					window.open("RunStudy.html?platform=local&" +
+					window.open("RunStudy.html?platform=localhost&" +
                                     "location=" + master_json.exp_mgmt.experiment +"&" +
                                     "name=" + $("#select_condition").val(),"_blank");
 				}
@@ -409,10 +410,10 @@ function online_settings(){
         "</tr>"+
         "<tr>"+
           "<td>"+
-            generate_prepend("data.google_script")+
+            generate_prepend("data.save_script")+
           "</td>"+
           "<td>" + 
-            '<button id="apply_filter_btn" type="button" class="btn btn-primary" onclick="update_this_setting(\'data.google_script\')">Update</button>'+
+            '<button id="apply_filter_btn" type="button" class="btn btn-primary" onclick="update_this_setting(\'data.save_script\')">Update</button>'+
           "</td>"+
         "</tr>"+
       "</table>",
