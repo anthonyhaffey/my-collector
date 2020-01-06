@@ -1,6 +1,6 @@
 /*  Collector (Garcia, Kornell, Kerr, Blake & Haffey)
     A program for running experiments on the web
-    Copyright 2012-2016 Mikey Garcia & Nate Kornell
+    Copyright 2012-2020 Mikey Garcia & Nate Kornell
 
 
     This program is free software: you can redistribute it and/or modify
@@ -15,7 +15,7 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>
 
-		Kitten release (2019) author: Dr. Anthony Haffey (a.haffey@reading.ac.uk)
+		Kitten release (2019-2020) author: Dr. Anthony Haffey (a.haffey@reading.ac.uk)
 */
 $("#delete_exp_btn").on("click",function(){
 	var this_exp = $("#experiment_list").val();
@@ -57,18 +57,54 @@ $("#download_experiment_button").on("click",function(){
 			}
 		}
 	});
+});
+$("#links_btn").on("click",function(){
+	var experiment = master_json.exp_mgmt.experiment.replaceAll(" ","");
 
+	participant_link = $("#publish_link").val();
+	preview_link = $("#preview_link").val();
+	iframe_code  = 	"<button class='btn btn-primary' data-toggle='collapse' data-target='#preview_"+experiment+"'> Show/Hide Preview </button>"+
+                  "<button class='btn btn-primary' onclick='window.open(\""+preview_link+"\");'>Open in new tab</button>"+
+                  "<div id='preview_"+experiment+"' class='collapse'> "+
+                    "<table>"+
+                      "<tr>"+
+                        "<td align='right'>"+
+                          "<button class='btn btn-primary' onclick='$(\"#iframe_"+experiment+"\").attr(\"src\",\""+preview_link+"\")'>Refresh</button>"+
+                        "</td>"+
+                      "</tr>"+
+                      "<tr>"+
+                        "<td>"+
+                          "<iframe id='iframe_"+experiment+"' src='"+preview_link+"' style='width:800px; height:800px'></iframe>"+
+                        "</td>"+
+                      "</tr>"+
+                    "</table>"+
+                  "</div>";
+
+	bootbox.dialog({
+		title:"Links",
+		message:"Send these links to participants or collaborators:<br><br>"+
+				"<table>"+
+					"<tr>"+
+						"<td>Participant link (to collect data)</td>"+
+						"<td><input style='width:300px' onfocus='this.select();' readonly value='"+participant_link+"'></td>"+
+					"</tr>"+
+					"<tr>"+
+						"<td>Preview link (will <b style='color:red'>NOT</b> collect data)</td>"+
+						"<td><input style='width:300px' onfocus='this.select();' readonly value='"+preview_link+"'></td>"+
+					"</tr>"+
+					"<tr>"+
+						"<td valign='middle'>iframe code</td>"+
+						"<td><textarea style='width:300px;height:250px;' onfocus='this.select();' readonly>"+iframe_code+"</textarea></td>"+
+					"</tr>"+
+				"</table>",
+	});
 });
 $("#new_proc_button").on("click",function(){
   var proc_template = new_experiment_data["Procedure"]["Procedure.csv"];
-
 	bootbox.prompt("What would you like the name of the new procedure sheet to be?",function(new_proc_name){
 		var experiment = master_json.exp_mgmt.experiment;
 		var this_exp   = master_json.exp_mgmt.experiments[experiment];
 		var current_procs = Object.keys(this_exp.all_procs);
-
-
-
 		if(current_procs.indexOf(new_proc_name) !== -1){
 			bootbox.alert("You already have a procedure sheet with that name");
 		} else {
@@ -80,21 +116,15 @@ $("#new_proc_button").on("click",function(){
 			}));
 			$("#proc_select").val(new_proc_name);
 			createExpEditorHoT(this_exp.all_procs[new_proc_name],"procedure",new_proc_name);	//sheet_name
-
 		}
 	});
 });
 $("#new_stim_button").on("click",function(){
-
 	var stim_template = new_experiment_data["Stimuli"]["Stimuli.csv"];
-
 	bootbox.prompt("What would you like the name of the new <b>Stimuli</b> sheet to be?",function(new_sheet_name){
 		var experiment = master_json.exp_mgmt.experiment;
 		var this_exp   = master_json.exp_mgmt.experiments[experiment];
 		var current_stims = Object.keys(this_exp.all_stims);
-
-
-
 		if(current_stims.indexOf(new_sheet_name) !== -1){
 			bootbox.alert("You already have a <b>Stimuli</b> sheet with that name");
 		} else {
@@ -106,11 +136,8 @@ $("#new_stim_button").on("click",function(){
 			}));
 			$("#stim_select").val(new_sheet_name);
 			createExpEditorHoT(this_exp.all_stims[new_sheet_name],"stimuli",new_sheet_name);	//sheet_name
-
 		}
 	});
-
-
 });
 $("#new_experiment_button").on("click",function(){
 	bootbox.prompt("What would you like to name the new experiment?",function(result){
@@ -130,6 +157,35 @@ $("#proc_select").on("change",function(){
 });
 $("#publish_link").on("click", function () {
 	$(this).select();
+});
+$("#rename_exp_btn").on("click",function(){
+	bootbox.prompt("What would you like to rename this experiment to?",function(new_name){
+		if($("#experiment_list").text().indexOf(new_name) !== -1){
+			bootbox.alert("You already have an experiment with this name");
+		} else { //proceed
+			var original_name = $("#experiment_list").val();
+			dbx.filesMove({from_path:"/Experiments/"+original_name+".json",to_path:"/Experiments/"+new_name+".json"})
+				.then(function(result){
+					master_json.exp_mgmt.experiments[new_name] =
+					master_json.exp_mgmt.experiments[original_name];
+					delete(master_json.exp_mgmt.experiments[original_name]);
+					$.post("IndexTabs/Simulator/AjaxMySQL.php",{
+						action:"rename",
+						original_name:original_name,
+						new_name:new_name
+					}, function(returned_result){
+						update_master_json();
+						list_experiments();
+						$("#experiment_list").val(new_name);
+					});
+				})
+				.catch(function(error){
+					report_error(error);
+				});
+		}
+		//confirm that there isn't another experiment with that name
+
+	});
 });
 $("#rename_proc_button").on("click",function(){
 	bootbox.prompt("What do you want to rename this <b>Procedure</b> sheet to?",function(new_proc_name){
@@ -190,6 +246,57 @@ $("#rename_stim_button").on("click",function(){
 			$('#stim_select option[value="' + current_stim + '"]').remove();
 
 			createExpEditorHoT(this_exp.all_stims[new_sheet_name],"stimuli",new_sheet_name);	//sheet_name
+		}
+	});
+});
+$("#run_btn").on("click",function(){
+  if(typeof(master_json.data.save_script) == "undefined" ||
+     //test here for whether there is a github repository linked
+     master_json.data.save_script == ""){
+     var no_script_warning = '<h2 class="text-danger">You have not set up where the data will be saved online yet. Whilst your experiment will work locally, it WILL NOT work online. <span onclick="online_settings()"><em><u>Click here</u></em></span> to review your online settings.</h2>';
+  } else {
+    var no_script_warning = '';
+  }
+	var select_html = '<select id="select_condition" class="custom-select">';
+	clean_conditions();
+  exp_json.conditions.forEach(function(condition){
+		select_html += "<option>" + condition.name + "</option>";
+	});
+	select_html += "</select>";
+
+	bootbox.dialog({
+		title:"Select a Condition",
+		message: no_script_warning + "Which condition would you like to run? <br><br>" + select_html,
+		buttons: {
+      local:{
+        label: "Localhost",
+				className: 'btn-primary',
+				callback: function(){
+					window.open("RunStudy.html?platform=localhost&" +
+                                    "location=" + master_json.exp_mgmt.experiment +"&" +
+                                    "name=" + $("#select_condition").val(),"_blank");
+				}
+      },
+			start: {
+				label: "Online",
+				className: 'btn-primary',
+				callback: function(){
+					var selected_cond_name = $("#select_condition").val();
+					exp_condition = selected_cond_name;
+					var link_old = $("#run_link")[0].href;
+							link_old = link_old.split("&");
+							link_new = link_old[0] + "&name=" + selected_cond_name;
+					$("#run_link")[0].href = link_new;
+					$("#run_link")[0].click();
+				}
+			},
+			cancel: {
+				label: "Cancel",
+				className: 'btn-secondary',
+				callback: function(){
+					//nada;
+				}
+			}
 		}
 	});
 });
@@ -378,3 +485,41 @@ $("#upload_experiment_input").on("change",function(){
 		reader.readAsBinaryString(myFile);
 	}
 });
+$("#versions_btn").on("click",function(){
+	if(typeof($_GET) == "undefined" || typeof($_GET.uid) == "undefined"){
+		bootbox.alert("If you login a dropbox account, it'll automatically backup your experiment files");
+	} else {
+		experiment = master_json.exp_mgmt.experiment;
+		var version_address = "https://www.dropbox.com/history/Apps/Open-Collector/experiments/"+experiment+".json?_subject_uid="+ $_GET.uid +"&undelete=1";
+
+		$("#synch_btn").on("click",function(){
+			alert("hi there");
+		});
+
+		var dialog = bootbox.dialog({
+			title: 'Revert back to an earlier version',
+			message: "<p>Click <a href='"+version_address+"' target='_blank'>here</a> to see version history of this file in dropbox<br><br>If you've reverted the current experiment '"+experiment+"' to an earlier version, click on the 'synch' button to load the reverted version of the experiment.</p>",
+			buttons: {
+					synch: {
+							label: "Synch",
+							className: 'btn-primary',
+							callback: function(){
+								$.get(master_json.exp_mgmt.experiments[experiment].location.replace("www.","dl."),function(result){
+									master_json.exp_mgmt.experiments[experiment] = JSON.parse(result);
+									update_master_json();
+									update_handsontables();
+								});
+							}
+					},
+					cancel: {
+							label: "Cancel",
+							className: 'btn-secondary',
+							callback: function(){
+									//nothing, just close
+							}
+					},
+			}
+    });
+	}
+});
+

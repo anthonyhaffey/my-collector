@@ -109,7 +109,7 @@ def load_master_json():
         master_json = json.loads(master_json)
         eel.load_master_json(master_json)
 
-@eel.expose
+@eel.expose 
 def save_experiment(experiment_name,experiment_json):
     print("trying to save experiment")
     if os.path.isdir("web/Local/Experiments") == False:
