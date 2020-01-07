@@ -25,6 +25,7 @@
 
 		Kitten release (2019) author: Dr. Anthony Haffey (a.haffey@reading.ac.uk)
 -->
+<script src="../../eel.js"></script>
 <script src="../libraries/jquery-3.3.1.min.js"></script>
 <script src="../libraries/tweetnacl.js"></script>
 <script src="../libraries/tweetnacl-utils.js"></script>
@@ -225,6 +226,7 @@ google_obj = {
 
 function local_save(){
   window.localStorage.setItem("exp_json",JSON.stringify(exp_json));
+  window.localStorage.setItem("username",$("#participant_code").val());
 }
 
 function simulator_off(){
@@ -364,6 +366,7 @@ function final_trial(){
               $("#participant_country").show();
               $("#participant_country").load("ParticipantCountry.html");
               window.localStorage.removeItem("exp_json");
+              window.localStorage.removeItem("username");
             },1000);
           } else {
             var google_prog_perc = (100*google_obj.saves_ended/google_obj.saves_started) + "%";
@@ -517,9 +520,9 @@ function process_welcome(){
 											"<br><br>" +
 											"<h4>It's very important to read the following before starting!</h1>" +
 											"<div class='text-danger'>If you complete multiple Collector experiments at the same time, your completion codes may be messed up. Please do not do this!</div>" +
-											"<br><br>" +
-											"<div class='text-danger'>If you refresh the page, you will lose <b>ALL</b> your progress. </div>"+
-											"<br><br>" +
+											"<br>" +
+											"<div class='text-danger'>If you participate in this experiment, your progress in it will be stored on your local machine to avoid you losing your progress if the window or tab closes or freezes. This data will be cleared from your computer once you have completed the task. <b>However, if you do not want this website to store your progress on your computer, DO NOT PROCEED.</b></div>"+
+											"<br>" +
 											"<div class='text-danger'>If the experiment freezes, try pressing <b>CTRL-S</b> to save your data so far. </div>";
 			$("#researcher_message").html(def_start_msg);
 		}
@@ -561,27 +564,48 @@ function create_exp_json_functions(){
 	//////////////////////////
 
 	exp_json.finish_trial = function(trial_no,post_no){
-    
+    if(typeof(dev_obj.experiment) == "undefined"){
+      //get experiment name from url
+      var split_url      = document.URL.split(".json")[0];
+      dev_obj.experiment = split_url.split("/").pop();
+    }
+    switch(get_vars.platform){
+      case "localhost":
+        eel.save_data(get_vars.location,
+                      $("#participant_code").val(),
+                      Papa.unparse(complete_csv(exp_json.responses),{
+                        quotes: false, //or array of booleans
+                        quoteChar: '"',
+                        escapeChar: '"',
+                        delimiter: ",",
+                        header: true,
+                        newline: "\r\n",
+                        skipEmptyLines: true, //or 'greedy',
+                        columns: null         //or array of strings
+                      }));                    //the data
+        break;
+      case "github":
+        google_obj.saves_started ++;
+        google_obj.save_queue_add(
+          function(){
+            google_save(dev_obj.experiment,
+                        $("#participant_code").val(),
+                        JSON.stringify(encrypt(exp_json.public_key,    //the public key
+                        JSON.stringify(exp_json.responses))),          //the data
+            exp_json.save_script,
+            function(){
+              google_obj.saves_ended ++;
+            }); 
+          }
+        );
+        break
+      case "preview":
+        //do nothing - you are not meant to be saving;
+        break;
+    }
     //trigger google save if we know we're in github
     if(dev_obj.context == "github"){
-      if(typeof(dev_obj.experiment) == "undefined"){
-        //get experiment name from url
-        var split_url      = document.URL.split(".json")[0];
-        dev_obj.experiment = split_url.split("/").pop();
-      }
-      google_obj.saves_started ++;
-      google_obj.save_queue_add(
-        function(){
-          google_save(dev_obj.experiment,
-                      $("#participant_code").val(),
-                      JSON.stringify(encrypt(exp_json.public_key,    //the public key
-                      JSON.stringify(exp_json.responses))),          //the data
-          exp_json.save_script,
-          function(){
-            google_obj.saves_ended ++;
-          }); 
-        }
-      );
+      
     }
     
 		$("#experiment_progress").css("width",(100 * exp_json.trial_no/(exp_json.parsed_proc.length-1))+"%");
@@ -612,6 +636,10 @@ function create_exp_json_functions(){
 		} else {
 			this_stim = exp_json.parsed_stims[exp_json.stimuli][this_proc.item];
 		}
+
+    if(this_stim == null){
+      this_stim = {};
+    }
 
     var objs = [exp_json.this_trial, trial_inputs, this_proc, this_stim],
     response_data =  objs.reduce(function (r, o) {
@@ -1123,7 +1151,8 @@ var exp_json = ""; //this will get updated
 function start_study(){
   switch(get_vars.platform){
     case "localhost":
-      console.dir("HI");
+    case "github":
+    case "preview":
       $.get("../Local/Experiments/" + get_vars.location + ".json",function(result){
         console.dir(result);
         exp_json = result;
@@ -1133,7 +1162,6 @@ function start_study(){
       });
       break;
     default:
-      console.dir("Ho");
       if(typeof(get_vars.location) !== "undefined" && get_vars.location !== ""){
         console.dir(get_vars.location);        
         if(get_vars.location.indexOf("www.dropbox") !== -1){
@@ -1152,6 +1180,9 @@ function start_study(){
   }
 }
 
+if(get_vars.platform == "preview"){
+  bootbox.alert("You are in <b>Preview</b> mode. This means that you will <b>NOT</b> be saving any data. If this is not what you want, go back to the study editor, click <em>run</em> again, and click on 'local' or 'online' instead of 'preview'");
+}
 if(window.localStorage.getItem("exp_json") !== null){
    
   bootbox.dialog({
@@ -1163,7 +1194,10 @@ if(window.localStorage.getItem("exp_json") !== null){
 				className: 'btn-primary',
 				callback: function(){
           exp_json = JSON.parse(window.localStorage.getItem("exp_json"));
-          initiate_experiment("resume");				
+          var participant_code = window.localStorage.getItem("username");
+          $("#participant_code").val(participant_code);
+          initiate_experiment("resume");
+          post_welcome(participant_code,false);
 				}
       },
 			start: {

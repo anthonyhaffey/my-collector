@@ -109,7 +109,23 @@ def load_master_json():
         master_json = json.loads(master_json)
         eel.load_master_json(master_json)
 
-@eel.expose 
+@eel.expose
+def save_data(experiment_name,participant_code,responses):
+    print("experiment_name")
+    print(experiment_name)
+    print("participant_code")
+    print(participant_code)
+    print("responses")
+    print(responses)
+    if os.path.isdir("web/Local/Data") == False:
+        os.mkdir("web/Local/Data")
+    if os.path.isdir("web/Local/Data/" + experiment_name) == False:
+        os.mkdir("web/Local/Data/" + experiment_name)
+    experiment_file = open("web/Local/Data/" + experiment_name+ "/" + participant_code + ".csv", "w")
+    experiment_file.write(responses)
+
+
+@eel.expose
 def save_experiment(experiment_name,experiment_json):
     print("trying to save experiment")
     if os.path.isdir("web/Local/Experiments") == False:

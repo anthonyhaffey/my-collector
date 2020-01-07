@@ -125,7 +125,6 @@ encrypt_obj = {
       this_decrypted_message = JSON.parse(encrypt_obj.decrypt(decrypted_private_key,JSON.parse(encrypted_content)));
       
       response_headers 		 = [];
-      condition_headers 	 = [];	
       for(var i = 0; i < this_decrypted_message.length ; i++) {
         decrypted_data = this_decrypted_message[i];
         Object.keys(decrypted_data).forEach(function(header){
@@ -133,7 +132,7 @@ encrypt_obj = {
             response_headers.push(header);
           };
         });        
-      }
+      }        
 
       for(var i =0; i < this_decrypted_message.length; i++){
         response_headers.forEach(function(this_header){

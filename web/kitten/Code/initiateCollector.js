@@ -41,7 +41,26 @@ function collectorPapaParsed(preparsed){
 
 	return post_parsed;
 }
+function complete_csv(this_csv){
+  response_headers 		 = [];
+  for(var i = 0; i < this_csv.length ; i++) {
+    csv_row = this_csv[i];
+    Object.keys(csv_row).forEach(function(header){
+      if(response_headers.indexOf(header) == -1){
+        response_headers.push(header);
+      };
+    });        
+  }        
 
+  for(var i =0; i < this_csv.length; i++){
+    response_headers.forEach(function(this_header){
+      if(typeof(this_csv[i][this_header]) == "undefined"){
+        this_csv[i][this_header] = "";
+      }
+    });
+  }
+  return this_csv;
+}
 function create_alerts_container() {
 	if (typeof(alerts_ready) !== "undefined" && alerts_ready) return;
 
