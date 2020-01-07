@@ -17,19 +17,6 @@
  		
 		Kitten release (2019) author: Dr. Anthony Haffey (a.haffey@reading.ac.uk)		
 */
-function clean_conditions(){
-  exp_json = master_json.exp_mgmt.experiments[master_json.exp_mgmt.experiment];	
-	exp_json.conditions = collectorPapaParsed(exp_json.cond_array);	
-  exp_json.conditions = exp_json.conditions.filter(row => row.procedure !== "");  
-  exp_json.conditions.forEach(function(row){
-    console.dir(row);
-    console.dir(row.name);
-    if(row.name.indexOf(" ") !== -1){
-      bootbox.alert("You have a space in your condition: " + row.name + ". Please change the name to not have any spaces");
-    }
-  });
-}
-
 function simulate_experiment() {    
 	clean_conditions();
 	

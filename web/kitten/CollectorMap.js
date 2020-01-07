@@ -11,9 +11,9 @@ window.Papa          || document.write('<script src="https://cdnjs.cloudflare.co
 
 // Collector specific
 
-window.Handsontable || document.write('<link rel="stylesheet" href="https://anthonyhaffey.github.io/my-collector/kitten/IndexTabs/Simulator/handsontables/handsontables.full.css">' +
-'<script type="text/javascript" charset="utf-8" src="https://anthonyhaffey.github.io/my-collector/kitten/IndexTabs/Simulator/handsontables/handsontables.full.js">' + 
-'<\/script><script type="text/javascript" charset="utf-8" src="https://anthonyhaffey.github.io/my-collector/kitten/IndexTabs/Simulator/HandsontableFunctions.js"><\/script>');
+window.Handsontable || document.write('<link rel="stylesheet" href="https://anthonyhaffey.github.io/my-collector/kitten/IndexTabs/Studies/handsontables/handsontables.full.css">' +
+'<script type="text/javascript" charset="utf-8" src="https://anthonyhaffey.github.io/my-collector/kitten/IndexTabs/Studies/handsontables/handsontables.full.js">' + 
+'<\/script><script type="text/javascript" charset="utf-8" src="https://anthonyhaffey.github.io/my-collector/kitten/IndexTabs/Studies/HandsontableFunctions.js"><\/script>');
 
 window.clean_obj_keys || document.write('<script src="https://anthonyhaffey.github.io/my-collector/kitten/jsFunctions.js"><\/script>');
 
@@ -46,7 +46,7 @@ var isolation_map = {
       "ProcHelp.json" : "file",
       "SurvHelp.json" : "file",
     },
-    Simulator:{
+    Studies:{
       ExperimentEditor:{        
         "ExperimentEditor.html" : "file"
       },

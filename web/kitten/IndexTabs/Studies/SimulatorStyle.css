@@ -18,10 +18,6 @@
 		Kitten release (2019) author: Dr. Anthony Haffey (a.haffey@reading.ac.uk)		
 */
 
-
-#authorised_interface{
-	width:100%;
-}
 #exp_data > tbody > tr > td { 
   text-align: center; padding: 15px; 
 }

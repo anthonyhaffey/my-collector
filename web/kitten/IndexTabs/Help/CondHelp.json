@@ -41,7 +41,7 @@
   },
 	"fullscreen":{
     "subtitle":"On or off?",
-    "text":"By default, the experiment will <b>NOT</b> be in Fullscreen mode. Change this to <b>off</b> if you don't want this."
+    "text":"By default, the experiment will <b>NOT</b> be in Fullscreen mode. Change this to <b>on</b> if you don't want this."
   }
 }
 

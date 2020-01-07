@@ -25,24 +25,23 @@ dev_obj.context = "";
 dev_obj.version = "kitten"; //this needs to be updated when moving to cat, but perhaps can just be hardcoded
 dev_obj.published_links = [];
 
-function custom_alert(msg,duration) {
-  if(typeof(duration) == "undefined"){
-		duration = 1000;
-	}
-	create_alerts_container();
-	var el = $("<div>");
-	el.html(msg);
-	el.css("opacity", "0");
-	$("#alerts").append(el).show();
-	el.animate({opacity: "1"}, 600, "swing", function() {
-		$(this).delay(duration).animate({height: "0px"}, 800, "swing", function() {
-			$(this).remove();
-			if ($("#alerts").html() === '') {
-				$("#alerts").hide();
-			}
-		});
-	});
+
+function collectorPapaParsed(preparsed){
+
+	post_parsed = Papa.parse(Papa.unparse(preparsed),{
+		beforeFirstChunk: function(chunk) {
+			var rows = chunk.split( /\r\n|\r|\n/ );
+			var headings = rows[0].toLowerCase();
+			rows[0] = headings;
+			return rows.join("\r\n");
+		},
+		header:true,
+		skipEmptyLines:true
+	}).data;
+
+	return post_parsed;
 }
+
 function create_alerts_container() {
 	if (typeof(alerts_ready) !== "undefined" && alerts_ready) return;
 
@@ -73,7 +72,24 @@ function create_alerts_container() {
 
 	alerts_ready = true;
 }
-
+function custom_alert(msg,duration) {
+  if(typeof(duration) == "undefined"){
+		duration = 1000;
+	}
+	create_alerts_container();
+	var el = $("<div>");
+	el.html(msg);
+	el.css("opacity", "0");
+	$("#alerts").append(el).show();
+	el.animate({opacity: "1"}, 600, "swing", function() {
+		$(this).delay(duration).animate({height: "0px"}, 800, "swing", function() {
+			$(this).remove();
+			if ($("#alerts").html() === '') {
+				$("#alerts").hide();
+			}
+		});
+	});
+}
 function detect_context(){
   if(document.URL.indexOf("localhost") !== -1){
     return "localhost";

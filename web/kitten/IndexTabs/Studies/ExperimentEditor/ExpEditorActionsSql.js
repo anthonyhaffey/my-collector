@@ -20,9 +20,9 @@
 $("#delete_exp_btn").on("click",function(){
 	var this_exp = $("#experiment_list").val();
 	if(this_exp == null){
-		bootbox.alert("You need to select an experiment to delete it");
+		bootbox.alert("You need to select a study to delete it");
 	} else {
-		bootbox.confirm("Are you sure you want to delete your experiment? <br><br> If you delete it you can go to your <a href='https://www.dropbox.com/home/Apps/Open-Collector' target='blank'>dropbox folder</a> to look up previous versions of your experiment.", function(result) {
+		bootbox.confirm("Are you sure you want to delete your experiment? <br><br> If you delete it you can go to your <a href='https://www.dropbox.com/home/Apps/Open-Collector' target='blank'>dropbox folder</a> to look up previous versions of your study.", function(result) {
 			if(result){
 				//delete from master_json
 				delete (master_json.exp_mgmt.experiments[this_exp]);
@@ -56,47 +56,6 @@ $("#download_experiment_button").on("click",function(){
 				download_collector_file(result,JSON.stringify(exp_json),"json");
 			}
 		}
-	});
-});
-$("#links_btn").on("click",function(){
-	var experiment = master_json.exp_mgmt.experiment.replaceAll(" ","");
-
-	participant_link = $("#publish_link").val();
-	preview_link = $("#preview_link").val();
-	iframe_code  = 	"<button class='btn btn-primary' data-toggle='collapse' data-target='#preview_"+experiment+"'> Show/Hide Preview </button>"+
-                  "<button class='btn btn-primary' onclick='window.open(\""+preview_link+"\");'>Open in new tab</button>"+
-                  "<div id='preview_"+experiment+"' class='collapse'> "+
-                    "<table>"+
-                      "<tr>"+
-                        "<td align='right'>"+
-                          "<button class='btn btn-primary' onclick='$(\"#iframe_"+experiment+"\").attr(\"src\",\""+preview_link+"\")'>Refresh</button>"+
-                        "</td>"+
-                      "</tr>"+
-                      "<tr>"+
-                        "<td>"+
-                          "<iframe id='iframe_"+experiment+"' src='"+preview_link+"' style='width:800px; height:800px'></iframe>"+
-                        "</td>"+
-                      "</tr>"+
-                    "</table>"+
-                  "</div>";
-
-	bootbox.dialog({
-		title:"Links",
-		message:"Send these links to participants or collaborators:<br><br>"+
-				"<table>"+
-					"<tr>"+
-						"<td>Participant link (to collect data)</td>"+
-						"<td><input style='width:300px' onfocus='this.select();' readonly value='"+participant_link+"'></td>"+
-					"</tr>"+
-					"<tr>"+
-						"<td>Preview link (will <b style='color:red'>NOT</b> collect data)</td>"+
-						"<td><input style='width:300px' onfocus='this.select();' readonly value='"+preview_link+"'></td>"+
-					"</tr>"+
-					"<tr>"+
-						"<td valign='middle'>iframe code</td>"+
-						"<td><textarea style='width:300px;height:250px;' onfocus='this.select();' readonly>"+iframe_code+"</textarea></td>"+
-					"</tr>"+
-				"</table>",
 	});
 });
 $("#new_proc_button").on("click",function(){
@@ -155,9 +114,6 @@ $("#proc_select").on("change",function(){
 	var this_exp   = master_json.exp_mgmt.experiments[experiment];
 	createExpEditorHoT(this_exp.all_procs[this.value], "procedure", this.value);
 });
-$("#publish_link").on("click", function () {
-	$(this).select();
-});
 $("#rename_exp_btn").on("click",function(){
 	bootbox.prompt("What would you like to rename this experiment to?",function(new_name){
 		if($("#experiment_list").text().indexOf(new_name) !== -1){
@@ -169,7 +125,7 @@ $("#rename_exp_btn").on("click",function(){
 					master_json.exp_mgmt.experiments[new_name] =
 					master_json.exp_mgmt.experiments[original_name];
 					delete(master_json.exp_mgmt.experiments[original_name]);
-					$.post("IndexTabs/Simulator/AjaxMySQL.php",{
+					$.post("IndexTabs/Studies/AjaxMySQL.php",{
 						action:"rename",
 						original_name:original_name,
 						new_name:new_name
@@ -273,23 +229,41 @@ $("#run_btn").on("click",function(){
 				className: 'btn-primary',
 				callback: function(){
 					window.open("RunStudy.html?platform=localhost&" +
-                                    "location=" + master_json.exp_mgmt.experiment +"&" +
-                                    "name=" + $("#select_condition").val(),"_blank");
+                      "location=" + master_json.exp_mgmt.experiment + "&" +
+                      "name=" + $("#select_condition").val(),"_blank");
 				}
       },
-			start: {
+			online: {
 				label: "Online",
 				className: 'btn-primary',
-				callback: function(){
-					var selected_cond_name = $("#select_condition").val();
-					exp_condition = selected_cond_name;
-					var link_old = $("#run_link")[0].href;
-							link_old = link_old.split("&");
-							link_new = link_old[0] + "&name=" + selected_cond_name;
-					$("#run_link")[0].href = link_new;
-					$("#run_link")[0].click();
+				callback: function(){ 
+          if(typeof(master_json.github.repository) == "undefined"){
+            bootbox.alert("You need to identify or create an online git repository  of Collector to run this online");
+          } else {
+            var github_url =  "https://" + 
+                              master_json.github.username + 
+                              ".github.io/" +
+                              master_json.github.repository + 
+                              "/" + 
+                              dev_obj.version + 
+                              "/";
+                                                                        
+            window.open(github_url + "RunStudy.html?platform=github&" +
+                        "location=" + master_json.exp_mgmt.experiment +"&" +
+                        "name=" + $("#select_condition").val(),"_blank");
+            
+          }
 				}
 			},
+      preview:{
+        label: "Preview",
+				className: 'btn-primary',
+				callback: function(){
+					window.open("RunStudy.html?platform=preview&" +
+                      "location=" + master_json.exp_mgmt.experiment + "&" +
+                      "name=" + $("#select_condition").val(),"_blank");
+				}
+      },
 			cancel: {
 				label: "Cancel",
 				className: 'btn-secondary',

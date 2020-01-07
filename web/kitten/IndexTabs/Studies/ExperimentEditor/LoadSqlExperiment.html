@@ -85,10 +85,7 @@ switch(dev_obj.context){
 					<button id="rename_exp_btn" class="btn btn-primary">Rename</button>
 					<button id="delete_exp_btn" class="btn btn-primary">Delete</button>
 					<button id="versions_btn" class="btn btn-primary">Versions</button>
-					<input  id='publish_link' type='text' readonly style='display:none'>
-					<input  id='preview_link' type='text' readonly style='display:none'>
 					<button id="run_btn"      class="btn btn-primary">Run</button>
-					<a id="run_link" style="display:none" href="" target="_blank"></a>
 				</span>
 			</td>
 		</tr>
@@ -141,7 +138,7 @@ function check_trialtypes_in_proc(procedure,post_trialtype){
 function list_experiments(){
 	name_list = Object.keys(master_json.exp_mgmt.experiments);
   function update_exp_list(){
-    var select_html = "<select id='experiment_list'  class='custom-select'><option hidden disabled selected>Select an experiment</option>";
+    var select_html = "<select id='experiment_list'  class='custom-select'><option hidden disabled selected>Select a study</option>";
     name_list.sort(function(a,b){
       return a.toLowerCase().localeCompare(b.toLowerCase());
     });
@@ -163,8 +160,6 @@ function list_experiments(){
 
       var this_exp = master_json.exp_mgmt.experiments[this.value];
       $("#dropbox_inputs").show();
-      $("#run_link").attr("href","../"+ dev_obj.version + "/RunStudy.html?location="+this_exp.location);
-      $("#run_btn").attr("title","../"+ dev_obj.version + "/RunStudy.html?location="+this_exp.location);
       update_handsontables();
     });
   }

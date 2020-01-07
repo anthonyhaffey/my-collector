@@ -64,7 +64,7 @@ trialtypes_obj = {
 		if(new_name == original_name){
 			bootbox.alert("Your suggested new name is the same as the original name");
 		} else {
-			$.post("IndexTabs/Simulator/TrialTypeEditor/AjaxTrialtypes.php",{
+			$.post("IndexTabs/Studies/TrialTypeEditor/AjaxTrialtypes.php",{
 				action 				: "rename",
 				original_name	: original_name,
 				new_name			: new_name
@@ -162,7 +162,7 @@ function list_trialtypes(){
   }
   switch(dev_obj.context){
     case "server":
-      $.post("IndexTabs/Simulator/TrialTypeEditor/AjaxTrialtypes.php",
+      $.post("IndexTabs/Studies/TrialTypeEditor/AjaxTrialtypes.php",
       {
         action:'initiate',
       },
