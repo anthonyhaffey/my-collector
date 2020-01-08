@@ -69,6 +69,19 @@ def startup():
         eel.load_settings(settings.read())
 
 @eel.expose
+def push_collector(username,
+                   password,
+                   organisation,
+                   repository):
+    print("trying to push to the repository")
+    if organisation == "":
+        organisation = username
+    #create repository if that fails
+    #os.system("git push https://github.com/open-collector/open-collector")
+    os.system("git push https://" + username + ":" + password + "@github.com/" + organisation + "/" + repository)
+
+
+@eel.expose
 def update_collector(location,
                      this_rep_info,
                      password):

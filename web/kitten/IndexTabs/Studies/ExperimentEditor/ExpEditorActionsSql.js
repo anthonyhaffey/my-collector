@@ -236,22 +236,77 @@ $("#run_btn").on("click",function(){
 			online: {
 				label: "Online",
 				className: 'btn-primary',
-				callback: function(){ 
+				callback: function(){
           if(typeof(master_json.github.repository) == "undefined"){
             bootbox.alert("You need to identify or create an online git repository  of Collector to run this online");
           } else {
-            var github_url =  "https://" + 
-                              master_json.github.username + 
-                              ".github.io/" +
-                              master_json.github.repository + 
-                              "/" + 
-                              dev_obj.version + 
-                              "/";
-                                                                        
-            window.open(github_url + "RunStudy.html?platform=github&" +
-                        "location=" + master_json.exp_mgmt.experiment +"&" +
-                        "name=" + $("#select_condition").val(),"_blank");
-            
+						// put in code from collector install here
+						//bootbox.dialog("<div id='github_dialog'></div>");
+						//$("#github_dialog").load('IndexTabs/Studies/ExperimentEditor/GithubDialog.html');
+
+						var dialog = bootbox.dialog({
+							title: 'Synch with github repository',
+							message: '<div class="jumbotron">' +
+												  '<h1 class="display-4">Collector</h1>' +
+												  '<p class="lead">Put in the information below to install an online versions of Collector</p>' +
+												  '<div class="input-group mb-3">' +
+												    '<div class="input-group-prepend">' +
+												      '<span class="input-group-text bg-primary text-white">Your github username</span>' +
+												    '</div>' +
+												    '<input class="form-control" id="github_username"/>' +
+												  '</div>' +
+												  '<div class="input-group mb-3">'+
+												    '<div class="input-group-prepend">'+
+												     ' <span class="input-group-text bg-primary text-white">Your password</span>' +
+												    '</div>' +
+												    '<input class="form-control" id="github_password"/>' +
+												  '</div>' +
+													'<div class="input-group mb-3">'+
+												    '<div class="input-group-prepend">'+
+												     ' <span class="input-group-text bg-primary text-white">Your organisation (optional)</span>' +
+												    '</div>' +
+												    '<input class="form-control" id="github_organisation"/>' +
+												  '</div>' +
+												  '<div class="input-group mb-3">' +
+												    '<div class="input-group-prepend">' +
+												      '<span class="input-group-text bg-primary text-white">Your repository\'s name</span>' +
+												    '</div>' +
+												    '<input class="form-control" id="github_repository"/>' +
+												  '</div>' +
+												'</div>',
+							buttons: {
+									synch: {
+											label: "Synch",
+											className: 'btn-primary',
+											callback: function(){
+												eel.push_collector($("#github_username").val(),
+												                   $("#github_password").val(),
+																					 $("#github_organisation").val(),
+																					 $("#github_repository").val());
+
+												var github_url =  "https://" +
+																					master_json.github.username +
+																					".github.io/" +
+																					master_json.github.repository +
+																					"/" +
+																					dev_obj.version +
+																					"/";
+
+												window.open(github_url + "RunStudy.html?platform=github&" +
+																		"location=" + master_json.exp_mgmt.experiment +"&" +
+																		"name=" + $("#select_condition").val(),"_blank");
+
+											}
+									},
+									cancel: {
+											label: "Cancel",
+											className: 'btn-secondary',
+											callback: function(){
+													//nothing, just close
+											}
+									},
+							}
+				    });
           }
 				}
 			},
@@ -352,7 +407,7 @@ $("#save_btn").on("click", function(){
       this_exp.parsed_procs[proc_name] = this_exp.parsed_procs[proc_name].map(function(row){
         var cleaned_row = clean_obj_keys(row);
         if(trialtypes.indexOf(cleaned_row["trial type"]) == -1){
-          trialtypes.push(cleaned_row["trial type"]);
+          trialtypes.push(cleaned_row["trial type"].toLowerCase());
         }
         return cleaned_row;
       });
@@ -377,7 +432,7 @@ $("#save_btn").on("click", function(){
       eel.save_master_json(master_json);
       eel.save_experiment(experiment,     //experiment name
                           this_exp);      //experiment content
-    }  
+    }
 
     //dropbox check here
     if(dropbox_check()){
@@ -496,4 +551,3 @@ $("#versions_btn").on("click",function(){
     });
 	}
 });
-

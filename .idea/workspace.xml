@@ -3,33 +3,16 @@
   <component name="ChangeListManager">
     <list default="true" id="e700dd51-0b21-44ea-b88e-97aacd83d845" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Collector.spec" beforeDir="false" afterPath="$PROJECT_DIR$/Collector.spec" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/Collector/base_library.zip" beforeDir="false" afterPath="$PROJECT_DIR$/build/Collector/base_library.zip" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Collector.py" beforeDir="false" afterPath="$PROJECT_DIR$/Collector.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/Local/Experiments/testing.json" beforeDir="false" afterPath="$PROJECT_DIR$/web/Local/Experiments/testing.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/web/Local/master.json" beforeDir="false" afterPath="$PROJECT_DIR$/web/Local/master.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/web/kitten/IndexTabs/Simulator/ExperimentEditor/ExpEditorActionsSql.js" beforeDir="false" afterPath="$PROJECT_DIR$/web/kitten/IndexTabs/Simulator/ExperimentEditor/ExpEditorActionsSql.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/kitten/IndexTabs/Studies/ExperimentEditor/ExpEditorActionsSql.js" beforeDir="false" afterPath="$PROJECT_DIR$/web/kitten/IndexTabs/Studies/ExperimentEditor/ExpEditorActionsSql.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/kitten/IndexTabs/Studies/TrialTypeEditor/Graphic.html" beforeDir="false" afterPath="$PROJECT_DIR$/web/kitten/IndexTabs/Studies/TrialTypeEditor/Graphic.html" afterDir="false" />
     </list>
-    <ignored path="$PROJECT_DIR$/venv/" />
-    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
-  </component>
-  <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/Collector.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="389">
-              <caret line="111" column="12" selection-start-line="111" selection-start-column="12" selection-end-line="111" selection-end-column="12" />
-              <folding>
-                <element signature="e#0#10#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -45,13 +28,6 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
-  </component>
-  <component name="IdeDocumentHistory">
-    <option name="CHANGED_PATHS">
-      <list>
-        <option value="$PROJECT_DIR$/Collector.py" />
-      </list>
-    </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="740" />
@@ -84,30 +60,6 @@
       </profile-state>
     </entry>
   </component>
-  <component name="ProjectView">
-    <navigator proportions="" version="1">
-      <foldersAlwaysOnTop value="true" />
-    </navigator>
-    <panes>
-      <pane id="ProjectPane">
-        <subPane>
-          <expand>
-            <path>
-              <item name="my-collector-new" type="b2602c69:ProjectViewProjectNode" />
-              <item name="my-collector-new" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="my-collector-new" type="b2602c69:ProjectViewProjectNode" />
-              <item name="my-collector-new" type="462c0819:PsiDirectoryNode" />
-              <item name="venv" type="462c0819:PsiDirectoryNode" />
-            </path>
-          </expand>
-          <select />
-        </subPane>
-      </pane>
-      <pane id="Scope" />
-    </panes>
-  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showExcludedFiles" value="true" />
@@ -116,7 +68,7 @@
   <component name="PropertiesComponent">
     <property name="DefaultHtmlFileTemplate" value="HTML File" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../my-collector-master" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RecentsManager">
@@ -124,18 +76,6 @@
       <recent name="$PROJECT_DIR$" />
       <recent name="D:\OneDrive - University of Reading\Github\open-collector\arduino\web" />
     </key>
-  </component>
-  <component name="RunDashboard">
-    <option name="ruleStates">
-      <list>
-        <RuleState>
-          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
-        </RuleState>
-        <RuleState>
-          <option name="name" value="StatusDashboardGroupingRule" />
-        </RuleState>
-      </list>
-    </option>
   </component>
   <component name="RunManager" selected="Python.Collector">
     <configuration name="Collector" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
@@ -145,7 +85,7 @@
       <envs>
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
-      <option name="SDK_HOME" value="C:\Users\Anthony Haffey\AppData\Local\Programs\Python\Python36\python.exe" />
+      <option name="SDK_HOME" value="/usr/bin/python3.6" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
       <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
@@ -246,56 +186,35 @@
       <is-autoscroll-to-source value="true" />
     </todo-panel>
   </component>
-  <component name="ToolWindowManager">
-    <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
-    <editor active="true" />
-    <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.4978903" visible="true" weight="0.25670242" />
-      <window_info id="Structure" order="1" sideWeight="0.5021097" side_tool="true" weight="0.2533512" />
-      <window_info id="Favorites" order="2" side_tool="true" />
-      <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Find" order="1" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.49865952" visible="true" weight="0.32956153" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
-      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
-      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
-      <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="bottom" id="Version Control" order="7" />
-      <window_info anchor="bottom" id="Terminal" order="8" sideWeight="0.49865952" weight="0.32956153" />
-      <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.5013405" side_tool="true" visible="true" weight="0.32956153" />
-      <window_info anchor="bottom" id="Python Console" order="10" sideWeight="0.49932975" weight="0.32956153" />
-      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
-      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
-      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
-      <window_info anchor="right" id="R Graphics" order="3" />
-      <window_info anchor="right" id="R Packages" order="4" />
-    </layout>
-  </component>
   <component name="WindowStateProjectService">
     <state x="667" y="156" width="642" height="792" key="#Collector" timestamp="1577879766239">
       <screen x="67" y="27" width="1853" height="1053" />
     </state>
     <state x="667" y="156" width="642" height="792" key="#Collector/67.27.1853.1053@67.27.1853.1053" timestamp="1577879766239" />
-    <state x="451" y="210" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1577886240070">
+    <state x="451" y="210" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1578478122071">
       <screen x="67" y="27" width="1853" height="1053" />
     </state>
-    <state x="451" y="210" key="#com.intellij.execution.impl.EditConfigurationsDialog/67.27.1853.1053@67.27.1853.1053" timestamp="1577886240070" />
-    <state width="1830" height="277" key="GridCell.Tab.0.bottom" timestamp="1577893916237">
+    <state x="451" y="210" key="#com.intellij.execution.impl.EditConfigurationsDialog/67.27.1853.1053@67.27.1853.1053" timestamp="1578478122071" />
+    <state x="776" y="310" width="424" height="484" key="FileChooserDialogImpl" timestamp="1578496131473">
       <screen x="67" y="27" width="1853" height="1053" />
     </state>
-    <state width="1830" height="277" key="GridCell.Tab.0.bottom/67.27.1853.1053@67.27.1853.1053" timestamp="1577893916237" />
-    <state width="1830" height="277" key="GridCell.Tab.0.center" timestamp="1577893916236">
+    <state x="776" y="310" width="424" height="484" key="FileChooserDialogImpl/67.27.1853.1053@67.27.1853.1053" timestamp="1578496131473" />
+    <state width="915" height="277" key="GridCell.Tab.0.bottom" timestamp="1578495554229">
       <screen x="67" y="27" width="1853" height="1053" />
     </state>
-    <state width="1830" height="277" key="GridCell.Tab.0.center/67.27.1853.1053@67.27.1853.1053" timestamp="1577893916236" />
-    <state width="1830" height="277" key="GridCell.Tab.0.left" timestamp="1577893916235">
+    <state width="915" height="277" key="GridCell.Tab.0.bottom/67.27.1853.1053@67.27.1853.1053" timestamp="1578495554229" />
+    <state width="915" height="277" key="GridCell.Tab.0.center" timestamp="1578495554224">
       <screen x="67" y="27" width="1853" height="1053" />
     </state>
-    <state width="1830" height="277" key="GridCell.Tab.0.left/67.27.1853.1053@67.27.1853.1053" timestamp="1577893916235" />
-    <state width="1830" height="277" key="GridCell.Tab.0.right" timestamp="1577893916237">
+    <state width="915" height="277" key="GridCell.Tab.0.center/67.27.1853.1053@67.27.1853.1053" timestamp="1578495554224" />
+    <state width="915" height="277" key="GridCell.Tab.0.left" timestamp="1578495554223">
       <screen x="67" y="27" width="1853" height="1053" />
     </state>
-    <state width="1830" height="277" key="GridCell.Tab.0.right/67.27.1853.1053@67.27.1853.1053" timestamp="1577893916237" />
+    <state width="915" height="277" key="GridCell.Tab.0.left/67.27.1853.1053@67.27.1853.1053" timestamp="1578495554223" />
+    <state width="915" height="277" key="GridCell.Tab.0.right" timestamp="1578495554227">
+      <screen x="67" y="27" width="1853" height="1053" />
+    </state>
+    <state width="915" height="277" key="GridCell.Tab.0.right/67.27.1853.1053@67.27.1853.1053" timestamp="1578495554227" />
     <state width="1830" height="344" key="GridCell.Tab.1.bottom" timestamp="1577880246331">
       <screen x="67" y="27" width="1853" height="1053" />
     </state>
@@ -312,24 +231,13 @@
       <screen x="67" y="27" width="1853" height="1053" />
     </state>
     <state width="1830" height="344" key="GridCell.Tab.1.right/67.27.1853.1053@67.27.1853.1053" timestamp="1577880246330" />
-    <state x="649" y="380" key="com.intellij.ide.util.TipDialog" timestamp="1577888352277">
+    <state x="482" y="187" key="SettingsEditor" timestamp="1578477919574">
       <screen x="67" y="27" width="1853" height="1053" />
     </state>
-    <state x="649" y="380" key="com.intellij.ide.util.TipDialog/67.27.1853.1053@67.27.1853.1053" timestamp="1577888352277" />
-  </component>
-  <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/venv/pyvenv.cfg">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Collector.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="389">
-          <caret line="111" column="12" selection-start-line="111" selection-start-column="12" selection-end-line="111" selection-end-column="12" />
-          <folding>
-            <element signature="e#0#10#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
+    <state x="482" y="187" key="SettingsEditor/67.27.1853.1053@67.27.1853.1053" timestamp="1578477919574" />
+    <state x="649" y="380" key="com.intellij.ide.util.TipDialog" timestamp="1578493805750">
+      <screen x="67" y="27" width="1853" height="1053" />
+    </state>
+    <state x="649" y="380" key="com.intellij.ide.util.TipDialog/67.27.1853.1053@67.27.1853.1053" timestamp="1578493805750" />
   </component>
 </project>
